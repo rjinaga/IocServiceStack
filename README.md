@@ -1,5 +1,5 @@
 # NJet.Interservice
-NJet.Interservice is a library for multi-services communication through multi level dependency injection.
+NJet.Interservice is a .NET library for multi-services communication through multi level dependency injection.
 
 ### Installing
 ```
