@@ -1,0 +1,22 @@
+{
+  "title": "NJet.Interservice",
+  "version": "1.0.0-beta-1",
+  "dependencies": {
+
+  },
+
+  "frameworks": {
+    "net462": {}
+  },
+
+  "buildOptions": {
+    "keyFile": "../../tools/servicerouter.snk"
+  },
+
+  "scripts": {
+    "postcompile": [
+      "dotnet pack --no-build --configuration %compile:Configuration%"
+    ]
+  }
+
+}
