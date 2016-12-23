@@ -9,12 +9,12 @@ Install-Package NJet.Interservice -Pre
 ### Services Registation
 
 ```
-             ServiceRouterManager.Configure(config =>
-            {
-                config.AddServices((serviceConfig) => { serviceConfig.Namespaces = new[] { "PrimaryServiceLibrary" }; serviceConfig.Assemblies = new[] { "PrimaryServiceLibrary" }; })
-                      .AddDependentServices((serviceConfig) => { serviceConfig.Namespaces = new[] { "DependentServiceLibrary" }; serviceConfig.Assemblies = new[] { "DependentServiceLibrary" }; });
-                
-            });
+  ServiceRouterManager.Configure(config =>
+  {
+    config.AddServices((serviceConfig) => { serviceConfig.Assemblies = new[] { "PrimaryServiceLibrary" }; })
+          .AddDependentServices((serviceConfig) => { serviceConfig.Assemblies = new[] { "DependentServiceLibrary" }; });
+
+  });
 ```
 
 ### Service and Contract Declaration
@@ -91,10 +91,11 @@ namespace DependentServiceLibrary
         }
     }
 }
-
-/*Accessing service*/
-var customerService = ServiceManager.GetService<ICustomer>();
-
 ```
+### Accessing service
+
+...
+var customerService = ServiceManager.GetService<ICustomer>();
+...
 
 
