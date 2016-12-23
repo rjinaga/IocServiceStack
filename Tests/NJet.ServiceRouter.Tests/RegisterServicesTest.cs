@@ -34,7 +34,7 @@ namespace NJet.Interservice.Tests
         [OneTimeSetUp]
         public void RegisterTest()
         {
-            ServiceRouterManager.Configure(config =>
+            ServiceInjector.Configure(config =>
             {
                 config.AddServices((serviceConfig) => { serviceConfig.Namespaces = new[] { "PrimaryServiceLibrary" }; serviceConfig.Assemblies = new[] { "PrimaryServiceLibrary" }; })
                       .AddDependentServices((serviceConfig) => { serviceConfig.Namespaces = new[] { "DependentServiceLibrary" }; serviceConfig.Assemblies = new[] { "DependentServiceLibrary" }; });
