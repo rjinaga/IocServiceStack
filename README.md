@@ -14,13 +14,25 @@ Install-Package NJet.Interservice -Pre
 ### Services Registation
 
 ```
-  ServiceRouterManager.Configure(config =>
+  var configRef = ServiceInjector.Configure(config =>
   {
     config.AddServices((serviceConfig) => 
                       { serviceConfig.Assemblies = new[] { "PrimaryServiceLibrary" }; })
           .AddDependentServices((serviceConfig) => 
                       { serviceConfig.Assemblies = new[] { "DependentServiceLibrary" }; });
   });
+```
+
+### Dependency Injection
+
+```
+    var factoryService = configRef.GetFactoryService();
+
+    /*Dependency Injection*/
+    factoryService.Replace<ICustomer>(typeof(CustomerService2))
+                  .Subcontract
+                  .Replace<ICustomerRepository>(typeof(CustomerRepository2));
+
 ```
 
 ### Service and Contract Declaration
