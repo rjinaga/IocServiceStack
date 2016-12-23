@@ -23,29 +23,40 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace NJet.Interservice
+namespace NJet.Interservice.Tests.Helper
 {
+    using DependentServiceLibrary;
+    using NJet.Interservice;
     using System;
-    using System.Linq.Expressions;
-    using System.Reflection;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
 
-    internal class RepositoryFactory : SubcontractFactory
+    [Service]
+    public class CustomerRepository2 : ICustomerRepository
     {
-        public RepositoryFactory(string[] namespaces, Assembly[] aseemblies) : base(namespaces,aseemblies)
+        public CustomerRepository2()
         {
         }
 
-        public override Expression Create(Type interfaceType)
+        public void AddCustomer()
         {
-            if (interfaceType == null)
-                throw new ArgumentNullException(nameof(interfaceType));
+            throw new NotImplementedException();
+        }
 
-            ServiceMeta serviceMeta = Services?[interfaceType];
+        public void DeleteCustomer()
+        {
+            throw new NotImplementedException();
+        }
 
-            if (serviceMeta != null && serviceMeta.ServiceType != null)
-                return Expression.New(serviceMeta.ServiceType);
-            else
-                return Expression.Default(interfaceType);
+        public void GetCustomer(int customerId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateCustomer()
+        {
+            throw new NotImplementedException();
         }
     }
 }

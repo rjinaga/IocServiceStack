@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DependentServiceLibrary
+namespace DependentServiceLibrary.Test
 {
     [Service]
     public class CustomerRepository : ICustomerRepository

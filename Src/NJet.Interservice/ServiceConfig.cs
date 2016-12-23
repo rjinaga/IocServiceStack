@@ -27,10 +27,5 @@
             config(_serviceDependentOptions);
             return this;
         }
-
-        public IBasicService GetFactoryService()
-        {
-            return InternalServiceManager.GetServiceFactory();
-        }
     }
 }

@@ -23,24 +23,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace NJet.Interservice.Tests
+namespace NJet.Interservice.Tests.Helper
 {
-    using NUnit.Framework;
-    using NJet.Interservice;
-
-    [SetUpFixture]
-    public class BaseTests
+    public class TestsHelper
     {
-        [OneTimeSetUp]
-        public void RegisterTest()
-        {
-            ServiceInjector.Configure(config =>
-            {
-                config.AddServices((serviceConfig) => { serviceConfig.Namespaces = new[] { "PrimaryServiceLibrary" }; serviceConfig.Assemblies = new[] { "PrimaryServiceLibrary" }; })
-                      .AddDependentServices((serviceConfig) => { serviceConfig.Namespaces = new[] { "DependentServiceLibrary" }; serviceConfig.Assemblies = new[] { "DependentServiceLibrary" }; });
-                
-            });
-        }
-
+        public static ServicePostConfiguration FactoryServicePointer { get; internal set; }
     }
 }

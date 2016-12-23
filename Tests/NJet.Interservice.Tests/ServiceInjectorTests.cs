@@ -23,29 +23,23 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace NJet.Interservice
+namespace NJet.Interservice.Tests
 {
-    using System;
-    using System.Linq.Expressions;
-    using System.Reflection;
+    using NUnit.Framework;
+    using PrimaryServiceLibrary;
+    using static NJet.Interservice.ServiceManager;
 
-    internal class RepositoryFactory : SubcontractFactory
+    public class ServiceInjectorTests
     {
-        public RepositoryFactory(string[] namespaces, Assembly[] aseemblies) : base(namespaces,aseemblies)
+        [Test]
+        public void CustomerService_Test()
         {
-        }
+            //Arrange & Act
+            var customerService = GetService<ICustomer>();
 
-        public override Expression Create(Type interfaceType)
-        {
-            if (interfaceType == null)
-                throw new ArgumentNullException(nameof(interfaceType));
-
-            ServiceMeta serviceMeta = Services?[interfaceType];
-
-            if (serviceMeta != null && serviceMeta.ServiceType != null)
-                return Expression.New(serviceMeta.ServiceType);
-            else
-                return Expression.Default(interfaceType);
+            //Assert
+            Assert.IsInstanceOf<PrimaryServiceLibrary.Test.CustomerService>(customerService);
+            Assert.IsInstanceOf<DependentServiceLibrary.Test.CustomerRepository>(customerService.GetRepository());
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DependentServiceLibrary;
 
-namespace PrimaryServiceLibrary
+namespace PrimaryServiceLibrary.Test
 {
     [Service]
     public class CustomerService : ICustomer

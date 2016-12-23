@@ -7,8 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{FAFAAA3B-5C7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A4D15232-2172-4D84-9710-E9400A7232BA}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NJet.ServiceRouter.Tests", "Tests\NJet.ServiceRouter.Tests\NJet.ServiceRouter.Tests.xproj", "{1CA583E1-178A-4333-90C8-7921007FF773}"
-EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PrimaryServiceLibrary", "Tests\PrimaryServiceLibrary\PrimaryServiceLibrary.xproj", "{82684339-518D-4DC9-9A23-28E6BCC62B8E}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "DependentServiceLibrary", "Tests\DependentServiceLibrary\DependentServiceLibrary.xproj", "{1ED7887D-FD12-4099-ACC7-F2972EB15E69}"
@@ -22,16 +20,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NJet.Interservice", "Src\NJet.Interservice\NJet.Interservice.xproj", "{129D8805-53DA-4C50-B624-38A86359237B}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NJet.Interservice.Tests", "Tests\NJet.Interservice.Tests\NJet.Interservice.Tests.xproj", "{1CA583E1-178A-4333-90C8-7921007FF773}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1CA583E1-178A-4333-90C8-7921007FF773}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1CA583E1-178A-4333-90C8-7921007FF773}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1CA583E1-178A-4333-90C8-7921007FF773}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1CA583E1-178A-4333-90C8-7921007FF773}.Release|Any CPU.Build.0 = Release|Any CPU
 		{82684339-518D-4DC9-9A23-28E6BCC62B8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{82684339-518D-4DC9-9A23-28E6BCC62B8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82684339-518D-4DC9-9A23-28E6BCC62B8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -44,15 +40,19 @@ Global
 		{129D8805-53DA-4C50-B624-38A86359237B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{129D8805-53DA-4C50-B624-38A86359237B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{129D8805-53DA-4C50-B624-38A86359237B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CA583E1-178A-4333-90C8-7921007FF773}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CA583E1-178A-4333-90C8-7921007FF773}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CA583E1-178A-4333-90C8-7921007FF773}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CA583E1-178A-4333-90C8-7921007FF773}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{1CA583E1-178A-4333-90C8-7921007FF773} = {A4D15232-2172-4D84-9710-E9400A7232BA}
 		{82684339-518D-4DC9-9A23-28E6BCC62B8E} = {AF8B92C2-74EA-4884-A382-DDA8ADD1D49B}
 		{1ED7887D-FD12-4099-ACC7-F2972EB15E69} = {AF8B92C2-74EA-4884-A382-DDA8ADD1D49B}
 		{AF8B92C2-74EA-4884-A382-DDA8ADD1D49B} = {A4D15232-2172-4D84-9710-E9400A7232BA}
 		{129D8805-53DA-4C50-B624-38A86359237B} = {FAFAAA3B-5C76-4A2D-947B-BF44794E01A1}
+		{1CA583E1-178A-4333-90C8-7921007FF773} = {A4D15232-2172-4D84-9710-E9400A7232BA}
 	EndGlobalSection
 EndGlobal

@@ -32,11 +32,11 @@ namespace NJet.Interservice
 
     public abstract class SubcontractFactory : IBasicService
     {
-        protected readonly Dictionary<Type, Type> Services;
+        protected readonly Dictionary<Type, ServiceMeta> Services;
 
         public SubcontractFactory(string[] namespaces, Assembly[] aseemblies)
         {
-            Services = new Dictionary<Type, Type>();
+            Services = new Dictionary<Type, ServiceMeta>();
             BootstrapHelper.Bootstrap(namespaces,aseemblies, Services);
         }
 
@@ -49,14 +49,18 @@ namespace NJet.Interservice
 
         public virtual IBasicService Add<T>(Type service) where T : class
         {
-            Services.Add(typeof(T), service);
+            Type interfaceType = typeof(T);
+            Services.Add(interfaceType, new ServiceMeta { ServiceType = service });
             return this;
         }
 
         public virtual IBasicService Replace<T>(Type service) where T : class
         {
-            Services[typeof(T)] = service;
+            Type interfaceType = typeof(T);
+            Services[interfaceType].ServiceType = service;
+
             return this;
         }
+        
     }
 }

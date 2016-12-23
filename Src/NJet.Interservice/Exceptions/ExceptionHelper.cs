@@ -26,26 +26,11 @@
 namespace NJet.Interservice
 {
     using System;
-    using System.Linq.Expressions;
-    using System.Reflection;
-
-    internal class RepositoryFactory : SubcontractFactory
+    internal class ExceptionHelper
     {
-        public RepositoryFactory(string[] namespaces, Assembly[] aseemblies) : base(namespaces,aseemblies)
+        internal static Exception ThrowServiceNotRegisteredException(string name)
         {
-        }
-
-        public override Expression Create(Type interfaceType)
-        {
-            if (interfaceType == null)
-                throw new ArgumentNullException(nameof(interfaceType));
-
-            ServiceMeta serviceMeta = Services?[interfaceType];
-
-            if (serviceMeta != null && serviceMeta.ServiceType != null)
-                return Expression.New(serviceMeta.ServiceType);
-            else
-                return Expression.Default(interfaceType);
+            throw new ServiceNotFoundException($"Requested service of '{name}' contract is not found.");
         }
     }
 }

@@ -29,9 +29,30 @@ namespace NJet.Interservice
     using System.Collections.Generic;
     using System.Reflection;
 
+    public class ServiceMeta
+    {
+        private Type _serviceType;
+        public Type ServiceType {
+            get
+            {
+                return _serviceType;
+            }
+            set
+            {
+                if (_serviceType != value)
+                {
+                    IsTypeChanged = true;
+                    _serviceType = value;
+                }
+            }
+        }
+        public bool IsTypeChanged { get; private set; }
+    }
+
+
     public class DefaultServiceFactory : IServiceFactory
     {
-        private Dictionary<Type, Type> _services;
+        private Dictionary<Type, ServiceMeta> _services;
 
         public SubcontractFactory Subcontract
         {
@@ -40,7 +61,7 @@ namespace NJet.Interservice
 
         public DefaultServiceFactory(string[] namespaces, Assembly[] aseemblies)
         {
-            _services = new Dictionary<Type, Type>();
+            _services = new Dictionary<Type, ServiceMeta>();
 
             if (aseemblies == null || aseemblies.Length == 0)
                 return;
@@ -51,12 +72,16 @@ namespace NJet.Interservice
         public T Create<T>() where T : class
         {
             Type interfaceType = typeof(T);
-            Type serviceType = _services?[interfaceType];
 
-            if (serviceType != null)
+            if (!_services.ContainsKey(interfaceType))
+                throw ExceptionHelper.ThrowServiceNotRegisteredException(interfaceType.Name);
+
+            ServiceMeta serviceMeta = _services[interfaceType];
+
+            if (serviceMeta != null)
             {
-                if (!InternalServiceObjectFactory.Contains(interfaceType))
-                    InternalServiceObjectFactory.AddOrReplace<T>(interfaceType, serviceType, Subcontract);
+                if (!InternalServiceObjectFactory.Contains(interfaceType) || serviceMeta.IsTypeChanged)
+                    InternalServiceObjectFactory.AddOrReplace<T>(interfaceType, serviceMeta.ServiceType, Subcontract);
 
                 return InternalServiceObjectFactory.Get<T>();
             }
@@ -66,13 +91,16 @@ namespace NJet.Interservice
 
         public IBasicService Add<T>(Type service) where T : class
         {
-            _services.Add(typeof(T), service);
+            Type interfaceType = typeof(T);
+            _services.Add(interfaceType, new ServiceMeta { ServiceType = service });
             return this;
         }
 
         public IBasicService Replace<T>(Type service) where T : class
         {
-            _services[typeof(T)] = service;
+            Type interfaceType = typeof(T);
+            _services[interfaceType].ServiceType = service;
+
             return this;
         }
 

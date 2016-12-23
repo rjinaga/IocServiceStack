@@ -28,11 +28,11 @@ namespace NJet.Interservice
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    
+
 
     internal static class BootstrapHelper
     {
-        public static void Bootstrap(string[] namespaces, Assembly[] aseemblies, Dictionary<Type, Type> services)
+        public static void Bootstrap(string[] namespaces, Assembly[] aseemblies, Dictionary<Type, ServiceMeta> services)
         {
             if (aseemblies == null)
                 return;
@@ -47,17 +47,22 @@ namespace NJet.Interservice
             });
         }
 
-        public static void FillServicesDictionary(IEnumerable<Type> serviceTypes, Dictionary<Type, Type> services, string[] namespaces)
+        public static void FillServicesDictionary(IEnumerable<Type> serviceTypes, Dictionary<Type, ServiceMeta> services, string[] namespaces)
         {
             foreach (var serviceType in serviceTypes)
             {
-                IEnumerable<Type> interfaces = serviceType.GetInterfaces()
-                                                         .Where(@interface => @interface.GetCustomAttribute<ContractAttribute>() != null
-                                                         && (namespaces == null || namespaces.Length == 0 || namespaces.Contains(@interface.Namespace)));
-
-                foreach (var item in interfaces)
+                /*Allow when no namespaces are configured or if it's configured then check the namespace of the service is matched with namespaces declared in config via ServiceInjector.*/
+                if (namespaces == null || namespaces.Length == 0 || namespaces.Contains(serviceType.Namespace))
                 {
-                    services[item] = serviceType;
+                    /*Fetch implemented intefaces of service whose interface is decorated with  ContractAttribute.*/
+                    IEnumerable<Type> interfaces = serviceType.GetInterfaces()
+                                                              .Where(@interface => @interface.GetCustomAttribute<ContractAttribute>() != null);
+
+                    /*Map service type with the contract interfaces*/
+                    foreach (var item in interfaces)
+                    {
+                        services[item] = new ServiceMeta { ServiceType = serviceType };
+                    }
                 }
             }
         }

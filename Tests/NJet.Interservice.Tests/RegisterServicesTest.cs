@@ -23,29 +23,26 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace NJet.Interservice
+namespace NJet.Interservice.Tests
 {
-    using System;
-    using System.Linq.Expressions;
-    using System.Reflection;
-
-    internal class RepositoryFactory : SubcontractFactory
+    using NUnit.Framework;
+    using NJet.Interservice;
+    
+    /*This test module doesn't support parallel execution*/
+    [SetUpFixture]
+    public class SetupTests
     {
-        public RepositoryFactory(string[] namespaces, Assembly[] aseemblies) : base(namespaces,aseemblies)
+        [OneTimeSetUp]
+        public void RegisterTest()
         {
-        }
+            var configRef = ServiceInjector.Configure(config =>
+            {
+                config.AddServices((serviceConfig) => { serviceConfig.Namespaces = new[] { "PrimaryServiceLibrary.Test" }; serviceConfig.Assemblies = new[] { "PrimaryServiceLibrary" }; })
+                      .AddDependentServices((serviceConfig) => { serviceConfig.Namespaces = new[] { "DependentServiceLibrary.Test" }; serviceConfig.Assemblies = new[] { "DependentServiceLibrary" }; });
+            });
 
-        public override Expression Create(Type interfaceType)
-        {
-            if (interfaceType == null)
-                throw new ArgumentNullException(nameof(interfaceType));
-
-            ServiceMeta serviceMeta = Services?[interfaceType];
-
-            if (serviceMeta != null && serviceMeta.ServiceType != null)
-                return Expression.New(serviceMeta.ServiceType);
-            else
-                return Expression.Default(interfaceType);
+            //Hold the pointer of serviceConfig to run further tests of dependecy injections
+            Helper.TestsHelper.FactoryServicePointer = configRef;
         }
     }
 }

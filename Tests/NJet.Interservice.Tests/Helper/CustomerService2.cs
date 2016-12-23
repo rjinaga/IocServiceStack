@@ -23,25 +23,27 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace NJet.Interservice.Tests
+namespace NJet.Interservice.Tests.Helper
 {
-    using NUnit.Framework;
+    using NJet.Interservice;
     using PrimaryServiceLibrary;
     using DependentServiceLibrary;
-    using static NJet.Interservice.ServiceManager;
 
-    public class ServiceRouterManagerTests
+
+    [Service]
+    public class CustomerService2 : ICustomer
     {
-        [Test, Order(1)]
-        public void CustomerService_Test()
+        ICustomerRepository _repository;
+        
+        [ServiceInit]
+        public CustomerService2(ICustomerRepository repository)
         {
-            //Assert & Act
-            var customerService = ServiceManager.GetService<ICustomer>();
+            _repository = repository;
+        }
 
-            //Assert
-            Assert.IsInstanceOf<CustomerService>(customerService);
-            Assert.IsInstanceOf<CustomerRepository>(customerService.GetRepository());
-
+        public ICustomerRepository GetRepository()
+        {
+            return _repository;
         }
     }
 }
