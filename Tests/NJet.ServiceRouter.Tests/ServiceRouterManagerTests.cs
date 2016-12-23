@@ -36,7 +36,7 @@ namespace NJet.Interservice.Tests
         public void CustomerService_Test()
         {
             //Assert & Act
-            var customerService = GetService<ICustomer>();
+            var customerService = ServiceManager.GetService<ICustomer>();
 
             //Assert
             Assert.IsInstanceOf<CustomerService>(customerService);

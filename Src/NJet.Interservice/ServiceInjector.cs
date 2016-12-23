@@ -27,7 +27,7 @@ namespace NJet.Interservice
 {
     using System;
     
-    public class ServiceRouterManager
+    public class ServiceInjector
     {
         private static ServiceConfig _config = new ServiceConfig();
 
