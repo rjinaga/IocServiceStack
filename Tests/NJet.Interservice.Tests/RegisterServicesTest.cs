@@ -41,7 +41,7 @@ namespace NJet.Interservice.Tests
                       .AddDependentServices((serviceConfig) => { serviceConfig.Namespaces = new[] { "DependentServiceLibrary.Test" }; serviceConfig.Assemblies = new[] { "DependentServiceLibrary" }; });
             });
 
-            //Hold the pointer of serviceConfig to run further tests of dependecy injections
+            //Hold the pointer of serviceConfig in a static field to run further tests of dependecy injection.
             Helper.TestsHelper.FactoryServicePointer = configRef;
         }
     }

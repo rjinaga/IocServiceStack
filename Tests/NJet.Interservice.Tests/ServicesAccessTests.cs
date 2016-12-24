@@ -29,7 +29,7 @@ namespace NJet.Interservice.Tests
     using PrimaryServiceLibrary;
     using static NJet.Interservice.ServiceManager;
 
-    public class ServiceInjectorTests
+    public class ServicesAccessTests
     {
         [Test]
         public void CustomerService_Test()

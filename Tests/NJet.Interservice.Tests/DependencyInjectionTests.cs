@@ -45,7 +45,7 @@ namespace NJet.Interservice.Tests
             factoryService.Replace<ICustomer>(typeof(CustomerService2))
                           .Subcontract
                           .Replace<ICustomerRepository>(typeof(CustomerRepository2));
-
+            
             //Act
             var service = ServiceManager.GetService<ICustomer>();
 
