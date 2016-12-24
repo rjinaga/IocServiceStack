@@ -25,18 +25,13 @@
 
 namespace NJet.Interservice
 {
-    using System;
-    
-    public class ServiceInjector
-    {
-        private static ServiceConfig _config = new ServiceConfig();
-        private static ServicePostConfiguration _postConfig = new ServicePostConfiguration();
 
-        public static ServicePostConfiguration Configure(Action<ServiceConfig> configuration)
+    public class ServicePostConfiguration
+    {
+        public IBasicService GetFactoryService()
         {
-            configuration(_config);
-            InternalServiceManager.Config = _config;
-            return _postConfig;
+            return InternalServiceManager.GetServiceFactory();
         }
     }
+
 }
