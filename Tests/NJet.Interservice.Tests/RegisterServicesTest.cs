@@ -26,7 +26,7 @@
 namespace NJet.Interservice.Tests
 {
     using NUnit.Framework;
-    using NJet.Interservice;
+    using Interservice;
     
     /*This test module doesn't support parallel execution*/
     [SetUpFixture]
@@ -39,6 +39,9 @@ namespace NJet.Interservice.Tests
             {
                 config.AddServices((serviceConfig) => { serviceConfig.Namespaces = new[] { "PrimaryServiceLibrary.Test" }; serviceConfig.Assemblies = new[] { "PrimaryServiceLibrary" }; })
                       .AddDependentServices((serviceConfig) => { serviceConfig.Namespaces = new[] { "DependentServiceLibrary.Test" }; serviceConfig.Assemblies = new[] { "DependentServiceLibrary" }; });
+
+                config.EnableStrictMode();
+
             });
 
             //Hold the pointer of serviceConfig in a static field to run further tests of dependecy injection.

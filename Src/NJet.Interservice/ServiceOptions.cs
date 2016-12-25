@@ -30,5 +30,6 @@ namespace NJet.Interservice
         public string[] Namespaces;
         public string[] Assemblies;
         public IServiceFactory ServiceFactory;
+        public bool StrictMode;
     }
 }

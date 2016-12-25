@@ -31,7 +31,7 @@ namespace NJet.Interservice
 
     internal class RepositoryFactory : SubcontractFactory
     {
-        public RepositoryFactory(string[] namespaces, Assembly[] aseemblies) : base(namespaces,aseemblies)
+        public RepositoryFactory(string[] namespaces, Assembly[] aseemblies, bool strictMode) : base(namespaces,aseemblies, strictMode)
         {
         }
 
@@ -40,7 +40,7 @@ namespace NJet.Interservice
             if (interfaceType == null)
                 throw new ArgumentNullException(nameof(interfaceType));
 
-            ServiceMeta serviceMeta = Services?[interfaceType];
+            ServiceMeta serviceMeta = ServicesMapTable?[interfaceType];
 
             if (serviceMeta != null && serviceMeta.ServiceType != null)
                 return Expression.New(serviceMeta.ServiceType);

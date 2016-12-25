@@ -27,7 +27,6 @@ namespace NJet.Interservice
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
 
@@ -67,7 +66,7 @@ namespace NJet.Interservice
                     Func<T> serviceCreator = Expression.Lambda<Func<T>>(Expression.New(serviceConstructor, arguments)).Compile();
                     _repositories[interfaceType] = serviceCreator;
 
-                    return ; 
+                    return;
                 }
             }
 
@@ -85,7 +84,13 @@ namespace NJet.Interservice
 
         public static T Get<T>()
         {
-            return (T)_repositories[typeof(T)]();
+            var type = typeof(T);
+            if (_repositories.ContainsKey(type))
+            {
+                return (T)_repositories[type]();
+            }
+
+            return default(T);
         }
     }
 

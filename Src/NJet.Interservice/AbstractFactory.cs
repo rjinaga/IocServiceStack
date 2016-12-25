@@ -26,16 +26,37 @@
 namespace NJet.Interservice
 {
     using System;
-    using System.Linq.Expressions;
     using System.Reflection;
 
-    public abstract class SubcontractFactory : AbstractFactory
+    public abstract class AbstractFactory : IBasicService
     {
-        public SubcontractFactory(string[] namespaces, Assembly[] assemblies, bool strictMode) : base(namespaces, assemblies, strictMode)
+        protected readonly ContractServiceAutoMapTable ServicesMapTable;
+
+        public AbstractFactory(string[] namespaces, Assembly[] assemblies, bool strictMode)
         {
-            
+            ServicesMapTable = new ContractServiceAutoMapTable(namespaces, assemblies, strictMode);
+            ServicesMapTable.Map();
         }
 
-        public abstract Expression Create(Type interfaceType);
+        public SubcontractFactory Subcontract
+        {
+            get; set;
+        }
+
+
+        public virtual IBasicService Add<T>(Type service) where T : class
+        {
+            Type interfaceType = typeof(T);
+            ServicesMapTable.Add(interfaceType, new ServiceMeta { ServiceType = service });
+            return this;
+        }
+
+        public virtual IBasicService Replace<T>(Type service) where T : class
+        {
+            Type interfaceType = typeof(T);
+            ServicesMapTable[interfaceType].ServiceType = service;
+
+            return this;
+        }
     }
 }

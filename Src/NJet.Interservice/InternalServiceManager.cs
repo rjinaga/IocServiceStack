@@ -23,10 +23,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.Reflection;
-
 namespace NJet.Interservice
 {
+    using System.Reflection;
+
     internal class InternalServiceManager
     {
         private static IServiceFactory _serviceFactory;
@@ -50,11 +50,11 @@ namespace NJet.Interservice
                 if (_serviceFactory == null)
                 {
                     Assembly[] assmblies = GetAssemblies(Config.ServiceOptions.Assemblies);
-                    _serviceFactory = new DefaultServiceFactory(Config.ServiceOptions.Namespaces, assmblies);
+                    _serviceFactory = new DefaultServiceFactory(Config.ServiceOptions.Namespaces, assmblies, Config.ServiceOptions.StrictMode);
                     
                     //Set subcontract factory 
                     Assembly[] subcontractAssmblies = GetAssemblies(Config.ServiceDependentOptions?.Assemblies);
-                    _serviceFactory.Subcontract = new RepositoryFactory(Config.ServiceDependentOptions?.Namespaces, subcontractAssmblies);
+                    _serviceFactory.Subcontract = new RepositoryFactory(Config.ServiceDependentOptions?.Namespaces, subcontractAssmblies, Config.ServiceOptions.StrictMode);
                 }
             }
         }

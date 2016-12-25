@@ -27,6 +27,7 @@ namespace NJet.Interservice
 {
     using System;
 
+    [Serializable]
     public class ServiceNotFoundException : Exception {
         public ServiceNotFoundException(string message) : base(message)
         {

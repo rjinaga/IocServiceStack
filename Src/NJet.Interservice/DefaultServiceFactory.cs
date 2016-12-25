@@ -26,57 +26,22 @@
 namespace NJet.Interservice
 {
     using System;
-    using System.Collections.Generic;
     using System.Reflection;
 
-    public class ServiceMeta
+    public class DefaultServiceFactory : AbstractFactory, IServiceFactory
     {
-        private Type _serviceType;
-        public Type ServiceType {
-            get
-            {
-                return _serviceType;
-            }
-            set
-            {
-                if (_serviceType != value)
-                {
-                    IsTypeChanged = true;
-                    _serviceType = value;
-                }
-            }
-        }
-        public bool IsTypeChanged { get; private set; }
-    }
-
-
-    public class DefaultServiceFactory : IServiceFactory
-    {
-        private Dictionary<Type, ServiceMeta> _services;
-
-        public SubcontractFactory Subcontract
+        public DefaultServiceFactory(string[] namespaces, Assembly[] assemblies, bool strictMode) : base(namespaces, assemblies, strictMode)
         {
-            get;set;
-        }
-
-        public DefaultServiceFactory(string[] namespaces, Assembly[] aseemblies)
-        {
-            _services = new Dictionary<Type, ServiceMeta>();
-
-            if (aseemblies == null || aseemblies.Length == 0)
-                return;
-
-            BootstrapHelper.Bootstrap(namespaces,aseemblies, _services);
         }
 
         public T Create<T>() where T : class
         {
             Type interfaceType = typeof(T);
 
-            if (!_services.ContainsKey(interfaceType))
+            if (!ServicesMapTable.Contains(interfaceType))
                 throw ExceptionHelper.ThrowServiceNotRegisteredException(interfaceType.Name);
 
-            ServiceMeta serviceMeta = _services[interfaceType];
+            ServiceMeta serviceMeta = ServicesMapTable[interfaceType];
 
             if (serviceMeta != null)
             {
@@ -88,21 +53,5 @@ namespace NJet.Interservice
 
             return default(T);
         }
-
-        public IBasicService Add<T>(Type service) where T : class
-        {
-            Type interfaceType = typeof(T);
-            _services.Add(interfaceType, new ServiceMeta { ServiceType = service });
-            return this;
-        }
-
-        public IBasicService Replace<T>(Type service) where T : class
-        {
-            Type interfaceType = typeof(T);
-            _services[interfaceType].ServiceType = service;
-
-            return this;
-        }
-
     }
 }

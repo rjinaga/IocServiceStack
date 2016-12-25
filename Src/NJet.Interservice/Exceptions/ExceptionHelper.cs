@@ -32,5 +32,10 @@ namespace NJet.Interservice
         {
             throw new ServiceNotFoundException($"Requested service of '{name}' contract is not found.");
         }
+
+        internal static void ThrowDuplicateServiceException(string fullName)
+        {
+            throw new DuplicateServiceImplementaionException(fullName);
+        }
     }
 }

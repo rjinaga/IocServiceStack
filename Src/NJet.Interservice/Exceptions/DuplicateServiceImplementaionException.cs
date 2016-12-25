@@ -26,16 +26,11 @@
 namespace NJet.Interservice
 {
     using System;
-    using System.Linq.Expressions;
-    using System.Reflection;
 
-    public abstract class SubcontractFactory : AbstractFactory
-    {
-        public SubcontractFactory(string[] namespaces, Assembly[] assemblies, bool strictMode) : base(namespaces, assemblies, strictMode)
+    [Serializable]
+    public class DuplicateServiceImplementaionException : Exception {
+        public DuplicateServiceImplementaionException(string message) : base(message)
         {
-            
         }
-
-        public abstract Expression Create(Type interfaceType);
     }
 }

@@ -26,16 +26,25 @@
 namespace NJet.Interservice
 {
     using System;
-    using System.Linq.Expressions;
-    using System.Reflection;
 
-    public abstract class SubcontractFactory : AbstractFactory
+    public class ServiceMeta
     {
-        public SubcontractFactory(string[] namespaces, Assembly[] assemblies, bool strictMode) : base(namespaces, assemblies, strictMode)
+        private Type _serviceType;
+        public Type ServiceType
         {
-            
+            get
+            {
+                return _serviceType;
+            }
+            set
+            {
+                if (_serviceType != value)
+                {
+                    IsTypeChanged = true;
+                    _serviceType = value;
+                }
+            }
         }
-
-        public abstract Expression Create(Type interfaceType);
+        public bool IsTypeChanged { get; private set; }
     }
 }

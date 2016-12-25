@@ -27,5 +27,13 @@
             config(_serviceDependentOptions);
             return this;
         }
+        /// <summary>
+        /// EnableStrictMode applies the one contract with one service policy. This means if more than one service is implemented single contract interface
+        /// then it will throw an exception. It ensures a contract interface is implemented by a single service. By default it's not enabled, mapping table wll have the last service in the list of inteface implementaions services.
+        /// </summary>
+        public void EnableStrictMode()
+        {
+            _serviceOptions.StrictMode = true;
+        }
     }
 }

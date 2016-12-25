@@ -22,17 +22,60 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
+
 namespace NJet.Interservice
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
-
-    internal static class BootstrapHelper
+    
+    public class ContractServiceAutoMapTable
     {
-        public static void Bootstrap(string[] namespaces, Assembly[] aseemblies, Dictionary<Type, ServiceMeta> services)
+        private readonly Assembly[] _aseemblies;
+        private readonly string[] _namespaces;
+        private readonly bool _strictMode;
+        private readonly Dictionary<Type, ServiceMeta> _mapTable;
+
+        public ContractServiceAutoMapTable(string[] namespaces, Assembly[] aseemblies, bool strictMode)
+        {
+            _namespaces = namespaces;
+            _aseemblies = aseemblies;
+            _strictMode = strictMode;
+            _mapTable = new Dictionary<Type, ServiceMeta>();
+        }
+
+        /// <summary>
+        /// Maps contracts with services in specified assemblies and namespaces
+        /// </summary>
+        public void Map()
+        {
+            InternalMap(_namespaces, _aseemblies, _mapTable);
+        }
+
+        public ServiceMeta this[Type contractType]
+        {
+            get
+            {
+                return _mapTable[contractType];
+            }
+            set
+            {
+                _mapTable[contractType] = value;
+            }
+        }
+
+        public bool Contains(Type contractType)
+        {
+            return _mapTable.ContainsKey(contractType);
+        }
+
+        public void Add(Type contractType, ServiceMeta serviceMeta)
+        {
+            _mapTable.Add(contractType, serviceMeta);
+        }
+
+        private void InternalMap(string[] namespaces, Assembly[] aseemblies, Dictionary<Type, ServiceMeta> services)
         {
             if (aseemblies == null)
                 return;
@@ -47,7 +90,7 @@ namespace NJet.Interservice
             });
         }
 
-        public static void FillServicesDictionary(IEnumerable<Type> serviceTypes, Dictionary<Type, ServiceMeta> services, string[] namespaces)
+        public void FillServicesDictionary(IEnumerable<Type> serviceTypes, Dictionary<Type, ServiceMeta> services, string[] namespaces)
         {
             foreach (var serviceType in serviceTypes)
             {
@@ -61,11 +104,17 @@ namespace NJet.Interservice
                     /*Map service type with the contract interfaces*/
                     foreach (var item in interfaces)
                     {
+                        if (_strictMode)
+                        {
+                            if (services.ContainsKey(item))
+                                ExceptionHelper.ThrowDuplicateServiceException($"{serviceType.FullName} implements {item.FullName}");
+                        }
                         services[item] = new ServiceMeta { ServiceType = serviceType };
                     }
                 }
             }
         }
-    }
 
+      
+    }
 }
