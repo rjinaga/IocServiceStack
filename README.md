@@ -1,5 +1,6 @@
 # NJet.Interservice
-NJet.Interservice is a .NET library for multi-services communication through multi level dependency injection.
+NJet.Interservice is a .NET library for multi-services communication through multi-level dependency injection. This separates the concerns of application layers. This makes the layers configurable, but not required to reference dependent layer at compile or design time. References will be added virtually at runtime.
+
 
 ### Prerequisite
 - .NET Core
@@ -20,6 +21,8 @@ var configRef = ServiceInjector.Configure(config =>
                     { serviceConfig.Assemblies = new[] { "PrimaryServiceLibrary" }; })
         .AddDependentServices((serviceConfig) => 
                     { serviceConfig.Assemblies = new[] { "DependentServiceLibrary" }; });
+                    
+  config.EnableStrictMode();
 });
 ```
 
@@ -35,7 +38,7 @@ factoryService.Replace<ICustomer>(typeof(CustomerService2))
 
 ```
 
-### Service and Contract Declaration
+### Services and Contracts Implementations
 
 ```c#
 namespace PrimaryServiceLibrary
