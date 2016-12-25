@@ -1,7 +1,7 @@
 # NJet.Interservice
 NJet.Interservice is a .NET library for multi-services communication through multi level dependency injection.
 
-### prerequisite
+### Prerequisite
 - .NET Core
 - .NET Framework 4.6.2 
 
@@ -13,31 +13,31 @@ Install-Package NJet.Interservice -Pre
 
 ### Services Registation
 
-```
-  var configRef = ServiceInjector.Configure(config =>
-  {
-    config.AddServices((serviceConfig) => 
-                      { serviceConfig.Assemblies = new[] { "PrimaryServiceLibrary" }; })
-          .AddDependentServices((serviceConfig) => 
-                      { serviceConfig.Assemblies = new[] { "DependentServiceLibrary" }; });
-  });
+```c#
+var configRef = ServiceInjector.Configure(config =>
+{
+  config.AddServices((serviceConfig) => 
+                    { serviceConfig.Assemblies = new[] { "PrimaryServiceLibrary" }; })
+        .AddDependentServices((serviceConfig) => 
+                    { serviceConfig.Assemblies = new[] { "DependentServiceLibrary" }; });
+});
 ```
 
 ### Dependency Injection
 
-```
-    var factoryService = configRef.GetFactoryService();
+```c#
+var factoryService = configRef.GetFactoryService();
 
-    /*Dependency Injection*/
-    factoryService.Replace<ICustomer>(typeof(CustomerService2))
-                  .Subcontract
-                  .Replace<ICustomerRepository>(typeof(CustomerRepository2));
+/*Dependency Injection*/
+factoryService.Replace<ICustomer>(typeof(CustomerService2))
+              .Subcontract
+              .Replace<ICustomerRepository>(typeof(CustomerRepository2));
 
 ```
 
 ### Service and Contract Declaration
 
-```
+```c#
 namespace PrimaryServiceLibrary
 {
     [Contract]
@@ -112,7 +112,7 @@ namespace DependentServiceLibrary
 ```
 ### Accessing service
 
-```
+```c#
 var customerService = ServiceManager.GetService<ICustomer>();
 
 ```
