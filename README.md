@@ -119,4 +119,7 @@ namespace DependentServiceLibrary
 var customerService = ServiceManager.GetService<ICustomer>();
 
 ```
+### Web Application Architecture using NJet.Ineterservice
+
+https://github.com/rjinaga/Web-App-Architecture-With-NJet-Interservice
 
