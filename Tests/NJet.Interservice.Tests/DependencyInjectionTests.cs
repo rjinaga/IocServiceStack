@@ -33,7 +33,7 @@ namespace NJet.Interservice.Tests
     using PrimaryServiceLibrary;
     using PrimaryServiceLibrary.Test;
 
-    public class DependencyInjectionTests 
+    public class DependencyInjectionTests
     {
         [Test]
         public void ReplaceService_Test()
@@ -42,10 +42,12 @@ namespace NJet.Interservice.Tests
             var factoryService = Helper.TestsHelper.FactoryServicePointer.GetFactoryService();
 
             /*Dependency Injection*/
+
             factoryService.Replace<ICustomer>(typeof(CustomerService2))
                           .Subcontract
                           .Replace<ICustomerRepository>(typeof(CustomerRepository2));
             
+
             //Act
             var service = ServiceManager.GetService<ICustomer>();
 
@@ -59,10 +61,12 @@ namespace NJet.Interservice.Tests
 
         private void RevertToOrignal()
         {
-            Helper.TestsHelper.FactoryServicePointer.GetFactoryService()
-            .Replace<ICustomer>(typeof(CustomerService))
-            .Subcontract
-            .Replace<ICustomerRepository>(typeof(CustomerRepository));
+            var factoryService = Helper.TestsHelper.FactoryServicePointer.GetFactoryService();
+
+            factoryService.Replace<ICustomer>(typeof(CustomerService))
+                          .Subcontract
+                          .Replace<ICustomerRepository>(typeof(CustomerRepository));
+            
         }
     }
 }

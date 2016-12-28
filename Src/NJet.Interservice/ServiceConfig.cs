@@ -22,7 +22,7 @@
             return this;
         }
 
-        public IDependentServiceConfig AddDependentServices(Action<ServiceDependentOptions> config)
+        public IDependentServiceConfig AddDependencies(Action<ServiceDependentOptions> config)
         {
             config(_serviceDependentOptions);
             return this;

@@ -26,13 +26,40 @@
 namespace NJet.Interservice
 {
     using System;
-
-    [AttributeUsage(AttributeTargets.Class)]
-    public class ServiceAttribute : Attribute
+    
+    public class ServiceActivator<T> : IServiceActivator where T: class
     {
-        /// <summary>
-        /// if IsReusable set to true then multiple requests are served with the same instance.
-        /// </summary>
-        public bool IsReusable { get; set; }
+        private T _reusableInstance;
+        private readonly object _syncObject = new object();
+        private readonly Func<T> _creator;
+        private readonly bool _isReusable;
+
+        TService IServiceActivator.GetInstance<TService>() 
+        {
+            if (_isReusable)
+            {
+                if (_reusableInstance == null)
+                {
+                    lock (_syncObject)
+                    {
+                        if (_reusableInstance == null)
+                        {
+                            _reusableInstance = _creator();
+                        }
+                    }
+                }
+                return _reusableInstance as TService;
+            }
+            else
+            {
+                return _creator() as TService;
+            }
+        }
+
+        public ServiceActivator(Func<T> creator, bool isReusable)
+        {
+            _creator = creator;
+            _isReusable = isReusable;
+        }
     }
 }

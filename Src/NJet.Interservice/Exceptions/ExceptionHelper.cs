@@ -30,7 +30,7 @@ namespace NJet.Interservice
     {
         internal static Exception ThrowServiceNotRegisteredException(string name)
         {
-            throw new ServiceNotFoundException($"Requested service of '{name}' contract is not found.");
+            throw new ServiceNotFoundException($"Requested service of '{name}' contract was not found. Check your configuraion of {nameof(ServiceInjector)}. You might have configured different namespaces or assemblies where the requested service was not found.");
         }
 
         internal static void ThrowDuplicateServiceException(string fullName)

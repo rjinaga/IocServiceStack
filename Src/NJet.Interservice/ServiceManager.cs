@@ -27,9 +27,16 @@ namespace NJet.Interservice
 {
     public static class ServiceManager
     {
-        public static T GetService<T>() where T: class
+        static IServiceManagerAssociate _associate;
+
+        static ServiceManager()
         {
-            return InternalServiceManager.GetServiceFactory()?.Create<T>();
+            _associate = new ServiceManagerAssociate();
+        }
+
+        public static T GetService<T>() where T : class
+        {
+            return _associate.GetService<T>();
         }
     }
 }

@@ -25,7 +25,8 @@
 
 namespace NJet.Interservice
 {
-    public interface IServiceFactory : IBasicService
+   
+    public interface IServiceFactory : IRootServiceFactory
     {
         T Create<T>() where T : class;
     }

@@ -30,8 +30,11 @@ namespace NJet.Interservice
 
     public class DefaultServiceFactory : AbstractFactory, IServiceFactory
     {
+        private ServiceNotifier _notifier;
+
         public DefaultServiceFactory(string[] namespaces, Assembly[] assemblies, bool strictMode) : base(namespaces, assemblies, strictMode)
         {
+
         }
 
         public T Create<T>() where T : class
@@ -45,13 +48,27 @@ namespace NJet.Interservice
 
             if (serviceMeta != null)
             {
-                if (!InternalServiceObjectFactory.Contains(interfaceType) || serviceMeta.IsTypeChanged)
-                    InternalServiceObjectFactory.AddOrReplace<T>(interfaceType, serviceMeta.ServiceType, Subcontract);
+                if (serviceMeta.Activator == null)
+                {
+                    //Attach register
+                    serviceMeta.Compile<T>(Subcontract, _notifier);
 
-                return InternalServiceObjectFactory.Get<T>();
+                }
+                return serviceMeta.Activator.GetInstance<T>();
             }
-
             return default(T);
+        }
+
+        public void StartWork()
+        {
+            ContractObserver = new DefaultContractWorkObserver();
+            _notifier = new ServiceNotifier();
+
+            ContractObserver.OnUpdate((type) =>
+            {
+                _notifier.SendUpdate(type);
+            });
+
         }
     }
 }

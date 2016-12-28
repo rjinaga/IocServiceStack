@@ -26,10 +26,16 @@
 namespace NJet.Interservice
 {
     using System;
+    using System.Linq.Expressions;
+    using System.Reflection;
 
-    public class ServiceMeta
+    public class ServiceMeta 
     {
         private Type _serviceType;
+        private bool? _isReusable;
+        private ServiceRegistrar _registrar;
+        private object _lockCompile = new object();
+        
         public Type ServiceType
         {
             get
@@ -40,11 +46,110 @@ namespace NJet.Interservice
             {
                 if (_serviceType != value)
                 {
-                    IsTypeChanged = true;
                     _serviceType = value;
                 }
             }
         }
-        public bool IsTypeChanged { get; private set; }
+        
+
+        /// <summary>
+        /// if IsReusable set to true then multiple requests are served with the same instance.
+        /// </summary>
+        public bool IsReusable
+        {
+            get
+            {
+                if (_isReusable == null && _serviceType != null)
+                {
+                    var serviceAttribtue = _serviceType.GetCustomAttribute<ServiceAttribute>();
+                    if (serviceAttribtue != null)
+                    {
+                        _isReusable = serviceAttribtue.IsReusable;
+                    }
+                    else
+                    {
+                        _isReusable = false;
+                    }
+                }
+                return _isReusable??false;
+            }
+
+        }
+        /// <summary>
+        /// Gets <see cref="IServiceActivator"/> 
+        /// </summary>
+        public IServiceActivator Activator { get; private set; }
+
+        internal void Compile<T>(SubcontractFactory subcontract, IServiceNotifier notifier) where T : class
+        {
+            if (Activator == null)
+            {
+                lock (_lockCompile)
+                {
+                    if (Activator == null)
+                    {
+                        _registrar = new ServiceRegistrar();
+
+                        //Register self
+                        _registrar.Register(typeof(T));
+
+                        notifier.ServiceUpdateNofication += ServiceUpdateNofication;
+
+                        InternalCompile<T>(subcontract);
+                    }
+                }
+            }
+        }
+
+        private void ServiceUpdateNofication(ServiceEventArgs eventArgs)
+        {
+            if (Activator != null && _registrar != null && _registrar.Contains(eventArgs.ServiceType))
+            {
+                Activator = null;
+            }
+        }
+
+        private void InternalCompile<T>(SubcontractFactory subcontract) where T : class
+        {
+            Type interfaceType = typeof(T);
+            ConstructorInfo[] serviceConstructors = _serviceType.GetConstructors();
+            foreach (var serviceConstructor in serviceConstructors)
+            {
+                var attribute = serviceConstructor.GetCustomAttribute<ServiceInitAttribute>();
+                if (attribute != null)
+                {
+                    /*Get parameters of service's constructor and inject corresponding repositories values to it */
+                    ParameterInfo[] constructorParametersInfo = serviceConstructor.GetParameters();
+                    Expression[] arguments = new Expression[constructorParametersInfo.Length];
+
+                    int index = 0;
+                    foreach (var constrParameter in constructorParametersInfo)
+                    {
+                        arguments[index] = subcontract.Create(constrParameter.ParameterType, _registrar) ?? Expression.Default(constrParameter.GetType());
+                        index++;
+                    }
+
+                    Func<T> serviceCreator = Expression.Lambda<Func<T>>(Expression.New(serviceConstructor, arguments)).Compile();
+
+                    Activator = new ServiceActivator<T>(serviceCreator, IsReusable);
+
+                    return;
+                }
+            }
+
+            /*if none of them are not decorated with ServiceInitAttribute then initialize default with default constructor*/
+            CreateWithDefaultConstructor<T>(_serviceType);
+        }
+
+        private void CreateWithDefaultConstructor<T>(Type serviceType) where T : class
+        {
+            NewExpression newExp = Expression.New(serviceType);
+
+            Func<T> serviceCreator = Expression.Lambda<Func<T>>(Expression.New(serviceType)).Compile();
+
+            // Compile our new lambda expression.
+            Activator = new ServiceActivator<T>(serviceCreator, IsReusable );
+        }
+
     }
 }

@@ -25,13 +25,11 @@
 
 namespace NJet.Interservice
 {
-
     public class ServicePostConfiguration
     {
-        public IBasicService GetFactoryService()
+        public IRootServiceFactory GetFactoryService()
         {
             return InternalServiceManager.GetServiceFactory();
         }
     }
-
 }

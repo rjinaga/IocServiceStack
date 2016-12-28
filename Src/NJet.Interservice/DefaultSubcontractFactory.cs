@@ -26,13 +26,32 @@
 namespace NJet.Interservice
 {
     using System;
+    using System.Linq.Expressions;
+    using System.Reflection;
 
-    [AttributeUsage(AttributeTargets.Class)]
-    public class ServiceAttribute : Attribute
+    internal class DefaultSubcontractFactory : SubcontractFactory
     {
-        /// <summary>
-        /// if IsReusable set to true then multiple requests are served with the same instance.
-        /// </summary>
-        public bool IsReusable { get; set; }
+        public DefaultSubcontractFactory(string[] namespaces, Assembly[] aseemblies, bool strictMode) : base(namespaces,aseemblies, strictMode)
+        {
+        }
+
+        public override Expression Create(Type interfaceType, ServiceRegistrar registrar)
+        {
+            //TODO:  must support subcontract of subcontract
+
+            if (interfaceType == null)
+                throw new ArgumentNullException(nameof(interfaceType));
+
+            //Register current subcontract service with ServiceRegistrar
+            //Root service will refresh with the updated service when ther's replacement with new service
+            registrar.Register(interfaceType);
+
+            ServiceMeta serviceMeta = ServicesMapTable?[interfaceType];
+
+            if (serviceMeta != null && serviceMeta.ServiceType != null)
+                return Expression.New(serviceMeta.ServiceType);
+            else
+                return Expression.Default(interfaceType);
+        }
     }
 }

@@ -26,11 +26,33 @@
 namespace NJet.Interservice
 {
     using System;
-
+    
+    /// <summary>
+    /// Represents basic service methods of factory
+    /// </summary>
     public interface IBasicService
     {
+        /// <summary>
+        /// Gets or sets Subcontract factory
+        /// </summary>
         SubcontractFactory Subcontract { get; set; }
+
+        /// <summary>
+        /// Adds the specified service to the factory
+        /// </summary>
+        /// <typeparam name="T">The class of the service</typeparam>
+        /// <param name="service">The type of the service</param>
+        /// <returns>Instance <see cref="IBasicService"/> of current object</returns>
         IBasicService Add<T>(Type service) where T : class;
+        
+        /// <summary>
+        /// Replaces the specified service in the factory.
+        /// </summary>
+        /// <typeparam name="T">The class of the service</typeparam>
+        /// <param name="service">The type of the service</param>
+        /// <returns>Instance <see cref="IBasicService"/> of current object</returns>
         IBasicService Replace<T>(Type service) where T : class;
+
+        
     }
 }

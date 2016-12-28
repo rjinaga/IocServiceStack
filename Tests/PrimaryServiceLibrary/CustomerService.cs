@@ -1,12 +1,12 @@
-﻿using NJet.Interservice;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DependentServiceLibrary;
-
-namespace PrimaryServiceLibrary.Test
+﻿namespace PrimaryServiceLibrary.Test
 {
+    using NJet.Interservice;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using DependentServiceLibrary;
+
     [Service]
     public class CustomerService : ICustomer
     {

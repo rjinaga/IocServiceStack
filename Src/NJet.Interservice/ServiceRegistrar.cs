@@ -26,13 +26,26 @@
 namespace NJet.Interservice
 {
     using System;
+    using System.Collections.Generic;
 
-    [AttributeUsage(AttributeTargets.Class)]
-    public class ServiceAttribute : Attribute
+    public sealed class ServiceRegistrar
     {
-        /// <summary>
-        /// if IsReusable set to true then multiple requests are served with the same instance.
-        /// </summary>
-        public bool IsReusable { get; set; }
+        private List<Type> _register;
+
+        public ServiceRegistrar()
+        {
+            _register = new List<Type>();
+        }
+
+        public bool Contains(Type type)
+        {
+            return _register.Contains(type);
+        }
+
+        public void Register(Type type)
+        {
+            if (!_register.Contains(type))
+                _register.Add(type);
+        }
     }
 }

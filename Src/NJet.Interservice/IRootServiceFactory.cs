@@ -25,14 +25,10 @@
 
 namespace NJet.Interservice
 {
-    using System;
-
-    [AttributeUsage(AttributeTargets.Class)]
-    public class ServiceAttribute : Attribute
+    public interface IRootServiceFactory : IBasicService
     {
-        /// <summary>
-        /// if IsReusable set to true then multiple requests are served with the same instance.
-        /// </summary>
-        public bool IsReusable { get; set; }
+        //void ApplyChanges();
+        void StartWork();
     }
+
 }

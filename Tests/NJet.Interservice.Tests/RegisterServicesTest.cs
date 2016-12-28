@@ -37,8 +37,9 @@ namespace NJet.Interservice.Tests
         {
             var configRef = ServiceInjector.Configure(config =>
             {
+
                 config.AddServices((serviceConfig) => { serviceConfig.Namespaces = new[] { "PrimaryServiceLibrary.Test" }; serviceConfig.Assemblies = new[] { "PrimaryServiceLibrary" }; })
-                      .AddDependentServices((serviceConfig) => { serviceConfig.Namespaces = new[] { "DependentServiceLibrary.Test" }; serviceConfig.Assemblies = new[] { "DependentServiceLibrary" }; });
+                      .AddDependencies((serviceConfig) => { serviceConfig.Namespaces = new[] { "DependentServiceLibrary.Test" }; serviceConfig.Assemblies = new[] { "DependentServiceLibrary" }; });
 
                 config.EnableStrictMode();
 

@@ -1,6 +1,6 @@
 {
   "title": "NJet.Interservice",
-  "version": "1.0.0-beta-3",
+  "version": "1.0.0-beta-4",
   "dependencies": {
 
   },
@@ -10,7 +10,8 @@
   },
 
   "buildOptions": {
-    "keyFile": "../../tools/servicerouter.snk"
+    "keyFile": "../../tools/servicerouter.snk",
+    "xmlDoc": true
   },
 
   "scripts": {

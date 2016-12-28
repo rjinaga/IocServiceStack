@@ -33,9 +33,10 @@ namespace NJet.Interservice
     {
         public SubcontractFactory(string[] namespaces, Assembly[] assemblies, bool strictMode) : base(namespaces, assemblies, strictMode)
         {
-            
+
         }
 
-        public abstract Expression Create(Type interfaceType);
+        public abstract Expression Create(Type interfaceType, ServiceRegistrar register);
+       
     }
 }

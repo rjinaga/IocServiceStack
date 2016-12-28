@@ -2,7 +2,7 @@
   "version": "1.0.0-*",
 
   "dependencies": {
-    "NJet.Interservice": "1.0.0-beta-1"
+    "NJet.Interservice": "1.0.0-beta-3"
   },
   
   "frameworks": {

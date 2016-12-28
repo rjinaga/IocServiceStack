@@ -29,6 +29,6 @@ namespace NJet.Interservice
     
     public interface IDependentServiceConfig
     {
-        IDependentServiceConfig AddDependentServices(Action<ServiceDependentOptions> config);
+        IDependentServiceConfig AddDependencies(Action<ServiceDependentOptions> config);
     }
 }

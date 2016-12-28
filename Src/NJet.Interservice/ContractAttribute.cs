@@ -27,6 +27,10 @@ namespace NJet.Interservice
 {
     using System;
 
+    /// <summary>
+    /// If a class is decorated with the ContractAttribute class, then the discovery 
+    /// service will register that interface autmatically.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Interface)]
     public class ContractAttribute : Attribute
     {

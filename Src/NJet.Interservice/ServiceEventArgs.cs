@@ -26,13 +26,12 @@
 namespace NJet.Interservice
 {
     using System;
-
-    [AttributeUsage(AttributeTargets.Class)]
-    public class ServiceAttribute : Attribute
+    public class ServiceEventArgs : EventArgs
     {
-        /// <summary>
-        /// if IsReusable set to true then multiple requests are served with the same instance.
-        /// </summary>
-        public bool IsReusable { get; set; }
+        public readonly Type ServiceType;
+        public ServiceEventArgs(Type serviceType)
+        {
+            ServiceType = serviceType;
+        }
     }
 }

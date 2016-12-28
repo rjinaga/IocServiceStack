@@ -54,7 +54,9 @@ namespace NJet.Interservice
                     
                     //Set subcontract factory 
                     Assembly[] subcontractAssmblies = GetAssemblies(Config.ServiceDependentOptions?.Assemblies);
-                    _serviceFactory.Subcontract = new RepositoryFactory(Config.ServiceDependentOptions?.Namespaces, subcontractAssmblies, Config.ServiceOptions.StrictMode);
+                    _serviceFactory.Subcontract = new DefaultSubcontractFactory(Config.ServiceDependentOptions?.Namespaces, subcontractAssmblies, Config.ServiceOptions.StrictMode);
+
+                    _serviceFactory.StartWork();
                 }
             }
         }

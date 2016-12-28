@@ -25,14 +25,8 @@
 
 namespace NJet.Interservice
 {
-    using System;
-
-    [AttributeUsage(AttributeTargets.Class)]
-    public class ServiceAttribute : Attribute
+    public interface IServiceManagerAssociate
     {
-        /// <summary>
-        /// if IsReusable set to true then multiple requests are served with the same instance.
-        /// </summary>
-        public bool IsReusable { get; set; }
+        T GetService<T>() where T : class;
     }
 }

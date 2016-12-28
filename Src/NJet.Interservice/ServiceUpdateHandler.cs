@@ -25,27 +25,5 @@
 
 namespace NJet.Interservice
 {
-    using System;
-    using System.Linq.Expressions;
-    using System.Reflection;
-
-    internal class RepositoryFactory : SubcontractFactory
-    {
-        public RepositoryFactory(string[] namespaces, Assembly[] aseemblies, bool strictMode) : base(namespaces,aseemblies, strictMode)
-        {
-        }
-
-        public override Expression Create(Type interfaceType)
-        {
-            if (interfaceType == null)
-                throw new ArgumentNullException(nameof(interfaceType));
-
-            ServiceMeta serviceMeta = ServicesMapTable?[interfaceType];
-
-            if (serviceMeta != null && serviceMeta.ServiceType != null)
-                return Expression.New(serviceMeta.ServiceType);
-            else
-                return Expression.Default(interfaceType);
-        }
-    }
+    public delegate void ServiceUpdateHandler(ServiceEventArgs eventArgs);
 }
