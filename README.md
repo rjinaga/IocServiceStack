@@ -3,7 +3,7 @@ NJet.Interservice is a .NET library for multi-services communication through mul
 
 
 ### Supports
-- .NET Core
+- .NET Core 1.0
 - .NET Framework 4.6.2 
 
 
@@ -121,5 +121,5 @@ var customerService = ServiceManager.GetService<ICustomer>();
 ```
 ### Web Application Architecture using NJet.Ineterservice
 
-https://github.com/rjinaga/Web-App-Architecture-With-NJet-Interservice
+https://github.com/rjinaga/Web-App-Architecture-Using-NJet-Interservice
 
