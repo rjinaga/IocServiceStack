@@ -5,7 +5,7 @@ NInterservice is a open source .NET library for multi-services communication thr
 
 ### Supports
 - .NET Core 1.0 (.NET Standard 1.6)
-- .NET Framework 4.6.2 
+- .NET Framework 4.6
 
 
 ## [NuGet](https://www.nuget.org/packages/NJet.Interservice/)
