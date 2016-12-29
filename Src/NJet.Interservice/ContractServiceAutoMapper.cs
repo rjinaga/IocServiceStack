@@ -29,7 +29,7 @@ namespace NJet.Interservice
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    
+
     /// <summary>
     /// Represents auto mapper of contact and it's corrospendet service.
     /// </summary>
@@ -108,14 +108,14 @@ namespace NJet.Interservice
             if (aseemblies == null)
                 return;
 
-            Array.ForEach(aseemblies, (asm) =>
+            foreach (var asm in aseemblies)
             {
                 IEnumerable<Type> serviceTypes = from type in asm.GetTypes()
-                                                 where type.GetCustomAttribute<ServiceAttribute>() != null
+                                                 where type.GetTypeInfo().GetCustomAttribute<ServiceAttribute>() != null
                                                  select type;
 
                 FillServicesDictionary(serviceTypes, services, namespaces);
-            });
+            }
         }
 
         private void FillServicesDictionary(IEnumerable<Type> serviceTypes, Dictionary<Type, ServiceMeta> services, string[] namespaces)
@@ -127,7 +127,7 @@ namespace NJet.Interservice
                 {
                     /*Fetch implemented intefaces of service whose interface is decorated with  ContractAttribute.*/
                     IEnumerable<Type> interfaces = serviceType.GetInterfaces()
-                                                              .Where(@interface => @interface.GetCustomAttribute<ContractAttribute>() != null);
+                                                              .Where(@interface => @interface.GetTypeInfo().GetCustomAttribute<ContractAttribute>() != null);
 
                     /*Map service type with the contract interfaces*/
                     foreach (var item in interfaces)

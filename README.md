@@ -3,7 +3,7 @@ NJet.Interservice is a .NET library for multi-services communication through mul
 
 
 ### Supports
-- .NET Core 1.0
+- .NET Core 1.0 (.NET Standard 1.6)
 - .NET Framework 4.6.2 
 
 

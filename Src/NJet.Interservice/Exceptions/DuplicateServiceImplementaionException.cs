@@ -30,7 +30,6 @@ namespace NJet.Interservice
     /// <summary>
     /// The exception that is thrown when services are implemented a single contract interface.
     /// </summary>
-    [Serializable]
     public class DuplicateServiceImplementaionException : Exception {
       
         /// <summary>

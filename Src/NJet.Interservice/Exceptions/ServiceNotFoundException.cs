@@ -30,7 +30,6 @@ namespace NJet.Interservice
     /// <summary>
     /// The exception that is thrown when a requested service is not found in factory.
     /// </summary>
-    [Serializable]
     public class ServiceNotFoundException : Exception
     {
 

@@ -61,7 +61,7 @@ namespace NJet.Interservice
             {
                 if (_isReusable == null && _serviceType != null)
                 {
-                    var serviceAttribtue = _serviceType.GetCustomAttribute<ServiceAttribute>();
+                    var serviceAttribtue = _serviceType.GetTypeInfo().GetCustomAttribute<ServiceAttribute>();
                     if (serviceAttribtue != null)
                     {
                         _isReusable = serviceAttribtue.IsReusable;
@@ -112,6 +112,7 @@ namespace NJet.Interservice
         private void InternalCompile<T>(SubcontractFactory subcontract) where T : class
         {
             Type interfaceType = typeof(T);
+
             ConstructorInfo[] serviceConstructors = _serviceType.GetConstructors();
             foreach (var serviceConstructor in serviceConstructors)
             {
