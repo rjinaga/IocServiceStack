@@ -1,4 +1,7 @@
 # NJet.Interservice
+
+[![Join the chat at https://gitter.im/NInterservice/Lobby](https://badges.gitter.im/NInterservice/Lobby.svg)](https://gitter.im/NInterservice/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 NJet.Interservice is a .NET library for multi-services communication through multi-level dependency injection. This separates the concerns of application layers. This makes the layers configurable, but not required to reference dependent layer at compile or design time. 
 
 
@@ -11,6 +14,10 @@ NJet.Interservice is a .NET library for multi-services communication through mul
 ```
 PM> Install-Package NJet.Interservice -Pre
 ```
+[![NuGet Pre Release](https://img.shields.io/badge/nuget-Pre%20Release-yellow.svg)](https://www.nuget.org/packages/NJet.Interservice/)
+
+[![Join the chat at https://gitter.im/NJet-Interservice/Lobby](https://badges.gitter.im/NJet-Interservice/Lobby.svg)](https://gitter.im/NJet-Interservice/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 
 ### Services Registation
 
