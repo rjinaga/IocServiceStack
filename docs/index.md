@@ -119,10 +119,12 @@ namespace DependentServiceLibrary
 }
 ```
 
-###Invoke Service
+### Invoke Service
 
 ```c#
+
 var customerService = ServiceManager.GetService<ICustomer>();
+
 ```
 
 ### Web Application Architecture using NIneterservice
