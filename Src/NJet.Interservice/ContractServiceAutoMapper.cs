@@ -110,10 +110,16 @@ namespace NJet.Interservice
 
             foreach (var asm in aseemblies)
             {
+#if NET46
+                IEnumerable<Type> serviceTypes = from type in asm.GetTypes()
+                                                 where type.GetCustomAttribute<ServiceAttribute>() != null
+                                                 select type;
+#else
                 IEnumerable<Type> serviceTypes = from type in asm.GetTypes()
                                                  where type.GetTypeInfo().GetCustomAttribute<ServiceAttribute>() != null
-                                                 select type;
+                                                 select type;           
 
+#endif
                 FillServicesDictionary(serviceTypes, services, namespaces);
             }
         }
@@ -125,10 +131,15 @@ namespace NJet.Interservice
                 /*Allow when no namespaces are configured or if it's configured then check the namespace of the service is matched with namespaces declared in config via ServiceInjector.*/
                 if (namespaces == null || namespaces.Length == 0 || namespaces.Contains(serviceType.Namespace))
                 {
+#if NET46
                     /*Fetch implemented intefaces of service whose interface is decorated with  ContractAttribute.*/
                     IEnumerable<Type> interfaces = serviceType.GetInterfaces()
-                                                              .Where(@interface => @interface.GetTypeInfo().GetCustomAttribute<ContractAttribute>() != null);
-
+                                                              .Where(@interface => @interface.GetCustomAttribute<ContractAttribute>() != null);
+#else
+                   /*Fetch implemented intefaces of service whose interface is decorated with  ContractAttribute.*/
+                    IEnumerable<Type> interfaces = serviceType.GetInterfaces()
+                                                              .Where(@interface => @interface.GetTypeInfo().GetCustomAttribute<ContractAttribute>() != null);               
+#endif
                     /*Map service type with the contract interfaces*/
                     foreach (var item in interfaces)
                     {

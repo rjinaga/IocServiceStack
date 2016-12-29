@@ -61,7 +61,13 @@ namespace NJet.Interservice
             {
                 if (_isReusable == null && _serviceType != null)
                 {
+
+#if NET46
+                    var serviceAttribtue = _serviceType.GetCustomAttribute<ServiceAttribute>();
+#else
                     var serviceAttribtue = _serviceType.GetTypeInfo().GetCustomAttribute<ServiceAttribute>();
+#endif
+
                     if (serviceAttribtue != null)
                     {
                         _isReusable = serviceAttribtue.IsReusable;
