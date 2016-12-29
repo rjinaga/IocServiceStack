@@ -1,3 +1,4 @@
 theme: jekyll-theme-cayman
 
-teaser: /assets/images/background.jpg
+header:
+  teaser: /assets/images/background.jpg
