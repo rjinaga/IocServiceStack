@@ -118,13 +118,19 @@ namespace DependentServiceLibrary
     }
 }
 ```
+
 ### Accessing service
 
 ```c#
 var customerService = ServiceManager.GetService<ICustomer>();
 
 ```
+
 ### Web Application Architecture using NIneterservice
 
 https://github.com/rjinaga/Web-App-Architecture-Using-NInterservice
+
+
+
+
 
