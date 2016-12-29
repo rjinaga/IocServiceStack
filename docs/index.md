@@ -9,7 +9,7 @@ NInterservice is a open source .NET library for multi-services communication thr
 
 
 ## [NuGet](https://www.nuget.org/packages/NJet.Interservice/)
-```
+```sh
 PM> Install-Package NInterservice -Pre
 ```
 [![NuGet Pre Release](https://img.shields.io/badge/nuget-Pre%20Release-yellow.svg)](https://www.nuget.org/packages/NInterservice/)
