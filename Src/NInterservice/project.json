@@ -1,0 +1,38 @@
+{
+  "title": "NInterservice",
+  "version": "1.0.0-beta-7",
+  "dependencies": {
+  },
+
+  "frameworks": {
+    "net46": {},
+    "netstandard1.6": {
+      "dependencies": {
+        "NETStandard.Library": "1.6.0",
+        "System.Reflection": "4.3.0",
+        "System.Reflection.Extensions": "4.3.0",
+        "System.Reflection.TypeExtensions": "4.3.0"
+      }
+    }
+  },
+
+  "buildOptions": {
+    "keyFile": "../../tools/servicerouter.snk",
+    "xmlDoc": true
+  },
+
+  "scripts": {
+    "postcompile": [
+      "dotnet pack --no-build --configuration %compile:Configuration%"
+    ]
+  },
+
+  "packOptions": {
+    "summary": "NInterservice is a open source .NET library for multi-services communication through multi-level dependency injection. This separates the concerns of application layers. This makes the layers configurable, but not required to reference dependent layer at compile or design time.",
+    "tags": [ ".NET", "Dependecy Injection" ],
+    "owners": [ "rjinaga" ],
+    "projectUrl": "https://github.com/rjinaga/NInterservice"
+  }
+
+
+}

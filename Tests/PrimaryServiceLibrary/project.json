@@ -3,7 +3,7 @@
 
   "dependencies": {
     "DependentServiceLibrary": "1.0.0-*",
-    "NJet.Interservice": "1.0.0-beta-4"
+    "NInterservice": "1.0.0-beta-4"
   },
 
   "frameworks": {

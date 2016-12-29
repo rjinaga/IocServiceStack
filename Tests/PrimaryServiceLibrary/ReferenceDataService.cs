@@ -1,6 +1,6 @@
 ﻿namespace PrimaryServiceLibrary.Test
 {
-    using NJet.Interservice;
+    using NInterservice;
     using Contracts;
     
     [Service(IsReusable =true)]   

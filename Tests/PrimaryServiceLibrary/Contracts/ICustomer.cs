@@ -1,6 +1,6 @@
 ﻿namespace PrimaryServiceLibrary
 {
-    using NJet.Interservice;
+    using NInterservice;
     using System;
     using System.Collections.Generic;
     using System.Linq;

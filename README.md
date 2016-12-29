@@ -1,6 +1,6 @@
-# NJet.Interservice
+# NInterservice
 
-NJet.Interservice is a .NET library for multi-services communication through multi-level dependency injection. This separates the concerns of application layers. This makes the layers configurable, but not required to reference dependent layer at compile or design time. 
+NInterservice is a open source .NET library for multi-services communication through multi-level dependency injection. This separates the concerns of application layers. This makes the layers configurable, but not required to reference dependent layer at compile or design time. 
 
 
 ### Supports

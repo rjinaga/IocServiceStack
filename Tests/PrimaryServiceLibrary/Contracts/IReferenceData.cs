@@ -1,7 +1,7 @@
 ﻿
 namespace PrimaryServiceLibrary.Contracts
 {
-    using NJet.Interservice;
+    using NInterservice;
 
     [Contract]
     public interface IReferenceData
