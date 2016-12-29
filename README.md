@@ -14,7 +14,7 @@ PM> Install-Package NJet.Interservice -Pre
 ```
 [![NuGet Pre Release](https://img.shields.io/badge/nuget-Pre%20Release-yellow.svg)](https://www.nuget.org/packages/NJet.Interservice/)
 
-[![Join the chat at https://gitter.im/NJet-Interservice/Lobby](https://badges.gitter.im/NJet-Interservice/Lobby.svg)](https://gitter.im/NJet-Interservice/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Gitter](https://badges.gitter.im/NInterservice/Lobby.svg)](https://gitter.im/NInterservice/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
 
 
 ### Services Registation
