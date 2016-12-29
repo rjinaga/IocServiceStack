@@ -31,18 +31,6 @@ var configRef = ServiceInjector.Configure(config =>
 });
 ```
 
-### Dependency Injection
-
-```c#
-var factoryService = configRef.GetFactoryService();
-
-/*Dependency Injection*/
-factoryService.Replace<ICustomer>(typeof(CustomerService2))
-              .Subcontract
-              .Replace<ICustomerRepository>(typeof(CustomerRepository2));
-
-```
-
 ### Services and Contracts Implementations
 
 ```c#
@@ -124,6 +112,19 @@ namespace DependentServiceLibrary
 ```c#
 
 var customerService = ServiceManager.GetService<ICustomer>();
+
+```
+
+### Dependency Injection
+You can replace with another service which is already discovered by the NInterservice and registered, or add a new service.
+
+```c#
+var factoryService = configRef.GetFactoryService();
+
+/*Dependency Injection*/
+factoryService.Replace<ICustomer>(typeof(CustomerService2))
+              .Subcontract
+              .Replace<ICustomerRepository>(typeof(CustomerRepository2));
 
 ```
 
