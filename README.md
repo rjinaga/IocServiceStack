@@ -193,6 +193,9 @@ factoryService.Replace<ICustomer>(typeof(CustomerService2))
               .Subcontract
               .Replace<ICustomerRepository>(typeof(CustomerRepository2));
 
+/*Add new service*/
+factoryService.Add<IPayment>(typeof(PaypalPayment));
+
 ```
 
 ### Web Application Architecture using NIneterservice

@@ -24,7 +24,7 @@ var configRef = ServiceInjector.Configure(config =>
 {
     config.Services((opt) =>
     {
-        /*if namespaces are not specfied, it finds for services in entire assembly.*/
+	/*if namespaces are not specfied, it finds for services in entire assembly.*/
         opt.Namespaces = new[] { "BusinessService" };
         opt.Assemblies = new[] { "BusinessServiceLibrary" };
 
@@ -192,6 +192,9 @@ var factoryService = configRef.GetFactoryService();
 factoryService.Replace<ICustomer>(typeof(CustomerService2))
               .Subcontract
               .Replace<ICustomerRepository>(typeof(CustomerRepository2));
+
+/*Add new service*/
+factoryService.Add<IPayment>(typeof(PaypalPayment));
 
 ```
 
