@@ -24,7 +24,7 @@ var configRef = ServiceInjector.Configure(config =>
 {
     config.Services((opt) =>
     {
-        /*if namespaces are not specfied, it finds for services in entire assembly irrespective of namespaces.*/
+        /*if namespaces are not specfied, it finds for services in entire assembly.*/
         opt.Namespaces = new[] { "BusinessService" };
         opt.Assemblies = new[] { "BusinessServiceLibrary" };
 
@@ -49,7 +49,7 @@ var configRef = ServiceInjector.Configure(config =>
 ### Services and Contracts Implementations
 
 > Specify [Contract] and [Service] attributes if you want to support the dependency injection 
-> and auto mapping the contract and service in your application.
+> and auto map the contracts and services in your application.
 
 ```c#
 namespace BusinessContractLibrary
