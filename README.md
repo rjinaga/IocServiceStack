@@ -48,6 +48,9 @@ var configRef = ServiceInjector.Configure(config =>
 
 ### Services and Contracts Implementations
 
+> Specify [Contract] and [Service] attributes if you want to support the dependency injection 
+> and auto mapping the contract and service in your application.
+
 ```c#
 namespace BusinessContractLibrary
 {
