@@ -26,6 +26,7 @@
 namespace NInterservice
 {
     using System;
+    using System.Linq.Expressions;
     using System.Reflection;
 
     /// <summary>
@@ -77,7 +78,7 @@ namespace NInterservice
 
             return this;
         }
-        
+
         /// <summary>
         /// Replaces the specified service in the factory.
         /// </summary>
@@ -120,6 +121,32 @@ namespace NInterservice
                     //ExceptionHelper.ThrowOverrideObserverExpection
                 }
             }
+        }
+
+        protected virtual Expression CreateConstructorExpression(Type interfaceType, Type serviceType, ServiceRegistrar registrar)
+        {
+            ConstructorInfo[] serviceConstructors = serviceType.GetConstructors();
+            foreach (var serviceConstructor in serviceConstructors)
+            {
+                var attribute = serviceConstructor.GetCustomAttribute<ServiceInitAttribute>();
+                if (attribute != null)
+                {
+                    /*Get parameters of service's constructor and inject corresponding repositories values to it */
+                    ParameterInfo[] constructorParametersInfo = serviceConstructor.GetParameters();
+                    Expression[] arguments = new Expression[constructorParametersInfo.Length];
+
+                    int index = 0;
+                    foreach (var constrParameter in constructorParametersInfo)
+                    {
+                        arguments[index] = Subcontract?.Create(constrParameter.ParameterType, registrar) ?? Expression.Default(constrParameter.GetType());
+                        index++;
+                    }
+                    return Expression.New(serviceConstructor, arguments);
+                }
+            }
+
+            //Default constructor
+            return Expression.New(serviceType);
         }
     }
 }

@@ -26,9 +26,10 @@
 namespace NInterservice.Tests.Helper
 {
     using NInterservice;
-    using PrimaryServiceLibrary;
-    using DependentServiceLibrary;
-
+    using BusinessContractLibrary;
+    using RepositoryService;
+    using Models;
+    using System;
 
     [Service]
     public class CustomerService2 : ICustomer
@@ -39,6 +40,11 @@ namespace NInterservice.Tests.Helper
         public CustomerService2(ICustomerRepository repository)
         {
             _repository = repository;
+        }
+
+        public void AddCustomer(Customer customer)
+        {
+            throw new NotImplementedException();
         }
 
         public ICustomerRepository GetRepository()

@@ -22,26 +22,52 @@ PM> Install-Package NInterservice -Pre
 ```c#
 var configRef = ServiceInjector.Configure(config =>
 {
-  config.AddServices((serviceConfig) => 
-                    { serviceConfig.Assemblies = new[] { "PrimaryServiceLibrary" }; })
-        .AddDependencies((serviceConfig) => 
-                    { serviceConfig.Assemblies = new[] { "DependentServiceLibrary" }; });
-                    
-  config.EnableStrictMode();
+    config.Services((opt) =>
+    {
+        /*if namespaces are not specfied, it finds for services in entire assembly irrespective of namespaces.*/
+        opt.Namespaces = new[] { "BusinessService" };
+        opt.Assemblies = new[] { "BusinessServiceLibrary" };
+
+        opt.AddDependencies((dopt) =>
+        {
+            dopt.Namespaces = new[] { "RepositoryService" }; ;
+            dopt.Assemblies = new[] { "RepositoryServiceLibrary" };
+
+            dopt.AddDependencies(ddopt =>
+            {
+                ddopt.Namespaces = new[] { "DataService" };
+                ddopt.Assemblies = new[] { "DataServiceLibrary" };
+            });
+        });
+
+        opt.StrictMode = true;
+    });
+    //.SetServiceManager(new ProxyServiceManager());
 });
 ```
 
 ### Services and Contracts Implementations
 
 ```c#
-namespace PrimaryServiceLibrary
+namespace BusinessContractLibrary
 {
+    using NInterservice;
+    using Models;
+ 
     [Contract]
     public interface ICustomer
     {
-        ICustomerRepository GetRepository();
+        void AddCustomer(Customer customer);
     }
-    
+}
+
+namespace BusinessService
+{
+    using NInterservice;
+    using BusinessContractLibrary;
+    using Models;
+    using RepositoryService;
+
     [Service]
     public class CustomerService : ICustomer
     {
@@ -52,59 +78,99 @@ namespace PrimaryServiceLibrary
         {
             _repository = repository;
         }
-
-        public void AddCustomer()
-        {
-            _repository.AddCustomer();
-        }
-
+        
         public ICustomerRepository GetRepository()
         {
             return _repository;
         }
+
+        public void AddCustomer(Customer customer)
+        {
+            _repository.Add(customer);
+        }
     }
 }
 
-//DependentServiceLibrary Library
-namespace DependentServiceLibrary
+
+namespace RepositoryService
 {
+    using NInterservice;
+    using Models;
+
     [Contract]
     public interface ICustomerRepository
     {
-        void AddCustomer();
-        void UpdateCustomer();
-        void DeleteCustomer();
-        void GetCustomer(int customerId);
+        void Add(Customer customer);
+        void Update(Customer customer);
+        void Delete(Customer customer);
+        Customer GetCustomer(int customerId);
     }
-    
+}
+
+namespace RepositoryService
+{
+    using System;
+    using NInterservice;
+    using DataContractLibrary;
+    using Models;
+
     [Service]
     public class CustomerRepository : ICustomerRepository
     {
-        public CustomerRepository()
+        [ServiceInit]
+        public CustomerRepository(IDbContext dbcontext)
         {
         }
 
-        public void AddCustomer()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteCustomer()
+        public void Add(Customer customer)
         {
             throw new NotImplementedException();
         }
 
-        public void GetCustomer(int customerId)
+        public void Delete(Customer customer)
         {
             throw new NotImplementedException();
         }
 
-        public void UpdateCustomer()
+        public Customer GetCustomer(int customerId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(Customer customer)
         {
             throw new NotImplementedException();
         }
     }
 }
+
+
+namespace DataContractLibrary
+{
+    using NInterservice;
+
+    [Contract]
+    public interface IDbContext
+    {
+        
+    }
+}
+
+namespace DataService
+{
+    using NInterservice;
+    using DataContractLibrary;
+
+    [Service]
+    public class AdventureDbContext : IDbContext
+    {
+        public AdventureDbContext()
+        {
+
+        }
+    }
+}
+
 ```
 ### Accessing service
 

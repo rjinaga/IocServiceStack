@@ -50,14 +50,47 @@ namespace NInterservice
                 if (_serviceFactory == null)
                 {
                     Assembly[] assmblies = GetAssemblies(Config.ServiceOptions.Assemblies);
-                    _serviceFactory = new DefaultServiceFactory(Config.ServiceOptions.Namespaces, assmblies, Config.ServiceOptions.StrictMode);
-                    
-                    //Set subcontract factory 
-                    Assembly[] subcontractAssmblies = GetAssemblies(Config.ServiceDependentOptions?.Assemblies);
-                    _serviceFactory.Subcontract = new DefaultSubcontractFactory(Config.ServiceDependentOptions?.Namespaces, subcontractAssmblies, Config.ServiceOptions.StrictMode);
 
+                    //if userdefined ServiceFactory is configured then set that factory, otherise set the default one
+                    if (Config.ServiceOptions.ServiceFactory != null)
+                    {
+                        _serviceFactory = Config.ServiceOptions.ServiceFactory;
+                    }
+                    else
+                    {
+                        _serviceFactory = new DefaultServiceFactory(Config.ServiceOptions.Namespaces, assmblies, Config.ServiceOptions.StrictMode);
+                    }
+
+                    InitChainOfSubctractFactories();
+
+                    //Start work of service factory and chain of dependent factories
                     _serviceFactory.StartWork();
                 }
+            }
+        }
+
+        private static void InitChainOfSubctractFactories()
+        {
+            ServiceDependencyOptions dependencies = Config.ServiceOptions.Dependencies;
+            IBasicService serviceNode = _serviceFactory;
+
+            while (dependencies  != null)
+            {
+                //if userdefined ServiceFactory is configured then set that factory, otherise set the default one
+                if (dependencies.ServiceFactory != null)
+                {
+                    serviceNode.Subcontract = dependencies.ServiceFactory;
+                }
+                //if Subcontract is defined along with ServiceFactory configuration, then don't set the default contract factory.
+                else if (serviceNode.Subcontract == null)
+                {
+                    Assembly[] subcontractAssmblies = GetAssemblies(dependencies.Assemblies);
+                    serviceNode.Subcontract = new DefaultSubcontractFactory(dependencies.Namespaces, subcontractAssmblies, Config.ServiceOptions.StrictMode);
+                }
+
+                //set child node of current dependencies
+                dependencies = dependencies.Dependencies;
+                serviceNode = serviceNode.Subcontract;
             }
         }
 

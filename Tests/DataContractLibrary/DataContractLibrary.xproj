@@ -7,8 +7,8 @@
 
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>1ed7887d-fd12-4099-acc7-f2972eb15e69</ProjectGuid>
-    <RootNamespace>DependentServiceLibrary</RootNamespace>
+    <ProjectGuid>a78d5a49-36a7-4167-924a-a694617f8153</ProjectGuid>
+    <RootNamespace>DataContractLibrary</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>

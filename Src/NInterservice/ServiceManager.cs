@@ -31,7 +31,7 @@ namespace NInterservice
 
         static ServiceManager()
         {
-            _associate = new ServiceManagerAssociate();
+            _associate = InternalServiceManager.Config.ServiceManager??new ServiceManagerAssociate();
         }
 
         public static T GetService<T>() where T : class

@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "Models": "1.0.0-*",
+    "NInterservice": "1.0.0-beta-7"
+  },
+
+  "frameworks": {
+    "net46": {}
+  }
+}

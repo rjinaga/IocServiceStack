@@ -23,12 +23,78 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
+
 namespace NInterservice
 {
-    public class ServiceDependentOptions
+    public class ServiceDependencyOptions
     {
-        public string[] Namespaces;
-        public string[] Assemblies;
-        public SubcontractFactory ServiceFactory;
+        private bool _readOnly;
+        private string[] _namespaces, _assemblies;
+        private SubcontractFactory _serviceFactory;
+        private ServiceDependencyOptions _dependencies;
+
+        public string[] Namespaces
+        {
+            get
+            {
+                return _namespaces;
+            }
+            set
+            {
+                if (!_readOnly)
+                {
+                    _namespaces = value;
+                }
+            }
+        }
+
+        public string[] Assemblies
+        {
+            get
+            {
+                return _assemblies;
+            }
+            set
+            {
+                if (!_readOnly)
+                {
+                    _assemblies = value;
+                }
+            }
+        }
+        public SubcontractFactory ServiceFactory
+        {
+            get
+            {
+                return _serviceFactory;
+            }
+            set
+            {
+                if (!_readOnly)
+                {
+                    _serviceFactory = value;
+                }
+            }
+        }
+        public ServiceDependencyOptions Dependencies
+        {
+            get
+            {
+                return _dependencies;
+            }
+        }
+
+        public void AddDependencies(Action<ServiceDependencyOptions> options)
+        {
+            _dependencies = new ServiceDependencyOptions();
+            options(_dependencies);
+        }
+
+        internal void MakeReadOnly()
+        {
+            _readOnly = true;
+            _dependencies?.MakeReadOnly();
+        }
     }
 }

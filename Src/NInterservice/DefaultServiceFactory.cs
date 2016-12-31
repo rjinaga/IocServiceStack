@@ -51,7 +51,11 @@ namespace NInterservice
                 if (serviceMeta.Activator == null)
                 {
                     //Attach register
-                    serviceMeta.Compile<T>(Subcontract, _notifier);
+                    serviceMeta.Compile<T>(Subcontract, _notifier, (registrar) =>
+                    {
+                        return CreateConstructorExpression(interfaceType, serviceMeta.ServiceType, registrar);
+                    });
+
 
                 }
                 return serviceMeta.Activator.GetInstance<T>();

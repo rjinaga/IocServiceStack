@@ -35,6 +35,10 @@ namespace NInterservice
         public static ServicePostConfiguration Configure(Action<ServiceConfig> configuration)
         {
             configuration(_config);
+
+            //Make the ServiceOptions object readonly, don't allow the further changes to the object.
+            _config.ServiceOptions.MakeReadOnly();
+
             InternalServiceManager.Config = _config;
             return _postConfig;
         }

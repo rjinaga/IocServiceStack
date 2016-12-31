@@ -23,13 +23,99 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
+
 namespace NInterservice
 {
     public class ServiceOptions
     {
-        public string[] Namespaces;
-        public string[] Assemblies;
-        public IServiceFactory ServiceFactory;
-        public bool StrictMode;
+        private bool _readOnly;
+        private bool _strictMode;
+        private string[] _namespaces, _assemblies;
+        private IServiceFactory _serviceFactory;
+        private ServiceDependencyOptions _dependencies;
+
+        /// <summary>
+        /// StrictMode applies the one contract with one service policy. This means if more than one service is implemented single contract interface
+        /// then it will throw an exception. It ensures a contract interface is implemented by a single service. By default it's not enabled, mapping table wll have the last service in the list of inteface implementaions services.
+        /// </summary>
+        public bool StrictMode
+        {
+            get
+            {
+                return _strictMode;
+            }
+            set
+            {
+                if (!_readOnly)
+                {
+                    _strictMode = value;
+                }
+            }
+        }
+
+        public string[] Namespaces
+        {
+            get
+            {
+                return _namespaces;
+            }
+            set
+            {
+                if (!_readOnly)
+                {
+                    _namespaces = value;
+                }
+            }
+        }
+
+        public string[] Assemblies
+        {
+            get
+            {
+                return _assemblies;
+            }
+            set
+            {
+                if (!_readOnly)
+                {
+                    _assemblies = value;
+                }
+            }
+        }
+        public IServiceFactory ServiceFactory
+        {
+            get
+            {
+                return _serviceFactory;
+            }
+            set
+            {
+                if (!_readOnly)
+                {
+                    _serviceFactory = value;
+                }
+            }
+        }
+        public ServiceDependencyOptions Dependencies
+        {
+            get
+            {
+                return _dependencies;
+            }
+        }
+
+        public void AddDependencies(Action<ServiceDependencyOptions> options)
+        {
+            _dependencies = new ServiceDependencyOptions();
+            options(_dependencies);
+        }
+
+        internal void MakeReadOnly()
+        {
+            _readOnly = true;
+            _dependencies?.MakeReadOnly();
+        }
+
     }
 }

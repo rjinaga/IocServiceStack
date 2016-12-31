@@ -25,36 +25,33 @@
 
 namespace NInterservice.Tests.Helper
 {
-    using DependentServiceLibrary;
     using NInterservice;
+    using RepositoryService;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Models;
 
     [Service]
     public class CustomerRepository2 : ICustomerRepository
     {
-        public CustomerRepository2()
-        {
-        }
-
-        public void AddCustomer()
+        public void Add(Customer customer)
         {
             throw new NotImplementedException();
         }
 
-        public void DeleteCustomer()
+        public void Delete(Customer customer)
         {
             throw new NotImplementedException();
         }
 
-        public void GetCustomer(int customerId)
+        public Customer GetCustomer(int customerId)
         {
             throw new NotImplementedException();
         }
 
-        public void UpdateCustomer()
+        public void Update(Customer customer)
         {
             throw new NotImplementedException();
         }

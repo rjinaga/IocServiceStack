@@ -26,9 +26,20 @@
 namespace NInterservice
 {
     using System;
-    
-    public interface IDependentServiceConfig
-    {
-        IDependentServiceConfig AddDependencies(Action<ServiceDependentOptions> config);
+
+    /// <summary>
+    /// The exception that is thrown when services are implemented a single contract interface.
+    /// </summary>
+    public class ContractNotRegisteredException : Exception {
+      
+        /// <summary>
+        /// Initializes a new instance of the DuplicateServiceImplementaionException class with a
+        /// specified error message.
+        /// </summary>
+        /// <param name="message">The error message that explains the reason for the exception.</param>
+        public ContractNotRegisteredException(string message) : base(message)
+        {
+            
+        }
     }
 }

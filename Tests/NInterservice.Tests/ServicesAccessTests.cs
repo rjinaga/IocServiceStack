@@ -25,8 +25,9 @@
 
 namespace NInterservice.Tests
 {
+    using BusinessContractLibrary;
+    using BusinessService;
     using NUnit.Framework;
-    using PrimaryServiceLibrary;
     using static NInterservice.ServiceManager;
 
     public class ServicesAccessTests
@@ -38,8 +39,8 @@ namespace NInterservice.Tests
             var customerService = GetService<ICustomer>();
 
             //Assert
-            Assert.IsInstanceOf<PrimaryServiceLibrary.Test.CustomerService>(customerService);
-            Assert.IsInstanceOf<DependentServiceLibrary.Test.CustomerRepository>(customerService.GetRepository());
+            Assert.IsInstanceOf<CustomerService>(customerService);
+            //Assert.IsInstanceOf<CustomerRepository>(customerService.GetRepository());
         }
     }
 }

@@ -86,7 +86,7 @@ namespace NInterservice
         /// </summary>
         public IServiceActivator Activator { get; private set; }
 
-        internal void Compile<T>(SubcontractFactory subcontract, IServiceNotifier notifier) where T : class
+        internal void Compile<T>(SubcontractFactory subcontract, IServiceNotifier notifier, Func<ServiceRegistrar, Expression> expression) where T : class
         {
             if (Activator == null)
             {
@@ -101,7 +101,12 @@ namespace NInterservice
 
                         notifier.ServiceUpdateNofication += ServiceUpdateNofication;
 
-                        InternalCompile<T>(subcontract);
+                        Expression newExpression = expression(_registrar);
+
+                        //Set Activator
+                        Func<T> serviceCreator = Expression.Lambda<Func<T>>(newExpression).Compile();
+                        Activator = new ServiceActivator<T>(serviceCreator, IsReusable);
+
                     }
                 }
             }
@@ -115,48 +120,55 @@ namespace NInterservice
             }
         }
 
-        private void InternalCompile<T>(SubcontractFactory subcontract) where T : class
-        {
-            Type interfaceType = typeof(T);
+        //private void InternalCompile<T>(SubcontractFactory subcontract) where T : class
+        //{
+        //    if (!CreateActivator<T>(subcontract))
+        //    {
+        //        /*if none of them are not decorated with ServiceInitAttribute then initialize default with default constructor*/
+        //        CreateWithDefaultConstructor<T>(_serviceType);
+        //    }
+        //}
 
-            ConstructorInfo[] serviceConstructors = _serviceType.GetConstructors();
-            foreach (var serviceConstructor in serviceConstructors)
-            {
-                var attribute = serviceConstructor.GetCustomAttribute<ServiceInitAttribute>();
-                if (attribute != null)
-                {
-                    /*Get parameters of service's constructor and inject corresponding repositories values to it */
-                    ParameterInfo[] constructorParametersInfo = serviceConstructor.GetParameters();
-                    Expression[] arguments = new Expression[constructorParametersInfo.Length];
+        //private bool CreateActivator<T>(SubcontractFactory subcontract) where T : class
+        //{
+        //    Type interfaceType = typeof(T);
 
-                    int index = 0;
-                    foreach (var constrParameter in constructorParametersInfo)
-                    {
-                        arguments[index] = subcontract.Create(constrParameter.ParameterType, _registrar) ?? Expression.Default(constrParameter.GetType());
-                        index++;
-                    }
+        //    ConstructorInfo[] serviceConstructors = _serviceType.GetConstructors();
+        //    foreach (var serviceConstructor in serviceConstructors)
+        //    {
+        //        var attribute = serviceConstructor.GetCustomAttribute<ServiceInitAttribute>();
+        //        if (attribute != null)
+        //        {
+        //            /*Get parameters of service's constructor and inject corresponding repositories values to it */
+        //            ParameterInfo[] constructorParametersInfo = serviceConstructor.GetParameters();
+        //            Expression[] arguments = new Expression[constructorParametersInfo.Length];
 
-                    Func<T> serviceCreator = Expression.Lambda<Func<T>>(Expression.New(serviceConstructor, arguments)).Compile();
+        //            int index = 0;
+        //            foreach (var constrParameter in constructorParametersInfo)
+        //            {
+        //                arguments[index] = subcontract.Create(constrParameter.ParameterType, _registrar) ?? Expression.Default(constrParameter.GetType());
+        //                index++;
+        //            }
 
-                    Activator = new ServiceActivator<T>(serviceCreator, IsReusable);
+        //            Func<T> serviceCreator = Expression.Lambda<Func<T>>(Expression.New(serviceConstructor, arguments)).Compile();
 
-                    return;
-                }
-            }
+        //            Activator = new ServiceActivator<T>(serviceCreator, IsReusable);
 
-            /*if none of them are not decorated with ServiceInitAttribute then initialize default with default constructor*/
-            CreateWithDefaultConstructor<T>(_serviceType);
-        }
+        //            return true;
+        //        }
+        //    }
+        //    return false;
+        //}
 
-        private void CreateWithDefaultConstructor<T>(Type serviceType) where T : class
-        {
-            NewExpression newExp = Expression.New(serviceType);
+        //private void CreateWithDefaultConstructor<T>(Type serviceType) where T : class
+        //{
+        //    NewExpression newExp = Expression.New(serviceType);
 
-            Func<T> serviceCreator = Expression.Lambda<Func<T>>(Expression.New(serviceType)).Compile();
+        //    Func<T> serviceCreator = Expression.Lambda<Func<T>>(Expression.New(serviceType)).Compile();
 
-            // Compile our new lambda expression.
-            Activator = new ServiceActivator<T>(serviceCreator, IsReusable );
-        }
+        //    // Compile our new lambda expression.
+        //    Activator = new ServiceActivator<T>(serviceCreator, IsReusable );
+        //}
 
     }
 }

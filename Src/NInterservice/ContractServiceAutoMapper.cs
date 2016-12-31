@@ -71,6 +71,9 @@ namespace NInterservice
         {
             get
             {
+                if (!_mapTable.ContainsKey(contractType))
+                    ExceptionHelper.ThrowContractNotRegisteredException(contractType.FullName);
+
                 return _mapTable[contractType];
             }
             set

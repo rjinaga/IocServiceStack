@@ -27,7 +27,6 @@ namespace NInterservice
 {
     public interface IRootServiceFactory : IBasicService
     {
-        //void ApplyChanges();
         void StartWork();
     }
 

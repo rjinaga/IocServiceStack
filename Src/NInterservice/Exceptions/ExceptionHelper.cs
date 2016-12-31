@@ -37,5 +37,10 @@ namespace NInterservice
         {
             throw new DuplicateServiceImplementaionException(fullName);
         }
+
+        internal static void ThrowContractNotRegisteredException(string fullName)
+        {
+            throw new ContractNotRegisteredException(fullName);
+        }
     }
 }

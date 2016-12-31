@@ -26,8 +26,8 @@
 namespace NInterservice.Tests
 {
     using NUnit.Framework;
-    
-    
+
+
     /*This test module doesn't support parallel execution*/
     [SetUpFixture]
     public class SetupTests
@@ -37,13 +37,28 @@ namespace NInterservice.Tests
         {
             var configRef = ServiceInjector.Configure(config =>
             {
+                config.Services((opt) =>
+                {
+        /*if namespaces are not specfied, it finds for services in entire assembly irrespective of namespaces.*/
+                    opt.Namespaces = new[] { "BusinessService" };
+                    opt.Assemblies = new[] { "BusinessServiceLibrary" };
 
-                config.AddServices((serviceConfig) => { serviceConfig.Namespaces = new[] { "PrimaryServiceLibrary.Test" }; serviceConfig.Assemblies = new[] { "PrimaryServiceLibrary" }; })
-                      .AddDependencies((serviceConfig) => { serviceConfig.Namespaces = new[] { "DependentServiceLibrary.Test" }; serviceConfig.Assemblies = new[] { "DependentServiceLibrary" }; });
+                    opt.AddDependencies((dopt) =>
+                    {
+                        dopt.Namespaces = new[] { "RepositoryService" }; ;
+                        dopt.Assemblies = new[] { "RepositoryServiceLibrary" };
 
-                config.EnableStrictMode();
+                        dopt.AddDependencies(ddopt =>
+                        {
+                            ddopt.Namespaces = new[] { "DataService" };
+                            ddopt.Assemblies = new[] { "DataServiceLibrary" };
+                        });
+                    });
 
-            });
+                    opt.StrictMode = true;
+                });
+    //.SetServiceManager(new ProxyServiceManager());
+});
 
             //Hold the pointer of serviceConfig in a static field to run further tests of dependecy injection.
             Helper.TestsHelper.FactoryServicePointer = configRef;
