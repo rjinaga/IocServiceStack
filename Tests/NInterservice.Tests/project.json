@@ -2,7 +2,7 @@
   "version": "1.0.0-*",
   "testRunner": "nunit",
   "dependencies": {
-    "NInterservice": "1.0.0-beta-8",
+    "NInterservice": "1.0.0-beta-9",
     "Moq": "4.5.29",
     "NUnit": "3.5.0",
     "dotnet-test-nunit": "3.4.0-beta-3",
