@@ -17,7 +17,7 @@ PM> Install-Package NInterservice -Pre
 [![Gitter](https://badges.gitter.im/NInterservice/Lobby.svg)](https://gitter.im/NInterservice/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
 
 
-### Services Registration
+### Services Configuration
 
 ```c#
 var configRef = ServiceInjector.Configure(config =>
