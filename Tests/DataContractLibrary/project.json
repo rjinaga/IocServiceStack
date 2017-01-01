@@ -2,7 +2,7 @@
   "version": "1.0.0-*",
 
   "dependencies": {
-    "NInterservice": "1.0.0-beta-7"
+    "NInterservice": "1.0.0-beta-8"
   },
 
   "frameworks": {
