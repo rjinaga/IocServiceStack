@@ -1,17 +1,17 @@
-﻿//namespace PrimaryServiceLibrary.Test
-//{
-//    using NInterservice;
-//    using Contracts;
-    
-//    [Service(IsReusable =true)]   
-//    public class ReferenceDataService : IReferenceData
-//    {
-//        private int _count = 0;
+﻿namespace BusinessService
+{
+    using NInterservice;
+    using BusinessContractLibrary;
 
-//        //This method is for IsReusable service test
-//        public int Increment()
-//        {
-//            return ++_count;
-//        }
-//    }
-//}
+    [Service(IsReusable = true)]
+    public class ReferenceDataService : IReferenceData
+    {
+        private int _count = 0;
+
+        //This method is for IsReusable service test
+        public int Increment()
+        {
+            return ++_count;
+        }
+    }
+}

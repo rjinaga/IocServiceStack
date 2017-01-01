@@ -1,7 +1,7 @@
 ﻿namespace NInterservice.Tests
 {
+    using BusinessContractLibrary;
     using NUnit.Framework;
-    using PrimaryServiceLibrary.Contracts;
     using static ServiceManager;
 
     public class ReusableServiceInstanceTest

@@ -1,5 +1,5 @@
 ﻿
-namespace PrimaryServiceLibrary.Contracts
+namespace BusinessContractLibrary
 {
     using NInterservice;
 
