@@ -41,10 +41,10 @@ namespace NInterservice.Tests
             var factoryService = Helper.TestsHelper.FactoryServicePointer.GetFactoryService();
 
             /*Dependency Injection*/
-            factoryService.Replace<ICustomer>(typeof(CustomerService2))
+            factoryService.Replace<ICustomer, CustomerService2>()
                           .Subcontract
-                          .Replace<ICustomerRepository>(typeof(CustomerRepository2));
-            
+                          .Replace<ICustomerRepository, CustomerRepository2>();
+
             //Act
             var service = ServiceManager.GetService<ICustomer>();
 
@@ -60,10 +60,10 @@ namespace NInterservice.Tests
         {
             var factoryService = Helper.TestsHelper.FactoryServicePointer.GetFactoryService();
 
-            factoryService.Replace<ICustomer>(typeof(CustomerService))
+            factoryService.Replace<ICustomer, CustomerService>()
                           .Subcontract
-                          .Replace<ICustomerRepository>(typeof(CustomerRepository));
-            
+                          .Replace<ICustomerRepository, CustomerRepository>();
+
         }
     }
 }

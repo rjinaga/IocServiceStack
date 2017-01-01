@@ -27,16 +27,16 @@ namespace NInterservice
 {
     public static class ServiceManager
     {
-        static IServiceManagerAssociate _associate;
+        static IServiceProvider _serviceProvider;
 
         static ServiceManager()
         {
-            _associate = InternalServiceManager.Config.ServiceManager??new ServiceManagerAssociate();
+            _serviceProvider = InternalServiceManager.Config.ServiceProvider??new DefaultServiceProvider();
         }
 
         public static T GetService<T>() where T : class
         {
-            return _associate.GetService<T>();
+            return _serviceProvider.GetService<T>();
         }
     }
 }

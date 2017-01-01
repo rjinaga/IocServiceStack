@@ -20,7 +20,7 @@ PM> Install-Package NInterservice -Pre
 ### Services Configuration
 
 ```c#
-var configRef = ServiceInjector.Configure(config =>
+var configRef = IocServiceProvider.Configure(config =>
 {
     config.Services((opt) =>
     {
@@ -190,12 +190,12 @@ You can replace with another service which is already discovered by the NInterse
 var factoryService = configRef.GetFactoryService();
 
 /*Dependency Injection*/
-factoryService.Replace<ICustomer>(typeof(CustomerService2))
+factoryService.Replace<ICustomer, CustomerService2>()
               .Subcontract
-              .Replace<ICustomerRepository>(typeof(CustomerRepository2));
+              .Replace<ICustomerRepository, CustomerRepository2>();
 
 /*Add new service*/
-factoryService.Add<IPayment>(typeof(PaypalPayment));
+factoryService.Add<IPayment, PaypalPayment>();
 
 ```
 

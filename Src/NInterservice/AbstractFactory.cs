@@ -61,6 +61,14 @@ namespace NInterservice
             get; set;
         }
 
+        public IBasicService Add<TC, TS>()
+          where TC : class
+          where TS : class
+        {
+            return Add<TC>(typeof(TS));
+        }
+
+
         /// <summary>
         /// Adds the specified service to the factory
         /// </summary>
@@ -77,6 +85,13 @@ namespace NInterservice
             ContractObserver.Update(interfaceType);
 
             return this;
+        }
+
+        public IBasicService Replace<TC, TS>()
+          where TC : class
+          where TS : class
+        {
+            return Replace<TC>(typeof(TS));
         }
 
         /// <summary>
@@ -148,5 +163,9 @@ namespace NInterservice
             //Default constructor
             return Expression.New(serviceType);
         }
+
+      
+
+      
     }
 }

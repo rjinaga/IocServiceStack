@@ -25,11 +25,8 @@
 
 namespace NInterservice
 {
-    public class ServiceManagerAssociate : IServiceManagerAssociate
+    public interface IServiceProvider
     {
-        public T GetService<T>() where T : class
-        {
-            return InternalServiceManager.GetServiceFactory()?.Create<T>();
-        }
+        T GetService<T>() where T : class;
     }
 }

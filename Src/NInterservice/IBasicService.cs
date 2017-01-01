@@ -37,6 +37,8 @@ namespace NInterservice
         /// </summary>
         SubcontractFactory Subcontract { get; set; }
 
+        IBasicService Add<TC, TS>() where TC : class where TS : class;
+
         /// <summary>
         /// Adds the specified service to the factory
         /// </summary>
@@ -44,7 +46,10 @@ namespace NInterservice
         /// <param name="service">The type of the service</param>
         /// <returns>Instance <see cref="IBasicService"/> of current object</returns>
         IBasicService Add<T>(Type service) where T : class;
-        
+
+
+        IBasicService Replace<TC, TS>() where TC : class where TS : class;
+
         /// <summary>
         /// Replaces the specified service in the factory.
         /// </summary>
@@ -53,6 +58,5 @@ namespace NInterservice
         /// <returns>Instance <see cref="IBasicService"/> of current object</returns>
         IBasicService Replace<T>(Type service) where T : class;
 
-        
     }
 }

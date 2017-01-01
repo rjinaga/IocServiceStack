@@ -5,6 +5,6 @@ namespace NInterservice
     public interface IServiceConfig
     {
         IServiceConfig Services(Action<ServiceOptions> config);
-        IServiceConfig SetServiceManager(IServiceManagerAssociate managerAssociate);
+        IServiceConfig RegisterServiceProvider(IServiceProvider serviceProvider);
     }
 }

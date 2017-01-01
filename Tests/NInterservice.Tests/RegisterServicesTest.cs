@@ -35,11 +35,11 @@ namespace NInterservice.Tests
         [OneTimeSetUp]
         public void RegisterTest()
         {
-            var configRef = ServiceInjector.Configure(config =>
+            var configRef = IocServiceProvider.Configure(config =>
             {
                 config.Services((opt) =>
                 {
-        /*if namespaces are not specfied, it finds for services in entire assembly irrespective of namespaces.*/
+                    /*if namespaces are not specfied, it finds for services in entire assembly irrespective of namespaces.*/
                     opt.Namespaces = new[] { "BusinessService" };
                     opt.Assemblies = new[] { "BusinessServiceLibrary" };
 
@@ -57,7 +57,7 @@ namespace NInterservice.Tests
 
                     opt.StrictMode = true;
                 });
-    //.SetServiceManager(new ProxyServiceManager());
+                //.RegisterServiceProvider(new ProxyServiceProvider());
 });
 
             //Hold the pointer of serviceConfig in a static field to run further tests of dependecy injection.

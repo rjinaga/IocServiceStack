@@ -5,10 +5,10 @@
     public sealed class ServiceConfig : IServiceConfig
     {
         private ServiceOptions _serviceOptions;
-        private IServiceManagerAssociate _manager;
+        private IServiceProvider _serviceProvider;
 
         internal ServiceOptions ServiceOptions => _serviceOptions;
-        internal IServiceManagerAssociate ServiceManager => _manager;
+        internal IServiceProvider ServiceProvider => _serviceProvider;
 
         public ServiceConfig()
         {
@@ -21,9 +21,9 @@
             return this;
         }
        
-        public IServiceConfig SetServiceManager(IServiceManagerAssociate managerAssociate)
+        public IServiceConfig RegisterServiceProvider(IServiceProvider serviceProvider)
         {
-            _manager = managerAssociate;
+            _serviceProvider = serviceProvider;
             return this;
         }
 

@@ -25,8 +25,22 @@
 
 namespace NInterservice
 {
-    public interface IServiceManagerAssociate
+    using System;
+    
+    public class IocServiceProvider
     {
-        T GetService<T>() where T : class;
+        private static ServiceConfig _config = new ServiceConfig();
+        private static ServicePostConfiguration _postConfig = new ServicePostConfiguration();
+
+        public static ServicePostConfiguration Configure(Action<ServiceConfig> configuration)
+        {
+            configuration(_config);
+
+            //Make the ServiceOptions object readonly, don't allow the further changes to the object.
+            _config.ServiceOptions.MakeReadOnly();
+
+            InternalServiceManager.Config = _config;
+            return _postConfig;
+        }
     }
 }
