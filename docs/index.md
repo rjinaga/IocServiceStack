@@ -16,6 +16,7 @@ PM> Install-Package NInterservice -Pre
 
 [![Gitter](https://badges.gitter.im/NInterservice/Lobby.svg)](https://gitter.im/NInterservice/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
 
+## Usage Examples
 
 ### Services Configuration
 
