@@ -206,6 +206,7 @@ factoryService.Add<IPayment, PaypalPayment>();
 https://github.com/rjinaga/Web-App-Architecture-Using-NInterservice
 
 
-## Relationship with the [NInterservice.Gateway](https://github.com/rjinaga/NInterservice.Gateway) and [NInterservice.Client](https://github.com/rjinaga/NInterservice.Client) Repository 
+
+### Relationship with the [NInterservice.Gateway](https://github.com/rjinaga/NInterservice.Gateway) and [NInterservice.Client](https://github.com/rjinaga/NInterservice.Client) Repositories
 
 --TODO Document
