@@ -17,7 +17,7 @@ PM> Install-Package NInterservice -Pre
 [![Gitter](https://badges.gitter.im/NInterservice/Lobby.svg)](https://gitter.im/NInterservice/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
 
 
-## Usage Examples
+## Usage
 
 ### Services Configuration
 
@@ -205,3 +205,7 @@ factoryService.Add<IPayment, PaypalPayment>();
 
 https://github.com/rjinaga/Web-App-Architecture-Using-NInterservice
 
+
+## Relationship with the [NInterservice.Gateway](https://github.com/rjinaga/NInterservice.Gateway) and [NInterservice.Client](https://github.com/rjinaga/NInterservice.Client) Repository 
+
+--TODO Document
