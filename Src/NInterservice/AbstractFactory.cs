@@ -41,17 +41,6 @@ namespace NInterservice
         /// </summary>
         protected readonly ContractServiceAutoMapper ServicesMapTable;
 
-        /// <summary>
-        /// Initializes a new instance of AbstractFactory class with the specified namespaces, assemblies and strictmode
-        /// </summary>
-        /// <param name="namespaces">The namespaces of services</param>
-        /// <param name="assemblies">The assemblies of services</param>
-        /// <param name="strictMode">The value indicating whether strict mode is on or off</param>
-        public AbstractFactory(string[] namespaces, Assembly[] assemblies, bool strictMode)
-        {
-            ServicesMapTable = new ContractServiceAutoMapper(namespaces, assemblies, strictMode);
-            ServicesMapTable.Map();
-        }
 
         /// <summary>
         /// Gets or sets factory of Subcontract of the current service
@@ -59,57 +48,6 @@ namespace NInterservice
         public SubcontractFactory Subcontract
         {
             get; set;
-        }
-
-        public IBasicService Add<TC, TS>()
-          where TC : class
-          where TS : class
-        {
-            return Add<TC>(typeof(TS));
-        }
-
-
-        /// <summary>
-        /// Adds the specified service to the factory
-        /// </summary>
-        /// <typeparam name="T">The class of the service</typeparam>
-        /// <param name="service">The type of the service</param>
-        /// <returns>Instance <see cref="IBasicService"/> of current object</returns>
-        public virtual IBasicService Add<T>(Type service) where T : class
-        {
-            Type interfaceType = typeof(T);
-            var serviceMeta = new ServiceMeta { ServiceType = service };
-            ServicesMapTable.Add(interfaceType, serviceMeta);
-
-            //send update to observer
-            ContractObserver.Update(interfaceType);
-
-            return this;
-        }
-
-        public IBasicService Replace<TC, TS>()
-          where TC : class
-          where TS : class
-        {
-            return Replace<TC>(typeof(TS));
-        }
-
-        /// <summary>
-        /// Replaces the specified service in the factory.
-        /// </summary>
-        /// <typeparam name="T">The class of the service</typeparam>
-        /// <param name="service"></param>
-        /// <returns></returns>
-        public virtual IBasicService Replace<T>(Type service) where T : class
-        {
-            Type interfaceType = typeof(T);
-            var serviceMeta = ServicesMapTable[interfaceType];
-            serviceMeta.ServiceType = service;
-
-            //send update to observer
-            ContractObserver.Update(interfaceType);
-
-            return this;
         }
 
         /// <summary>
@@ -138,7 +76,101 @@ namespace NInterservice
             }
         }
 
-        protected virtual Expression CreateConstructorExpression(Type interfaceType, Type serviceType, ServiceRegistrar registrar)
+
+        /// <summary>
+        /// Initializes a new instance of AbstractFactory class with the specified namespaces, assemblies and strictmode
+        /// </summary>
+        /// <param name="namespaces">The namespaces of services</param>
+        /// <param name="assemblies">The assemblies of services</param>
+        /// <param name="strictMode">The value indicating whether strict mode is on or off</param>
+        public AbstractFactory(string[] namespaces, Assembly[] assemblies, bool strictMode)
+        {
+            ServicesMapTable = new ContractServiceAutoMapper(namespaces, assemblies, strictMode);
+            ServicesMapTable.Map();
+        }
+
+        public IBasicService Add<TC, TS>()
+          where TC : class
+          where TS : class
+        {
+            return Add<TC>(typeof(TS));
+        }
+
+        /// <summary>
+        /// Adds the specified service to the factory
+        /// </summary>
+        /// <typeparam name="T">The class of the service</typeparam>
+        /// <param name="service">The type of the service</param>
+        /// <returns>Instance <see cref="IBasicService"/> of current object</returns>
+        public virtual IBasicService Add<T>(Type service) where T : class
+        {
+            Type interfaceType = typeof(T);
+            var serviceMeta = new ServiceInfo(service);
+            ServicesMapTable.Add(interfaceType, serviceMeta);
+
+            //send update to observer
+            ContractObserver.Update(interfaceType);
+
+            return this;
+        }
+
+     
+
+        public IBasicService AddSingleton<TC, TS>()
+            where TC : class
+            where TS : class
+        {
+            Type interfaceType = typeof(TC);
+            var serviceMeta = new ServiceInfo<TS>(isReusable: true);
+
+            ServicesMapTable.Add(interfaceType, serviceMeta);
+
+            //send update to observer
+            ContractObserver.Update(interfaceType);
+
+            return this;
+        }
+
+        public IBasicService Replace<TC, TS>()
+          where TC : class
+          where TS : class
+        {
+            return Replace<TC>(typeof(TS));
+        }
+
+        /// <summary>
+        /// Replaces the specified service in the factory.
+        /// </summary>
+        /// <typeparam name="T">The class of the service</typeparam>
+        /// <param name="service"></param>
+        /// <returns></returns>
+        public virtual IBasicService Replace<T>(Type service) where T : class
+        {
+            Type interfaceType = typeof(T);
+            ServicesMapTable[interfaceType] = new ServiceInfo(service);
+
+            //send update to observer
+            ContractObserver.Update(interfaceType);
+
+            return this;
+        }
+
+        public IBasicService ReplaceSingleton<TC, TS>()
+            where TC : class
+            where TS : class
+        {
+            Type interfaceType = typeof(TC);
+            var serviceMeta = new ServiceInfo<TS>(isReusable:true);
+
+            ServicesMapTable[interfaceType] = serviceMeta;
+
+            //send update to observer
+            ContractObserver.Update(interfaceType);
+
+            return this;
+        }
+
+        protected Expression CreateConstructorExpression(Type interfaceType, Type serviceType, ServiceRegistrar registrar)
         {
             ConstructorInfo[] serviceConstructors = serviceType.GetConstructors();
             foreach (var serviceConstructor in serviceConstructors)
@@ -163,9 +195,5 @@ namespace NInterservice
             //Default constructor
             return Expression.New(serviceType);
         }
-
-      
-
-      
     }
 }

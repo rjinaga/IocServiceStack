@@ -26,7 +26,7 @@
 namespace NInterservice
 {
     using System;
-    
+   
     public class ServiceActivator<T> : IServiceActivator where T: class
     {
         private T _reusableInstance;
@@ -34,7 +34,7 @@ namespace NInterservice
         private readonly Func<T> _creator;
         private readonly bool _isReusable;
 
-        TService IServiceActivator.GetInstance<TService>() 
+        TService IServiceActivator.CreateInstance<TService>() 
         {
             if (_isReusable)
             {

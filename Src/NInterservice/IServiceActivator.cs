@@ -27,6 +27,6 @@ namespace NInterservice
 {
     public interface IServiceActivator
     {
-        T GetInstance<T>() where T : class;
+        T CreateInstance<T>() where T : class;
     }
 }

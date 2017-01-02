@@ -37,7 +37,6 @@ namespace NInterservice
 
         public override Expression Create(Type interfaceType, ServiceRegistrar registrar)
         {
-
             if (interfaceType == null)
                 throw new ArgumentNullException(nameof(interfaceType));
 
@@ -45,16 +44,10 @@ namespace NInterservice
             //Root service will refresh with the updated service when ther's replacement with new service
             registrar.Register(interfaceType);
 
-            ServiceMeta serviceMeta = ServicesMapTable?[interfaceType];
+            ServiceInfo serviceMeta = ServicesMapTable?[interfaceType];
 
             return CreateConstructorExpression(interfaceType, serviceMeta.ServiceType, registrar)?? Expression.Default(interfaceType);
 
-            //if (serviceMeta != null && serviceMeta.ServiceType != null)
-            //    return Expression.New(serviceMeta.ServiceType);
-            //else
-            //    return Expression.Default(interfaceType);
         }
-
-      
     }
 }

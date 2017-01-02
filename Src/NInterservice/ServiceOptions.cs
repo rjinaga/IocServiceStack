@@ -23,10 +23,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-
 namespace NInterservice
 {
+    using System;
+
     public class ServiceOptions
     {
         private bool _readOnly;
@@ -83,6 +83,7 @@ namespace NInterservice
                 }
             }
         }
+
         public IServiceFactory ServiceFactory
         {
             get
@@ -97,6 +98,7 @@ namespace NInterservice
                 }
             }
         }
+
         public ServiceDependencyOptions Dependencies
         {
             get

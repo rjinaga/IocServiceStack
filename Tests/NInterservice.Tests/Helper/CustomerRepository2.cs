@@ -56,4 +56,5 @@ namespace NInterservice.Tests.Helper
             throw new NotImplementedException();
         }
     }
+
 }

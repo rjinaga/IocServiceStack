@@ -23,17 +23,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace DataService
+namespace NInterservice
 {
-    using NInterservice;
-    using DataContractLibrary;
-
-    [Service]
-    public class AdventureDbContext : IDbContext
+    public interface IServiceWorker : IRootBasicService
     {
-        public AdventureDbContext()
-        {
-
-        }
+        void StartWork();
     }
 }

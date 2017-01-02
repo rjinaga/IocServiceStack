@@ -38,7 +38,7 @@ namespace NInterservice
         private readonly Assembly[] _assemblies;
         private readonly string[] _namespaces;
         private readonly bool _strictMode;
-        private readonly Dictionary<Type, ServiceMeta> _mapTable;
+        private readonly Dictionary<Type, ServiceInfo> _mapTable;
 
         /// <summary>
         /// Initializes a new instance of ContractServiceAutoMapper class with the specified namespaces, assemblies and strictmode
@@ -51,7 +51,7 @@ namespace NInterservice
             _namespaces = namespaces;
             _assemblies = assemblies;
             _strictMode = strictMode;
-            _mapTable = new Dictionary<Type, ServiceMeta>();
+            _mapTable = new Dictionary<Type, ServiceInfo>();
         }
 
         /// <summary>
@@ -63,11 +63,11 @@ namespace NInterservice
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="ServiceMeta"/> object associated with the specified contractType.
+        /// Gets or sets the <see cref="ServiceInfo"/> object associated with the specified contractType.
         /// </summary>
         /// <param name="contractType"></param>
         /// <returns></returns>
-        public ServiceMeta this[Type contractType]
+        public ServiceInfo this[Type contractType]
         {
             get
             {
@@ -101,12 +101,12 @@ namespace NInterservice
         /// </summary>
         /// <param name="contractType"></param>
         /// <param name="serviceMeta"></param>
-        public void Add(Type contractType, ServiceMeta serviceMeta)
+        public void Add(Type contractType, ServiceInfo serviceMeta)
         {
             _mapTable.Add(contractType, serviceMeta);
         }
 
-        private void InternalMap(string[] namespaces, Assembly[] aseemblies, Dictionary<Type, ServiceMeta> services)
+        private void InternalMap(string[] namespaces, Assembly[] aseemblies, Dictionary<Type, ServiceInfo> services)
         {
             if (aseemblies == null)
                 return;
@@ -127,7 +127,7 @@ namespace NInterservice
             }
         }
 
-        private void FillServicesDictionary(IEnumerable<Type> serviceTypes, Dictionary<Type, ServiceMeta> services, string[] namespaces)
+        private void FillServicesDictionary(IEnumerable<Type> serviceTypes, Dictionary<Type, ServiceInfo> services, string[] namespaces)
         {
             foreach (var serviceType in serviceTypes)
             {
@@ -151,7 +151,7 @@ namespace NInterservice
                             if (services.ContainsKey(item))
                                 ExceptionHelper.ThrowDuplicateServiceException($"{serviceType.FullName} implements {item.FullName}");
                         }
-                        services[item] = new ServiceMeta { ServiceType = serviceType };
+                        services[item] = new ServiceInfo(serviceType);
                     }
                 }
             }

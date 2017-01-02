@@ -23,11 +23,40 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace NInterservice
+namespace NInterservice.Tests.Helper
 {
-    public interface IRootServiceFactory : IBasicService
-    {
-        void StartWork();
-    }
+    using NInterservice;
+    using RepositoryService;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Models;
 
+    public class CustomerRepository3 : ICustomerRepository
+    {
+        public CustomerRepository3()
+        {
+
+        }
+        public void Add(Customer customer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(Customer customer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Customer GetCustomer(int customerId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(Customer customer)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

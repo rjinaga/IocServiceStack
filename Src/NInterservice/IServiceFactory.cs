@@ -26,7 +26,7 @@
 namespace NInterservice
 {
    
-    public interface IServiceFactory : IRootServiceFactory
+    public interface IServiceFactory : IServiceWorker
     {
         T Create<T>() where T : class;
     }

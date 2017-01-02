@@ -23,10 +23,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-
 namespace NInterservice
 {
+    using System;
+
     public class ServiceDependencyOptions
     {
         private bool _readOnly;

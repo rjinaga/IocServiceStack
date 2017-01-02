@@ -29,6 +29,7 @@ namespace NInterservice
     public class ServiceEventArgs : EventArgs
     {
         public readonly Type ServiceType;
+
         public ServiceEventArgs(Type serviceType)
         {
             ServiceType = serviceType;

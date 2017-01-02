@@ -44,6 +44,25 @@ namespace NInterservice.Tests
             factoryService.Replace<ICustomer, CustomerService2>()
                           .Subcontract
                           .Replace<ICustomerRepository, CustomerRepository2>();
+            //Act
+            var service = ServiceManager.GetService<ICustomer>();
+
+            //Assert
+            Assert.IsInstanceOf<CustomerService2>(service);
+            //Assert.IsInstanceOf<CustomerRepository2>(service.GetRepository());
+
+            //Reset for other tests
+            RevertToOrignal();
+        }
+
+        [Test]
+        public void ReplaceService_DirectInstance_Inject_Test()
+        {
+            //Arrange
+            var factoryService = Helper.TestsHelper.FactoryServicePointer.GetFactoryService();
+
+            /*Dependency Injection*/
+            factoryService.Replace<ICustomer>(() => new CustomerService2(new CustomerRepository3()));
 
             //Act
             var service = ServiceManager.GetService<ICustomer>();
@@ -55,6 +74,8 @@ namespace NInterservice.Tests
             //Reset for other tests
             RevertToOrignal();
         }
+
+        
 
         private void RevertToOrignal()
         {

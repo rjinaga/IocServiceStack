@@ -27,7 +27,7 @@ namespace NInterservice
 {
     public class ServicePostConfiguration
     {
-        public IRootServiceFactory GetFactoryService()
+        public IRootBasicService GetFactoryService()
         {
             return InternalServiceManager.GetServiceFactory();
         }

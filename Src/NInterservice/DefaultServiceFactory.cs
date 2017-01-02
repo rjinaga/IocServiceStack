@@ -26,13 +26,15 @@
 namespace NInterservice
 {
     using System;
+    using System.Linq.Expressions;
     using System.Reflection;
 
-    public class DefaultServiceFactory : AbstractFactory, IServiceFactory
+    public class DefaultServiceFactory : AbstractFactory, IServiceFactory, IRootBasicService
     {
         private ServiceNotifier _notifier;
 
-        public DefaultServiceFactory(string[] namespaces, Assembly[] assemblies, bool strictMode) : base(namespaces, assemblies, strictMode)
+        public DefaultServiceFactory(string[] namespaces, Assembly[] assemblies, bool strictMode)
+            : base(namespaces, assemblies, strictMode)
         {
 
         }
@@ -44,25 +46,23 @@ namespace NInterservice
             if (!ServicesMapTable.Contains(interfaceType))
                 throw ExceptionHelper.ThrowServiceNotRegisteredException(interfaceType.Name);
 
-            ServiceMeta serviceMeta = ServicesMapTable[interfaceType];
+            ServiceInfo serviceMeta = ServicesMapTable[interfaceType];
 
             if (serviceMeta != null)
             {
                 if (serviceMeta.Activator == null)
                 {
-                    //Attach register
-                    serviceMeta.Compile<T>(Subcontract, _notifier, (registrar) =>
-                    {
-                        return CreateConstructorExpression(interfaceType, serviceMeta.ServiceType, registrar);
-                    });
-
-
+                    //Compile
+                    Compile<T>(interfaceType, serviceMeta);
                 }
-                return serviceMeta.Activator.GetInstance<T>();
+                return serviceMeta.Activator.CreateInstance<T>();
             }
             return default(T);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void StartWork()
         {
             ContractObserver = new DefaultContractWorkObserver();
@@ -74,5 +74,56 @@ namespace NInterservice
             });
 
         }
+
+        public IRootBasicService Add<TC>(Func<TC> serviceAction) where TC : class
+        {
+            Type interfaceType = typeof(TC);
+            var serviceMeta = new ServiceInfo<TC>(serviceAction);
+
+            ServicesMapTable.Add(interfaceType, serviceMeta);
+
+            //send update to observer
+            ContractObserver.Update(interfaceType);
+
+            return this;
+        }
+
+        public IRootBasicService Replace<TC>(Func<TC> expression) where TC : class
+        {
+            Type interfaceType = typeof(TC);
+            var serviceMeta = new ServiceInfo<TC>(expression);
+
+            ServicesMapTable[interfaceType] = serviceMeta;
+
+            //send update to observer
+            ContractObserver.Update(interfaceType);
+
+            return this;
+        }
+
+        private void Compile<T>(Type interfaceType, ServiceInfo serviceMeta) where T : class
+        {
+            if (serviceMeta.Activator == null)
+            {
+                lock (serviceMeta.SyncObject)
+                {
+                    if (serviceMeta.Activator == null)
+                    {
+                        var registrar = serviceMeta.InitNewRegistrar(interfaceType, _notifier);
+
+                        Func<T> serviceCreator  = serviceMeta.GetActionInfo<T>();
+                        if (serviceCreator == null)
+                        {
+                            Expression newExpression = CreateConstructorExpression(interfaceType, serviceMeta.ServiceType, registrar);
+                            //Set Activator
+                            serviceCreator = Expression.Lambda<Func<T>>(newExpression).Compile();
+                        }
+                        serviceMeta.Activator = new ServiceActivator<T>(serviceCreator, serviceMeta.IsReusable);
+                    }
+                }
+            }
+        }
+
+       
     }
 }
