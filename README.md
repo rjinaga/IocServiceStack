@@ -210,7 +210,7 @@ factoryService.Add<IPayment, PaypalPayment>();
 
 > TODO Document
 
-## Web Application Architecture using NIneterservice
+## Web Application Architecture using IocServiceStack
 
 https://github.com/rjinaga/Web-App-Architecture-Using-IocServiceStack
 
