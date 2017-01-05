@@ -23,17 +23,13 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace RepositoryService
+namespace IocServiceStack
 {
-    using IocServiceStack;
-    using Models;
-
-    [Contract]
-    public interface ICustomerRepository
+    public class DefaultServiceProvider : IServiceProvider
     {
-        void Add(Customer customer);
-        void Update(Customer customer);
-        void Delete(Customer customer);
-        Customer GetCustomer(int customerId);
+        public T GetService<T>() where T : class
+        {
+            return InternalServiceManager.GetServiceFactory()?.Create<T>();
+        }
     }
 }

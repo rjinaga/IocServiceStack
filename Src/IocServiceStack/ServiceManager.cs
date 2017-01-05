@@ -23,17 +23,20 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace RepositoryService
+namespace IocServiceStack
 {
-    using IocServiceStack;
-    using Models;
-
-    [Contract]
-    public interface ICustomerRepository
+    public static class ServiceManager
     {
-        void Add(Customer customer);
-        void Update(Customer customer);
-        void Delete(Customer customer);
-        Customer GetCustomer(int customerId);
+        static IServiceProvider _serviceProvider;
+
+        static ServiceManager()
+        {
+            _serviceProvider = InternalServiceManager.Config.ServiceProvider??new DefaultServiceProvider();
+        }
+
+        public static T GetService<T>() where T : class
+        {
+            return _serviceProvider.GetService<T>();
+        }
     }
 }

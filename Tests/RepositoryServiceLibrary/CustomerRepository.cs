@@ -26,7 +26,7 @@
 namespace RepositoryService
 {
     using System;
-    using NInterservice;
+    using IocServiceStack;
     using DataContractLibrary;
     using Models;
 

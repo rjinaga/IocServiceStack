@@ -23,17 +23,31 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace RepositoryService
+namespace IocServiceStack
 {
-    using IocServiceStack;
-    using Models;
+    using System;
+    using System.Linq.Expressions;
+    using System.Reflection;
 
-    [Contract]
-    public interface ICustomerRepository
+    internal class DefaultSubcontractFactory : SubcontractFactory
     {
-        void Add(Customer customer);
-        void Update(Customer customer);
-        void Delete(Customer customer);
-        Customer GetCustomer(int customerId);
+        public DefaultSubcontractFactory(string[] namespaces, Assembly[] aseemblies, bool strictMode) : base(namespaces,aseemblies, strictMode)
+        {
+        }
+
+        public override Expression Create(Type interfaceType, ServiceRegistrar registrar)
+        {
+            if (interfaceType == null)
+                throw new ArgumentNullException(nameof(interfaceType));
+
+            //Register current subcontract service with ServiceRegistrar
+            //Root service will refresh with the updated service when ther's replacement with new service
+            registrar.Register(interfaceType);
+
+            ServiceInfo serviceMeta = ServicesMapTable?[interfaceType];
+
+            return CreateConstructorExpression(interfaceType, serviceMeta.ServiceType, registrar)?? Expression.Default(interfaceType);
+
+        }
     }
 }

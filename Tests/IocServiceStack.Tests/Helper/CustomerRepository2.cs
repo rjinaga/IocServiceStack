@@ -23,17 +23,38 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace RepositoryService
+namespace IocServiceStack.Tests.Helper
 {
     using IocServiceStack;
+    using RepositoryService;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
     using Models;
 
-    [Contract]
-    public interface ICustomerRepository
+    [Service]
+    public class CustomerRepository2 : ICustomerRepository
     {
-        void Add(Customer customer);
-        void Update(Customer customer);
-        void Delete(Customer customer);
-        Customer GetCustomer(int customerId);
+        public void Add(Customer customer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(Customer customer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Customer GetCustomer(int customerId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(Customer customer)
+        {
+            throw new NotImplementedException();
+        }
     }
+
 }

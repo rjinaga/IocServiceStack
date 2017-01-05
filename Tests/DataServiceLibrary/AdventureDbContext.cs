@@ -25,7 +25,7 @@
 
 namespace DataService
 {
-    using NInterservice;
+    using IocServiceStack;
     using DataContractLibrary;
 
     [Service]

@@ -23,17 +23,24 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace RepositoryService
+namespace IocServiceStack
 {
-    using IocServiceStack;
-    using Models;
-
-    [Contract]
-    public interface ICustomerRepository
+    using System;
+    
+    public class IocServiceProvider
     {
-        void Add(Customer customer);
-        void Update(Customer customer);
-        void Delete(Customer customer);
-        Customer GetCustomer(int customerId);
+        private static ServiceConfig _config = new ServiceConfig();
+        private static ServicePostConfiguration _postConfig = new ServicePostConfiguration();
+
+        public static ServicePostConfiguration Configure(Action<ServiceConfig> configuration)
+        {
+            configuration(_config);
+
+            //Make the ServiceOptions object readonly, don't allow the further changes to the object.
+            _config.ServiceOptions.MakeReadOnly();
+
+            InternalServiceManager.Config = _config;
+            return _postConfig;
+        }
     }
 }

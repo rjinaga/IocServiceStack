@@ -23,17 +23,34 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace RepositoryService
+namespace IocServiceStack
 {
-    using IocServiceStack;
-    using Models;
+    using System;
 
-    [Contract]
-    public interface ICustomerRepository
+    public sealed class ServiceConfig : IServiceConfig
     {
-        void Add(Customer customer);
-        void Update(Customer customer);
-        void Delete(Customer customer);
-        Customer GetCustomer(int customerId);
+        private ServiceOptions _serviceOptions;
+        private IServiceProvider _serviceProvider;
+
+        internal ServiceOptions ServiceOptions => _serviceOptions;
+        internal IServiceProvider ServiceProvider => _serviceProvider;
+
+        public ServiceConfig()
+        {
+            _serviceOptions = new ServiceOptions();
+        }
+
+        public IServiceConfig Services(Action<ServiceOptions> config)
+        {
+            config(_serviceOptions);
+            return this;
+        }
+       
+        public IServiceConfig RegisterServiceProvider(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+            return this;
+        }
+
     }
 }

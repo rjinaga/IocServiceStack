@@ -23,17 +23,23 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace RepositoryService
+namespace IocServiceStack
 {
-    using IocServiceStack;
-    using Models;
+    using System;
 
-    [Contract]
-    public interface ICustomerRepository
-    {
-        void Add(Customer customer);
-        void Update(Customer customer);
-        void Delete(Customer customer);
-        Customer GetCustomer(int customerId);
+    /// <summary>
+    /// The exception that is thrown when services are implemented a single contract interface.
+    /// </summary>
+    public class ContractNotRegisteredException : Exception {
+      
+        /// <summary>
+        /// Initializes a new instance of the DuplicateServiceImplementaionException class with a
+        /// specified error message.
+        /// </summary>
+        /// <param name="message">The error message that explains the reason for the exception.</param>
+        public ContractNotRegisteredException(string message) : base(message)
+        {
+            
+        }
     }
 }

@@ -23,17 +23,16 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace RepositoryService
+namespace IocServiceStack
 {
-    using IocServiceStack;
-    using Models;
+    using System;
 
-    [Contract]
-    public interface ICustomerRepository
+    [AttributeUsage(AttributeTargets.Class)]
+    public class ServiceAttribute : Attribute
     {
-        void Add(Customer customer);
-        void Update(Customer customer);
-        void Delete(Customer customer);
-        Customer GetCustomer(int customerId);
+        /// <summary>
+        /// if IsReusable set to true then multiple requests are served with the same instance.
+        /// </summary>
+        public bool IsReusable { get; set; }
     }
 }

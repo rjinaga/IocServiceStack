@@ -23,17 +23,29 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace RepositoryService
+namespace IocServiceStack
 {
-    using IocServiceStack;
-    using Models;
+    using System;
+    using System.Collections.Generic;
 
-    [Contract]
-    public interface ICustomerRepository
+    public sealed class ServiceRegistrar
     {
-        void Add(Customer customer);
-        void Update(Customer customer);
-        void Delete(Customer customer);
-        Customer GetCustomer(int customerId);
+        private List<Type> _register;
+
+        public ServiceRegistrar()
+        {
+            _register = new List<Type>();
+        }
+
+        public bool Contains(Type type)
+        {
+            return _register.Contains(type);
+        }
+
+        public void Register(Type type)
+        {
+            if (!_register.Contains(type))
+                _register.Add(type);
+        }
     }
 }

@@ -23,17 +23,17 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace RepositoryService
+namespace IocServiceStack
 {
-    using IocServiceStack;
-    using Models;
+    using System;
 
-    [Contract]
-    public interface ICustomerRepository
+    /// <summary>
+    /// If a class is decorated with the ContractAttribute class, then the discovery 
+    /// service will register that interface autmatically.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Interface)]
+    public class ContractAttribute : Attribute
     {
-        void Add(Customer customer);
-        void Update(Customer customer);
-        void Delete(Customer customer);
-        Customer GetCustomer(int customerId);
+
     }
 }

@@ -25,7 +25,7 @@
 
 namespace BusinessService
 {
-    using NInterservice;
+    using IocServiceStack;
     using BusinessContractLibrary;
 
     [Service(IsReusable = true)]

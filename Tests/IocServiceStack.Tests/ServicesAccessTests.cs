@@ -23,17 +23,24 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace RepositoryService
+namespace IocServiceStack.Tests
 {
-    using IocServiceStack;
-    using Models;
+    using BusinessContractLibrary;
+    using BusinessService;
+    using NUnit.Framework;
+    using static IocServiceStack.ServiceManager;
 
-    [Contract]
-    public interface ICustomerRepository
+    public class ServicesAccessTests
     {
-        void Add(Customer customer);
-        void Update(Customer customer);
-        void Delete(Customer customer);
-        Customer GetCustomer(int customerId);
+        [Test]
+        public void CustomerService_Test()
+        {
+            //Arrange & Act
+            var customerService = GetService<ICustomer>();
+
+            //Assert
+            Assert.IsInstanceOf<CustomerService>(customerService);
+            //Assert.IsInstanceOf<CustomerRepository>(customerService.GetRepository());
+        }
     }
 }

@@ -23,17 +23,43 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace RepositoryService
+namespace IocServiceStack
 {
-    using IocServiceStack;
-    using Models;
-
-    [Contract]
-    public interface ICustomerRepository
+    using System;
+   
+    public class ServiceActivator<T> : IServiceActivator where T: class
     {
-        void Add(Customer customer);
-        void Update(Customer customer);
-        void Delete(Customer customer);
-        Customer GetCustomer(int customerId);
+        private T _reusableInstance;
+        private readonly object _syncObject = new object();
+        private readonly Func<T> _creator;
+        private readonly bool _isReusable;
+
+        TService IServiceActivator.CreateInstance<TService>() 
+        {
+            if (_isReusable)
+            {
+                if (_reusableInstance == null)
+                {
+                    lock (_syncObject)
+                    {
+                        if (_reusableInstance == null)
+                        {
+                            _reusableInstance = _creator();
+                        }
+                    }
+                }
+                return _reusableInstance as TService;
+            }
+            else
+            {
+                return _creator() as TService;
+            }
+        }
+
+        public ServiceActivator(Func<T> creator, bool isReusable)
+        {
+            _creator = creator;
+            _isReusable = isReusable;
+        }
     }
 }

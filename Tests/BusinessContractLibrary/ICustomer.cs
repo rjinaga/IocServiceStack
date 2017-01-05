@@ -25,7 +25,7 @@
 
 namespace BusinessContractLibrary
 {
-    using NInterservice;
+    using IocServiceStack;
     using Models;
  
     [Contract]

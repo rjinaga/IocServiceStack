@@ -23,17 +23,20 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace RepositoryService
+namespace IocServiceStack
 {
-    using IocServiceStack;
-    using Models;
+    using System;
+    using System.Linq.Expressions;
+    using System.Reflection;
 
-    [Contract]
-    public interface ICustomerRepository
+    public abstract class SubcontractFactory : AbstractFactory
     {
-        void Add(Customer customer);
-        void Update(Customer customer);
-        void Delete(Customer customer);
-        Customer GetCustomer(int customerId);
+        public SubcontractFactory(string[] namespaces, Assembly[] assemblies, bool strictMode) : base(namespaces, assemblies, strictMode)
+        {
+
+        }
+
+        public abstract Expression Create(Type interfaceType, ServiceRegistrar register);
+       
     }
 }

@@ -23,17 +23,24 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace RepositoryService
+namespace IocServiceStack
 {
-    using IocServiceStack;
-    using Models;
+    using System;
 
-    [Contract]
-    public interface ICustomerRepository
+    /// <summary>
+    /// The exception that is thrown when a requested service is not found in factory.
+    /// </summary>
+    public class ServiceNotFoundException : Exception
     {
-        void Add(Customer customer);
-        void Update(Customer customer);
-        void Delete(Customer customer);
-        Customer GetCustomer(int customerId);
+
+        /// <summary>
+        /// Initializes a new instance of the DuplicateServiceImplementaionException class with a
+        /// specified error message.
+        /// </summary>
+        /// <param name="message">The error message that explains the reason for the exception.</param>
+        public ServiceNotFoundException(string message) : base(message)
+        {
+        }
     }
+
 }

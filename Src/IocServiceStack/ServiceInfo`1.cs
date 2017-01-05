@@ -23,17 +23,34 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace RepositoryService
+namespace IocServiceStack
 {
-    using IocServiceStack;
-    using Models;
-
-    [Contract]
-    public interface ICustomerRepository
+    using System;
+    
+    public class ServiceInfo<T> : ServiceInfo where T: class
     {
-        void Add(Customer customer);
-        void Update(Customer customer);
-        void Delete(Customer customer);
-        Customer GetCustomer(int customerId);
+        private Func<T> _actionInfo;
+
+        public ServiceInfo() : base(typeof(T))
+        {
+        }
+        public ServiceInfo(bool isReusable) : base(typeof(T), isReusable)
+        {
+        }
+
+        public ServiceInfo(Func<T> serviceAction) : base(null)
+        {
+            _actionInfo = serviceAction;
+        }
+
+        public ServiceInfo(Func<T> serviceAction, bool isReusable) : base(null, isReusable)
+        {
+            _actionInfo = serviceAction;
+        }
+
+        public override Func<T1> GetActionInfo<T1>() 
+        {
+            return _actionInfo as Func<T1>;
+        }
     }
 }

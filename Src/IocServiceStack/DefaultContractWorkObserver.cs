@@ -23,17 +23,22 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace RepositoryService
-{
-    using IocServiceStack;
-    using Models;
 
-    [Contract]
-    public interface ICustomerRepository
+namespace IocServiceStack
+{
+    using System;
+
+    public class DefaultContractWorkObserver : IContractObserver
     {
-        void Add(Customer customer);
-        void Update(Customer customer);
-        void Delete(Customer customer);
-        Customer GetCustomer(int customerId);
+        private Action<Type> _updateAction;
+        public void OnUpdate(Action<Type> updateAction)
+        {
+            _updateAction = updateAction;
+        }
+
+        public void Update(Type serviceContractType)
+        {
+            _updateAction(serviceContractType);
+        }
     }
 }

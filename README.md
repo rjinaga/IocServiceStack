@@ -1,6 +1,6 @@
-# NInterservice
+# IocServiceStack
 
-NInterservice is a open source .NET library for multi-services communication through multi-level dependency injection. This separates the concerns of application layers. This makes the layers configurable, but not required to reference the dependent layer at design time. 
+IocServiceStack is a open source .NET library for multi-services communication through multi-level dependency injection. This separates the concerns of application layers. This makes the layers configurable, but not required to reference the dependent layer at design time. 
 
 
 ### Supports
@@ -10,11 +10,11 @@ NInterservice is a open source .NET library for multi-services communication thr
 
 ## [NuGet](https://www.nuget.org/packages/NJet.Interservice/)
 ```
-PM> Install-Package NInterservice -Pre
+PM> Install-Package IocServiceStack -Pre
 ```
-[![NuGet Pre Release](https://img.shields.io/badge/nuget-Pre%20Release-yellow.svg)](https://www.nuget.org/packages/NInterservice/)
+[![NuGet Pre Release](https://img.shields.io/badge/nuget-Pre%20Release-yellow.svg)](https://www.nuget.org/packages/IocServiceStack/)
 
-[![Gitter](https://badges.gitter.im/NInterservice/Lobby.svg)](https://gitter.im/NInterservice/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
+[![Gitter](https://badges.gitter.im/IocServiceStack/Lobby.svg)](https://gitter.im/IocServiceStack/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
 
 
 ## Usage
@@ -56,7 +56,7 @@ var configRef = IocServiceProvider.Configure(config =>
 ```c#
 namespace BusinessContractLibrary
 {
-    using NInterservice;
+    using IocServiceStack;
     using Models;
  
     [Contract]
@@ -68,7 +68,7 @@ namespace BusinessContractLibrary
 
 namespace BusinessService
 {
-    using NInterservice;
+    using IocServiceStack;
     using BusinessContractLibrary;
     using Models;
     using RepositoryService;
@@ -99,7 +99,7 @@ namespace BusinessService
 
 namespace RepositoryService
 {
-    using NInterservice;
+    using IocServiceStack;
     using Models;
 
     [Contract]
@@ -115,7 +115,7 @@ namespace RepositoryService
 namespace RepositoryService
 {
     using System;
-    using NInterservice;
+    using IocServiceStack;
     using DataContractLibrary;
     using Models;
 
@@ -152,7 +152,7 @@ namespace RepositoryService
 
 namespace DataContractLibrary
 {
-    using NInterservice;
+    using IocServiceStack;
 
     [Contract]
     public interface IDbContext
@@ -163,7 +163,7 @@ namespace DataContractLibrary
 
 namespace DataService
 {
-    using NInterservice;
+    using IocServiceStack;
     using DataContractLibrary;
 
     [Service]
@@ -186,7 +186,7 @@ var customerService = ServiceManager.GetService<ICustomer>();
 ```
 
 ### Dependency Injection
-You can replace with another service which is already discovered by the NInterservice and registered, or add a new service.
+You can replace with another service which is already discovered by the IocServiceStack and registered, or add a new service.
 
 ```c#
 var factoryService = configRef.GetFactoryService();
@@ -203,10 +203,10 @@ factoryService.Add<IPayment, PaypalPayment>();
 
 ## Web Application Architecture using NIneterservice
 
-https://github.com/rjinaga/Web-App-Architecture-Using-NInterservice
+https://github.com/rjinaga/Web-App-Architecture-Using-IocServiceStack
 
 
 
-### Relationship with the [NInterservice.Gateway](https://github.com/rjinaga/NInterservice.Gateway) and [NInterservice.Client](https://github.com/rjinaga/NInterservice.Client) Repositories
+### Relationship with the [IocServiceStack.Gateway](https://github.com/rjinaga/IocServiceStack.Gateway) and [IocServiceStack.Client](https://github.com/rjinaga/IocServiceStack.Client) Repositories
 
 --TODO Document

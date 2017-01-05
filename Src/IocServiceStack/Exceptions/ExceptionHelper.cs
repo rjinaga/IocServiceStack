@@ -23,17 +23,24 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace RepositoryService
+namespace IocServiceStack
 {
-    using IocServiceStack;
-    using Models;
-
-    [Contract]
-    public interface ICustomerRepository
+    using System;
+    internal class ExceptionHelper
     {
-        void Add(Customer customer);
-        void Update(Customer customer);
-        void Delete(Customer customer);
-        Customer GetCustomer(int customerId);
+        internal static Exception ThrowServiceNotRegisteredException(string name)
+        {
+            throw new ServiceNotFoundException($"Requested service of '{name}' contract was not found. Check your configuraion of {nameof(IocServiceProvider)}. You might have configured different namespaces or assemblies where the requested service was not found.");
+        }
+
+        internal static void ThrowDuplicateServiceException(string fullName)
+        {
+            throw new DuplicateServiceImplementaionException(fullName);
+        }
+
+        internal static void ThrowContractNotRegisteredException(string fullName)
+        {
+            throw new ContractNotRegisteredException(fullName);
+        }
     }
 }

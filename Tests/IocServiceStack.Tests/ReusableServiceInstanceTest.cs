@@ -23,17 +23,30 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace RepositoryService
+namespace IocServiceStack.Tests
 {
-    using IocServiceStack;
-    using Models;
+    using BusinessContractLibrary;
+    using NUnit.Framework;
+    using static ServiceManager;
 
-    [Contract]
-    public interface ICustomerRepository
+    public class ReusableServiceInstanceTest
     {
-        void Add(Customer customer);
-        void Update(Customer customer);
-        void Delete(Customer customer);
-        Customer GetCustomer(int customerId);
+        [Test]
+        public void Reusable_ServiceInstance_Test()
+        {
+            //Arrange
+            var referenceService1 = GetService<IReferenceData>();
+            var referenceService2 = GetService<IReferenceData>();
+
+            //Act
+            var count1 = referenceService1.Increment();
+            var count2 = referenceService2.Increment();
+
+            //Assert
+            Assert.AreSame(referenceService1, referenceService2);
+            Assert.AreEqual(count1, 1);
+            Assert.AreEqual(count2, 2);
+
+        }
     }
 }
