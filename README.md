@@ -201,12 +201,20 @@ factoryService.Add<IPayment, PaypalPayment>();
 
 ```
 
+
+### Relationship with the [IocServiceStack.Gateway](https://github.com/rjinaga/IocServiceStack.Gateway) and [IocServiceStack.Client](https://github.com/rjinaga/IocServiceStack.Client) Repositories
+
+> TODO Document
+
+### Thread Safety
+
+> TODO Document
+
 ## Web Application Architecture using NIneterservice
 
 https://github.com/rjinaga/Web-App-Architecture-Using-IocServiceStack
 
 
 
-### Relationship with the [IocServiceStack.Gateway](https://github.com/rjinaga/IocServiceStack.Gateway) and [IocServiceStack.Client](https://github.com/rjinaga/IocServiceStack.Client) Repositories
 
---TODO Document
+
