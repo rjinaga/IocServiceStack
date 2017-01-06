@@ -50,8 +50,10 @@ var configRef = IocServiceProvider.Configure(config =>
 
 ### Services and Contracts Implementations
 
-> Specify `[Contract]` and `[Service]` attributes if you want to support the dependency injection 
-> and auto map the contracts and services in your application.
+> To automap the interface and its implementaion class, 
+> set attribute ```[Contract]``` for interface
+> and attribute ```[Service]``` for class that implements cotnract interface.
+
 
 ```c#
 namespace BusinessContractLibrary
