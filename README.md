@@ -50,9 +50,9 @@ var configRef = IocServiceProvider.Configure(config =>
 
 ### Services and Contracts Implementations
 
-> To automap the interface and its implementaion class, 
-> set attribute ```[Contract]``` for interface
-> and attribute ```[Service]``` for class that implements cotnract interface.
+> To automatically map the interface and its implementaion class, 
+> set attribute ```[Contract]``` for the interface
+> and attribute ```[Service]``` for the class that implements contract interface.
 
 
 ```c#
