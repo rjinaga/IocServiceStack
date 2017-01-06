@@ -50,7 +50,7 @@ var configRef = IocServiceProvider.Configure(config =>
 
 ### Services and Contracts Implementations
 
-> Specify [Contract] and [Service] attributes if you want to support the dependency injection 
+> Specify `[Contract]` and `[Service]` attributes if you want to support the dependency injection 
 > and auto map the contracts and services in your application.
 
 ```c#
@@ -201,18 +201,18 @@ factoryService.Add<IPayment, PaypalPayment>();
 
 ```
 
+
 ### Relationship with the [IocServiceStack.Gateway](https://github.com/rjinaga/IocServiceStack.Gateway) and [IocServiceStack.Client](https://github.com/rjinaga/IocServiceStack.Client) Repositories
 
 > TODO Document
 
-### Thread Safety
-
-> TODO Document
 
 
 ## Web Application Architecture using IocServiceStack
 
 https://github.com/rjinaga/Web-App-Architecture-Using-IocServiceStack
+
+
 
 
 
