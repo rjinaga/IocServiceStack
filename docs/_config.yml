@@ -1,9 +1,8 @@
 theme: jekyll-theme-cayman
-name:         
-tagline:      A multi-service and multi-level dependency injection .net libraray
+
 # Setup
-title: IoCServiceStack .Net
-tagline: A responsive theme for your project on GitHub Pages
+title: IocServiceStack .Net
+tagline: A multi-service and multi-level dependency injection .net libraray
 baseurl: ""
 paginate: 1
 
