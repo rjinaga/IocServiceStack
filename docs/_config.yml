@@ -1,3 +1,19 @@
 theme: jekyll-theme-cayman
-name:         IoCServiceStack .Net
-tagline:      A multi-service and multi-level dependency injection .net libraray
+
+# Setup
+title: IocServiceStack .Net
+tagline: A multi-service and multi-level dependency injection .net libraray
+baseurl: ""
+paginate: 1
+
+# About/contact
+author:
+  name:       Rajeswara Rao Jinaga
+  url:        ""
+
+# Gems
+gems:
+  - jekyll-paginate
+
+#Others
+markdown: kramdown
