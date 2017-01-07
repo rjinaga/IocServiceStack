@@ -23,6 +23,8 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
+
 namespace IocServiceStack
 {
     public class DefaultServiceProvider : IServiceProvider
@@ -30,6 +32,10 @@ namespace IocServiceStack
         public T GetService<T>() where T : class
         {
             return InternalServiceManager.GetServiceFactory()?.Create<T>();
+        }
+        public object GetService(Type contractType)
+        {
+            return InternalServiceManager.GetServiceFactory()?.Create(contractType);
         }
     }
 }

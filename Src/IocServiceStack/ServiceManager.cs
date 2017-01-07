@@ -23,6 +23,8 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
+
 namespace IocServiceStack
 {
     public static class ServiceManager
@@ -37,6 +39,10 @@ namespace IocServiceStack
         public static T GetService<T>() where T : class
         {
             return _serviceProvider.GetService<T>();
+        }
+        public static object GetService(Type contractType) 
+        {
+            return _serviceProvider.GetService(contractType);
         }
     }
 }

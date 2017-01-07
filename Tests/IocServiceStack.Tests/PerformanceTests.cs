@@ -69,6 +69,17 @@ namespace IocServiceStack.Tests
             }
 
         }
+        [Test, Order(3)]
+        // [Ignore("Ignore this test")]
+        public void GetService_Performance3_Test()
+        {
+            //Arrange & Act
+            const int OneMillionTimes = 1000000;
+            for (int i = 0; i < OneMillionTimes; i++)
+            {
+                var customer = GetService(typeof(ICustomer));
+            }
+        }
 
         [Test, Order(4)]
         // [Ignore("Ignore this test")]

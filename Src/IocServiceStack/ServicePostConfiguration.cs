@@ -27,7 +27,7 @@ namespace IocServiceStack
 {
     public class ServicePostConfiguration
     {
-        public IRootBasicService GetFactoryService()
+        public IRootBasicService GetServiceFactory()
         {
             return InternalServiceManager.GetServiceFactory();
         }

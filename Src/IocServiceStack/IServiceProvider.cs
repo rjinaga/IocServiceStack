@@ -23,10 +23,13 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
+
 namespace IocServiceStack
 {
     public interface IServiceProvider
     {
         T GetService<T>() where T : class;
+        object GetService(Type contractType);
     }
 }

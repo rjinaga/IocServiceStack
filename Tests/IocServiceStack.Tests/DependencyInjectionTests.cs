@@ -38,7 +38,7 @@ namespace IocServiceStack.Tests
         public void ReplaceService_Test()
         {
             //Arrange
-            var factoryService = Helper.TestsHelper.FactoryServicePointer.GetFactoryService();
+            var factoryService = Helper.TestsHelper.FactoryServicePointer.GetServiceFactory();
 
             /*Dependency Injection*/
             factoryService.Replace<ICustomer, CustomerService2>()
@@ -56,13 +56,34 @@ namespace IocServiceStack.Tests
         }
 
         [Test]
+        public void ReplaceService_GetService_ByType_Test()
+        {
+            //Arrange
+            var serviceFactory = Helper.TestsHelper.FactoryServicePointer.GetServiceFactory();
+
+            /*Dependency Injection*/
+            serviceFactory.Replace<ICustomer, CustomerService2>()
+                          .Subcontract
+                          .Replace<ICustomerRepository, CustomerRepository2>();
+            //Act
+            var service = ServiceManager.GetService(typeof(ICustomer));
+
+            //Assert
+            Assert.IsInstanceOf<CustomerService2>(service);
+            //Assert.IsInstanceOf<CustomerRepository2>(service.GetRepository());
+
+            //Reset for other tests
+            RevertToOrignal();
+        }
+
+        [Test]
         public void ReplaceService_DirectInstance_Inject_Test()
         {
             //Arrange
-            var factoryService = Helper.TestsHelper.FactoryServicePointer.GetFactoryService();
+            var serviceFactory = Helper.TestsHelper.FactoryServicePointer.GetServiceFactory();
 
             /*Dependency Injection*/
-            factoryService.Replace<ICustomer>(() => new CustomerService2(new CustomerRepository3()));
+            serviceFactory.Replace<ICustomer>(() => new CustomerService2(new CustomerRepository3()));
 
             //Act
             var service = ServiceManager.GetService<ICustomer>();
@@ -79,9 +100,9 @@ namespace IocServiceStack.Tests
 
         private void RevertToOrignal()
         {
-            var factoryService = Helper.TestsHelper.FactoryServicePointer.GetFactoryService();
+            var serviceFactory = Helper.TestsHelper.FactoryServicePointer.GetServiceFactory();
 
-            factoryService.Replace<ICustomer, CustomerService>()
+            serviceFactory.Replace<ICustomer, CustomerService>()
                           .Subcontract
                           .Replace<ICustomerRepository, CustomerRepository>();
 

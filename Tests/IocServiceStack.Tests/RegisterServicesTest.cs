@@ -54,11 +54,10 @@ namespace IocServiceStack.Tests
                             ddopt.Assemblies = new[] { "DataServiceLibrary" };
                         });
                     });
-
                     opt.StrictMode = true;
                 });
                 //.RegisterServiceProvider(new ProxyServiceProvider());
-});
+            });
 
             //Hold the pointer of serviceConfig in a static field to run further tests of dependecy injection.
             Helper.TestsHelper.FactoryServicePointer = configRef;

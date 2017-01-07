@@ -8,7 +8,7 @@ IocServiceStack is a open source .NET library for multi-services communication t
 - .NET Framework 4.6
 
 
-## [NuGet](https://www.nuget.org/packages/NJet.Interservice/)
+## [NuGet](https://www.nuget.org/packages/IocServiceStack/)
 ```
 PM> Install-Package IocServiceStack -Pre
 ```
@@ -50,8 +50,10 @@ var configRef = IocServiceProvider.Configure(config =>
 
 ### Services and Contracts Implementations
 
-> Specify `[Contract]` and `[Service]` attributes if you want to support the dependency injection 
-> and auto map the contracts and services in your application.
+> To automatically map the interface and its implementaion class, 
+> set attribute ```[Contract]``` for the interface
+> and attribute ```[Service]``` for the class that implements contract interface.
+
 
 ```c#
 namespace BusinessContractLibrary
@@ -204,8 +206,7 @@ factoryService.Add<IPayment, PaypalPayment>();
 
 ### Relationship with the [IocServiceStack.Gateway](https://github.com/rjinaga/IocServiceStack.Gateway) and [IocServiceStack.Client](https://github.com/rjinaga/IocServiceStack.Client) Repositories
 
-> TODO Document
-
+>  **IocServiceStack.Gateway** and **IocServiceStack.Client** libraries helps to make the logical layered application into physical layer application that builts using IocServiceStack.
 
 
 ## Web Application Architecture using IocServiceStack

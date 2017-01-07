@@ -23,11 +23,14 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
+
 namespace IocServiceStack
 {
    
     public interface IServiceFactory : IServiceWorker
     {
         T Create<T>() where T : class;
+        object Create(Type contractType);
     }
 }

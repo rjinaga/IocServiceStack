@@ -39,7 +39,7 @@ namespace IocServiceStack
 
         }
 
-        public T Create<T>() where T : class
+        public virtual T Create<T>() where T : class
         {
             Type interfaceType = typeof(T);
 
@@ -58,6 +58,26 @@ namespace IocServiceStack
                 return serviceMeta.Activator.CreateInstance<T>();
             }
             return default(T);
+        }
+
+        public object Create(Type contractType)
+        {
+            
+            if (!ServicesMapTable.Contains(contractType))
+                throw ExceptionHelper.ThrowServiceNotRegisteredException(contractType.Name);
+
+            ServiceInfo serviceMeta = ServicesMapTable[contractType];
+
+            if (serviceMeta != null)
+            {
+                if (serviceMeta.Activator == null)
+                {
+                    //Compile
+                    Compile<object>(contractType, serviceMeta);
+                }
+                return serviceMeta.Activator.CreateInstance<object>();
+            }
+            return null;
         }
 
         /// <summary>
@@ -123,7 +143,5 @@ namespace IocServiceStack
                 }
             }
         }
-
-       
     }
 }
