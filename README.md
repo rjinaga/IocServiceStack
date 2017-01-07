@@ -1,5 +1,7 @@
 # IocServiceStack
 
+[![Gitter](https://badges.gitter.im/IocServiceStack/Lobby.svg)](https://gitter.im/IocServiceStack/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
+
 IocServiceStack is a open source .NET library for multi-services communication through multi-level dependency injection. This separates the concerns of application layers. This makes the layers configurable, but not required to reference the dependent layer at design time. 
 
 
@@ -13,8 +15,6 @@ IocServiceStack is a open source .NET library for multi-services communication t
 PM> Install-Package IocServiceStack -Pre
 ```
 [![NuGet Pre Release](https://img.shields.io/badge/nuget-Pre%20Release-yellow.svg)](https://www.nuget.org/packages/IocServiceStack/)
-
-[![Gitter](https://badges.gitter.im/IocServiceStack/Lobby.svg)](https://gitter.im/IocServiceStack/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
 
 
 ## Usage
