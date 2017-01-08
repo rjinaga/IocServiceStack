@@ -203,8 +203,15 @@ factoryService.Add<IPayment, PaypalPayment>();
 
 ```
 
+### Build and Use Isolated IoC Container
 
-### Relationship with the [IocServiceStack.Gateway](https://github.com/rjinaga/IocServiceStack.Gateway) and [IocServiceStack.Client](https://github.com/rjinaga/IocServiceStack.Client) Repositories
+```c#
+
+var container = IocServiceProvider.CreateNewIocContainer(config=> { });
+
+```
+
+### Relationship with the [IocServiceStack.Gateway](https://rjinaga.github.io/IocServiceStack.Gateway) and [IocServiceStack.Client](https://rjinaga.github.io/IocServiceStack.Client) Repositories
 
 >  **IocServiceStack.Gateway** and **IocServiceStack.Client** libraries helps to make the logical layered application into physical layer application that builts using IocServiceStack.
 
