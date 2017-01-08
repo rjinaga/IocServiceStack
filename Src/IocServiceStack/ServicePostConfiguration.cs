@@ -27,9 +27,19 @@ namespace IocServiceStack
 {
     public class ServicePostConfiguration
     {
+        private IocContainer _container;
+        
+        public ServicePostConfiguration(IocContainer container)
+        {
+            if (container == null)
+                ExceptionHelper.ThrowArgumentNullException(nameof(container));
+
+            _container = container;
+        }
+        public IocContainer GetIocContainer() => _container;
         public IRootBasicService GetServiceFactory()
         {
-            return InternalServiceManager.GetServiceFactory();
+            return _container.ServiceProvider.GetServiceFactory();
         }
     }
 }

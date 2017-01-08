@@ -42,5 +42,9 @@ namespace IocServiceStack
         {
             throw new ContractNotRegisteredException(fullName);
         }
+        internal static void ThrowArgumentNullException(string name)
+        {
+            throw new ArgumentNullException(name);
+        }
     }
 }

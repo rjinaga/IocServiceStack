@@ -23,20 +23,39 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace IocServiceStack
+namespace IocServiceStack.Tests
 {
-    using System;
-    public static class ServiceManager
+    using NUnit.Framework;
+
+    public class IsolatedContainerTests
     {
-        public static T GetService<T>() where T : class
+        [Test]
+        public void IsolateTest()
         {
-            var provider = IocContainer.GlobalIocContainer.ServiceProvider;
-            return provider.GetService<T>();
+            var configRef = IocServiceProvider.CreateNewIocContainer(config =>
+            {
+                config.Services((opt) =>
+                {
+                });
+            });
+
+            configRef.GetServiceFactory().Add<IEmployee, Employee>();
+
+            var employee = configRef.GetIocContainer().ServiceProvider.GetService<IEmployee>();
+
+            //Assert
+            Assert.IsInstanceOf<Employee>(employee);
+
         }
-        public static object GetService(Type contractType) 
+
+        interface IEmployee
         {
-            var provider = IocContainer.GlobalIocContainer.ServiceProvider;
-            return provider.GetService(contractType);
+        }
+        class Employee : IEmployee
+        {
+
         }
     }
+
+    
 }

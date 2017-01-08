@@ -26,21 +26,27 @@
 namespace IocServiceStack
 {
     using System;
-    
+
     public class IocServiceProvider
     {
-        private static ServiceConfig _config = new ServiceConfig();
-        private static ServicePostConfiguration _postConfig = new ServicePostConfiguration();
-
         public static ServicePostConfiguration Configure(Action<ServiceConfig> configuration)
         {
-            configuration(_config);
+            var postConfig = CreateNewIocContainer(configuration);
+            
+            IocContainer.GlobalIocContainer = postConfig.GetIocContainer();
+            
+            return postConfig;
+        }
+        public static ServicePostConfiguration CreateNewIocContainer(Action<ServiceConfig> configuration)
+        {
+            ServiceConfig config = new ServiceConfig();
+            configuration(config);
 
-            //Make the ServiceOptions object readonly, don't allow the further changes to the object.
-            _config.ServiceOptions.MakeReadOnly();
+            //Make the ServiceOptions object read-only, don't allow the further changes to the object.
+            config.ServiceOptions.MakeReadOnly();
+            
 
-            InternalServiceManager.Config = _config;
-            return _postConfig;
+            return new ServicePostConfiguration(new IocContainer(config));
         }
     }
 }

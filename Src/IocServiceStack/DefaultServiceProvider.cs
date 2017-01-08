@@ -23,19 +23,28 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-
 namespace IocServiceStack
 {
+    using System;
     public class DefaultServiceProvider : IServiceProvider
     {
+        private InternalServiceManager _internalsm;
+        public DefaultServiceProvider(ServiceConfig config)
+        {
+            _internalsm = new InternalServiceManager(config);
+        }
         public T GetService<T>() where T : class
         {
-            return InternalServiceManager.GetServiceFactory()?.Create<T>();
+            return _internalsm.GetServiceFactory()?.Create<T>();
         }
         public object GetService(Type contractType)
         {
-            return InternalServiceManager.GetServiceFactory()?.Create(contractType);
+            return _internalsm.GetServiceFactory()?.Create(contractType);
+        }
+
+        public IServiceFactory GetServiceFactory()
+        {
+            return _internalsm.GetServiceFactory();
         }
     }
 }

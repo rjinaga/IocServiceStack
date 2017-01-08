@@ -29,12 +29,19 @@ namespace IocServiceStack
 
     internal class InternalServiceManager
     {
-        private static IServiceFactory _serviceFactory;
-        private static readonly object _factorySyncObject = new object();
+        private IServiceFactory _serviceFactory;
+        private readonly object _factorySyncObject = new object();
+        private ServiceConfig _config;
 
-        internal static ServiceConfig Config { get; set; }
+        public InternalServiceManager(ServiceConfig config)
+        {
+            if (config == null)
+                ExceptionHelper.ThrowArgumentNullException(nameof(config));
 
-        internal static IServiceFactory GetServiceFactory()
+            _config = config;
+        }
+
+        public IServiceFactory GetServiceFactory()
         {
             if (_serviceFactory == null)
             {
@@ -43,22 +50,22 @@ namespace IocServiceStack
             return _serviceFactory;
         }
 
-        private static void InitServiceFactory()
+        private  void InitServiceFactory()
         {
             lock (_factorySyncObject)
             {
                 if (_serviceFactory == null)
                 {
-                    Assembly[] assmblies = GetAssemblies(Config.ServiceOptions.Assemblies);
+                    Assembly[] assmblies = GetAssemblies(_config.ServiceOptions.Assemblies);
 
                     //if userdefined ServiceFactory is configured then set that factory, otherise set the default one
-                    if (Config.ServiceOptions.ServiceFactory != null)
+                    if (_config.ServiceOptions.ServiceFactory != null)
                     {
-                        _serviceFactory = Config.ServiceOptions.ServiceFactory;
+                        _serviceFactory = _config.ServiceOptions.ServiceFactory;
                     }
                     else
                     {
-                        _serviceFactory = new DefaultServiceFactory(Config.ServiceOptions.Namespaces, assmblies, Config.ServiceOptions.StrictMode);
+                        _serviceFactory = new DefaultServiceFactory(_config.ServiceOptions.Namespaces, assmblies, _config.ServiceOptions.StrictMode);
                     }
 
                     InitChainOfSubctractFactories();
@@ -69,9 +76,9 @@ namespace IocServiceStack
             }
         }
 
-        private static void InitChainOfSubctractFactories()
+        private void InitChainOfSubctractFactories()
         {
-            ServiceDependencyOptions dependencies = Config.ServiceOptions.Dependencies;
+            ServiceDependencyOptions dependencies = _config.ServiceOptions.Dependencies;
             IBasicService serviceNode = _serviceFactory;
 
             while (dependencies  != null)
@@ -85,7 +92,7 @@ namespace IocServiceStack
                 else if (serviceNode.Subcontract == null)
                 {
                     Assembly[] subcontractAssmblies = GetAssemblies(dependencies.Assemblies);
-                    serviceNode.Subcontract = new DefaultSubcontractFactory(dependencies.Namespaces, subcontractAssmblies, Config.ServiceOptions.StrictMode);
+                    serviceNode.Subcontract = new DefaultSubcontractFactory(dependencies.Namespaces, subcontractAssmblies, _config.ServiceOptions.StrictMode);
                 }
 
                 //set child node of current dependencies
@@ -94,7 +101,7 @@ namespace IocServiceStack
             }
         }
 
-        private static Assembly[] GetAssemblies(string[] assmblynames)
+        private Assembly[] GetAssemblies(string[] assmblynames)
         {
             if (assmblynames == null || assmblynames.Length == 0)
             {

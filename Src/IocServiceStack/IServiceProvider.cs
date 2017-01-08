@@ -31,5 +31,6 @@ namespace IocServiceStack
     {
         T GetService<T>() where T : class;
         object GetService(Type contractType);
+        IServiceFactory GetServiceFactory();
     }
 }
