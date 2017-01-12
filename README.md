@@ -12,8 +12,7 @@ IocServiceStack is a open source .NET library for multi-services communication t
 - Multi level dependencies
 - Replace or Add dependencies
 - Highly extensible
-- Strict mode feature enables that ServiceAttribute attribute cannot be set more than one implemention of same interface while automap the services.
-- [Gateway](https://rjinaga.github.io/IocServiceStack.Gateway) and [Client](https://rjinaga.github.io/IocServiceStack.Client) libraries are helping to build SOA application with very minimal effort.
+- Convert web application as SOA with very minimal effort using [Gateway](https://rjinaga.github.io/IocServiceStack.Gateway) and [Client](https://rjinaga.github.io/IocServiceStack.Client) libraries.
 
 
 ### Supports
