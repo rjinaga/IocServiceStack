@@ -2,7 +2,18 @@
 
 [![Gitter](https://badges.gitter.im/IocServiceStack/Lobby.svg)](https://gitter.im/IocServiceStack/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
 
-IocServiceStack is a open source .NET library for multi-services communication through multi-level dependency injection. This separates the concerns of application layers. This makes the layers configurable, but not required to reference the dependent layer at design time. 
+IocServiceStack is a open source .NET library for multi-services communication through multi-level dependency injection. This clearly separates the concerns of application layers. This makes the layers configurable, but not required to reference the dependent layer at design time. This library offers several ways to inject dependencies. 
+
+### Features:
+- Global IoC Container
+- Isolated IoC Containers
+- Automatically maps the services to their contracts
+- Inject dependencies through decorators
+- Multi level dependencies
+- Replace or Add dependencies
+- Highly extensible
+- Strict mode feature enables that ServiceAttribute attribute cannot be set more than one implemention of same interface while automap the services.
+- [Gateway](https://rjinaga.github.io/IocServiceStack.Gateway) and [Client](https://rjinaga.github.io/IocServiceStack.Client) libraries are helping to build SOA application with very minimal effort.
 
 
 ### Supports
@@ -19,7 +30,7 @@ PM> Install-Package IocServiceStack -Pre
 
 ## Usage
 
-### Services Configuration
+### IoC Service Stack Setup
 
 ```c#
 var configRef = IocServiceProvider.Configure(config =>
@@ -180,7 +191,8 @@ namespace DataService
 
 ```
 
-### Accessing service
+### Accessing service from the Global IoC Container
+`ServiceManager` static class is a wrapper for global IoC container.
 
 ```c#
 var customerService = ServiceManager.GetService<ICustomer>();
@@ -188,7 +200,7 @@ var customerService = ServiceManager.GetService<ICustomer>();
 ```
 
 ### Dependency Injection
-You can replace with another service which is already discovered by the IocServiceStack and registered, or add a new service.
+You can replace with another service which is already discovered by the IocServiceStack, or add a new service.
 
 ```c#
 var factoryService = configRef.GetFactoryService();
@@ -203,22 +215,110 @@ factoryService.Add<IPayment, PaypalPayment>();
 
 ```
 
-### Build and Use Isolated IoC Container
+### Build and Use Isolated IoC Containers
 
 ```c#
 
-var container = IocServiceProvider.CreateNewIocContainer(config=> { });
+/*setup container*/
+
+var container = IocServiceProvider.CreateNewIocContainer(config=> { /* */  });
+
+/* You can add services by calling container.Add<Interface>(()=> new Service()) */
+/*set new container to a static field */
+
+Example.AppServiceManager.Container = container;
+
+/* Create IoC service manager class(Eg: AppServiceManager
+) to access services in the container. */
+
+namespace Example 
+{
+    using System;
+    public static class AppServiceManager
+    {
+    	public static IocContainer Container;
+        public static T GetService<T>() where T : class
+        {
+            var provider = Container.ServiceProvider;
+            return provider.GetService<T>();
+        }
+        public static object GetService(Type contractType) 
+        {
+            var provider = Container.ServiceProvider;
+            return provider.GetService(contractType);
+        }
+    }
+}
 
 ```
 
+### Decorators 
+You can build and configure service decorators globally or contract (interface) level. Decorators will be executed when instance is being created. You can modify the object or inject concrete objects at runtime using decorators.
+
+### Register Decorators with the Global IoC Container
+You can also register decorators with the isolated containers.
+
+```c#
+
+var configRef = IocServiceProvider.Configure(config =>
+{
+  /* ..... */
+  config.Decorators.Add(new CustomInjectorDecorator());
+}
+
+```
+
+#### Contract (Interface) level decorators
+
+```c#
+
+/*use decorator*/
+namespace BusinessContractLibrary
+{
+    using IocServiceStack;
+    using Models;
+
+    [Contract, CustomerDecorator]
+    public interface ICustomer
+    {
+        string AdditionalData { get; set; }
+        void AddCustomer(Customer customer);
+    }
+}
+
+/*Implement decorator*/
+namespace BusinessContractLibrary
+{
+    using IocServiceStack;
+
+    public class CustomerDecoratorAttribute : DecoratorAttribute
+    {
+        public override void OnBeforeInvoke(ServiceCallContext context)
+        {
+            base.OnBeforeInvoke(context);
+        }
+        public override void OnAfterInvoke(ServiceCallContext context)
+        {
+            //Set Default Value
+            if (context.ServiceInstance is ICustomer)
+            {
+                dynamic obj = context.ServiceInstance;
+                obj.AdditionalData = "Gold Customer";
+            }
+        }
+    }
+}
+```
+
+
 ### Relationship with the [IocServiceStack.Gateway](https://rjinaga.github.io/IocServiceStack.Gateway) and [IocServiceStack.Client](https://rjinaga.github.io/IocServiceStack.Client) Repositories
 
->  **IocServiceStack.Gateway** and **IocServiceStack.Client** libraries helps to make the logical layered application into physical layer application that builts using IocServiceStack.
+>  **IocServiceStack.Gateway** and **IocServiceStack.Client** libraries make the logical layered application into physical layered application that builts using IocServiceStack.
 
 
-## Web Application Architecture using IocServiceStack
+### Web Application Architecture using IocServiceStack
 
-https://github.com/rjinaga/Web-App-Architecture-Using-IocServiceStack
+[https://github.com/rjinaga/Web-App-Architecture-Using-IocServiceStack](https://github.com/rjinaga/Web-App-Architecture-Using-IocServiceStack)
 
 
 
