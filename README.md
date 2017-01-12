@@ -4,7 +4,7 @@
 
 IocServiceStack is a open source .NET library for multi-services communication through multi-level dependency injection. This clearly separates the concerns of application layers. This makes the layers configurable, but not required to reference the dependent layer at design time. This library offers several ways to inject dependencies. 
 
-Features:
+### Features:
 - Global IoC Container
 - Isolated IoC Containers
 - Automatically maps the services to their contracts
