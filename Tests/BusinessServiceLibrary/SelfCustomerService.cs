@@ -23,17 +23,38 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace IocServiceStack
+namespace BusinessService
 {
+    using IocServiceStack;
+    using BusinessContractLibrary;
+    using Models;
+    using RepositoryService;
     using System;
 
-    /// <summary>
-    /// If a class is decorated with the ContractAttribute class, then the discovery 
-    /// service will register that interface autmatically.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Interface)]
-    public class ContractAttribute : Attribute
+    [Service]
+    public class SelfCustomerService : ISelfService
     {
+        private ICustomerRepository _repository;
 
+        public string AdditionalData
+        {
+            get;set;
+        }
+
+        [ServiceInit, Ignore("repository")]
+        public SelfCustomerService(ICustomerRepository repository)
+        {
+            _repository = repository;
+        }
+        
+        public ICustomerRepository GetRepository()
+        {
+            return _repository;
+        }
+
+        public void AddCustomer(Customer customer)
+        {
+            _repository.Add(customer);
+        }
     }
 }

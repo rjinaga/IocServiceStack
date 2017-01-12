@@ -37,6 +37,5 @@ namespace IocServiceStack
         }
 
         public abstract Expression Create(Type interfaceType, ServiceRegistrar register);
-       
     }
 }

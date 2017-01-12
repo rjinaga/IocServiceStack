@@ -30,7 +30,8 @@ namespace IocServiceStack
    
     public interface IServiceFactory : IServiceWorker
     {
-        T Create<T>() where T : class;
-        object Create(Type contractType);
+        ServiceInfo GetServiceInfo(Type contractType);
+        T Create<T>(ServiceInfo serviceMeta) where T : class;
+        object Create(Type contractType, ServiceInfo serviceMeta);
     }
 }

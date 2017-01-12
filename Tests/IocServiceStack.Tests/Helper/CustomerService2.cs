@@ -42,6 +42,11 @@ namespace IocServiceStack.Tests.Helper
             _repository = repository;
         }
 
+        public string AdditionalData
+        {
+            get;set;
+        }
+
         public void AddCustomer(Customer customer)
         {
             throw new NotImplementedException();

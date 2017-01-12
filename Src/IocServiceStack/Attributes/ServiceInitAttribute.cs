@@ -25,23 +25,12 @@
 
 namespace IocServiceStack
 {
-    public class ServicePostConfiguration
+    using System;
+    /// <summary>
+    /// Dependency injectors look for the constructor with the ServiceInitAttribute to execute that particular constructor.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Constructor, AllowMultiple = false)]
+    public sealed class ServiceInitAttribute : Attribute
     {
-        private IocContainer _container;
-        
-        public ServicePostConfiguration(IocContainer container)
-        {
-            if (container == null)
-                ExceptionHelper.ThrowArgumentNullException(nameof(container));
-
-            _container = container;
-        }
-
-        public IocContainer GetIocContainer() => _container;
-
-        public IRootBasicService GetServiceFactory()
-        {
-            return _container.ServiceProvider.GetServiceFactory();
-        }
     }
 }

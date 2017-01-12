@@ -26,25 +26,75 @@
 namespace IocServiceStack
 {
     using System;
+    using System.Collections.Generic;
+
     public class DefaultServiceProvider : IServiceProvider
     {
         private InternalServiceManager _internalsm;
+
+        public IDecoratorManager DecoratorManager
+        {
+            get; set;
+        }
+
         public DefaultServiceProvider(ServiceConfig config)
         {
             _internalsm = new InternalServiceManager(config);
         }
-        public T GetService<T>() where T : class
+
+        public virtual T GetService<T>() where T : class
         {
-            return _internalsm.GetServiceFactory()?.Create<T>();
+            InvocationInfo info = BeforeInvoke(typeof(T));
+
+            var objectInstance = _internalsm.GetServiceFactory()?.Create<T>(info.ServiceInfo);
+
+            AfterInvoke(objectInstance, info.ServiceCallContext, info.ServiceInfo.Decorators);
+
+            return objectInstance;
+
         }
-        public object GetService(Type contractType)
+        public virtual object GetService(Type contractType)
         {
-            return _internalsm.GetServiceFactory()?.Create(contractType);
+            InvocationInfo info = BeforeInvoke(contractType);
+
+            var objectInstance = _internalsm.GetServiceFactory()?.Create(contractType, info.ServiceInfo);
+
+            AfterInvoke(objectInstance, info.ServiceCallContext, info.ServiceInfo.Decorators);
+
+            return objectInstance;
         }
 
-        public IServiceFactory GetServiceFactory()
+        public virtual IServiceFactory GetServiceFactory()
         {
             return _internalsm.GetServiceFactory();
+        }
+
+        protected InvocationInfo BeforeInvoke(Type contractType)
+        {
+            var factory = _internalsm.GetServiceFactory();
+            ServiceInfo serviceInfo = factory.GetServiceInfo(contractType);
+
+            ServiceCallContext callContext = ServiceCallContext.Create(contractType, serviceInfo.ServiceType);
+            InvokeDecorator(callContext, InvocationCase.Before, serviceInfo.Decorators);
+
+            return new InvocationInfo() { ServiceInfo = serviceInfo, ServiceCallContext = callContext };
+        }
+
+        protected void AfterInvoke(object objectInstance, ServiceCallContext context, IEnumerable<DecoratorAttribute> localDecorators)
+        {
+            context.ServiceInstance = objectInstance;
+            InvokeDecorator(context, InvocationCase.After, localDecorators);
+        }
+
+        private void InvokeDecorator(ServiceCallContext context, InvocationCase @case, IEnumerable<DecoratorAttribute> localDecorators)
+        {
+            DecoratorManager.Execute(context, @case, localDecorators);
+        }
+
+        protected struct InvocationInfo
+        {
+            public ServiceInfo ServiceInfo;
+            public ServiceCallContext ServiceCallContext;
         }
     }
 }

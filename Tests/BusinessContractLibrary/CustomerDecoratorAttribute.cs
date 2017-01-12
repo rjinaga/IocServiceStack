@@ -23,25 +23,24 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace IocServiceStack
+namespace BusinessContractLibrary
 {
-    public class ServicePostConfiguration
+    using IocServiceStack;
+
+    public class CustomerDecoratorAttribute : DecoratorAttribute
     {
-        private IocContainer _container;
-        
-        public ServicePostConfiguration(IocContainer container)
+        public override void OnBeforeInvoke(ServiceCallContext context)
         {
-            if (container == null)
-                ExceptionHelper.ThrowArgumentNullException(nameof(container));
-
-            _container = container;
+            base.OnBeforeInvoke(context);
         }
-
-        public IocContainer GetIocContainer() => _container;
-
-        public IRootBasicService GetServiceFactory()
+        public override void OnAfterInvoke(ServiceCallContext context)
         {
-            return _container.ServiceProvider.GetServiceFactory();
+            //Set Default Value
+            if (context.ServiceInstance is ICustomer)
+            {
+                dynamic obj = context.ServiceInstance;
+                obj.AdditionalData = "Gold Customer";
+            }
         }
     }
 }

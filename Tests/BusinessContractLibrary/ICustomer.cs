@@ -27,10 +27,12 @@ namespace BusinessContractLibrary
 {
     using IocServiceStack;
     using Models;
- 
-    [Contract]
+
+    [Contract, CustomerDecorator]
     public interface ICustomer
     {
+        string AdditionalData { get; set; }
         void AddCustomer(Customer customer);
     }
 }
+

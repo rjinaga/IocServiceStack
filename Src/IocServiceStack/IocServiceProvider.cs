@@ -37,6 +37,7 @@ namespace IocServiceStack
             
             return postConfig;
         }
+
         public static ServicePostConfiguration CreateNewIocContainer(Action<ServiceConfig> configuration)
         {
             ServiceConfig config = new ServiceConfig();

@@ -29,11 +29,17 @@ namespace BusinessService
     using BusinessContractLibrary;
     using Models;
     using RepositoryService;
+    using System;
 
     [Service]
     public class CustomerService : ICustomer
     {
         private ICustomerRepository _repository;
+
+        public string AdditionalData
+        {
+            get;set;
+        }
 
         [ServiceInit]
         public CustomerService(ICustomerRepository repository)

@@ -26,6 +26,7 @@
 namespace IocServiceStack.Tests
 {
     using NUnit.Framework;
+    using System;
 
 
     /*This test module doesn't support parallel execution*/
@@ -57,6 +58,7 @@ namespace IocServiceStack.Tests
                     opt.StrictMode = true;
                 });
                 //.RegisterServiceProvider(new ProxyServiceProvider());
+                config.Decorators.Add(new TestDecoratorAttribute());
             });
 
             //Hold the pointer of serviceConfig in a static field to run further tests of dependecy injection.

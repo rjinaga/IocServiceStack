@@ -31,7 +31,7 @@ namespace IocServiceStack
     using System.Reflection;
 
     /// <summary>
-    /// Represents auto mapper of contact and it's corrospendet service.
+    /// Represents auto mapper of contact and it's correspondent service.
     /// </summary>
     public class ContractServiceAutoMapper
     {
@@ -135,23 +135,23 @@ namespace IocServiceStack
                 if (namespaces == null || namespaces.Length == 0 || namespaces.Contains(serviceType.Namespace))
                 {
 #if NET46
-                    /*Fetch implemented intefaces of service whose interface is decorated with  ContractAttribute.*/
+                    /*Fetch implemented interfaces of service whose interface is decorated with  ContractAttribute.*/
                     IEnumerable<Type> interfaces = serviceType.GetInterfaces()
                                                               .Where(@interface => @interface.GetCustomAttribute<ContractAttribute>() != null);
 #else
-                   /*Fetch implemented intefaces of service whose interface is decorated with  ContractAttribute.*/
+                   /*Fetch implemented interfaces of service whose interface is decorated with  ContractAttribute.*/
                     IEnumerable<Type> interfaces = serviceType.GetInterfaces()
                                                               .Where(@interface => @interface.GetTypeInfo().GetCustomAttribute<ContractAttribute>() != null);               
 #endif
                     /*Map service type with the contract interfaces*/
-                    foreach (var item in interfaces)
+                    foreach (var interfaceType in interfaces)
                     {
                         if (_strictMode)
                         {
-                            if (services.ContainsKey(item))
-                                ExceptionHelper.ThrowDuplicateServiceException($"{serviceType.FullName} implements {item.FullName}");
+                            if (services.ContainsKey(interfaceType))
+                                ExceptionHelper.ThrowDuplicateServiceException($"{serviceType.FullName} implements {interfaceType.FullName}");
                         }
-                        services[item] = new ServiceInfo(serviceType);
+                        services[interfaceType] = new ServiceInfo(serviceType, ServiceInfo.GetDecorators(interfaceType));
                     }
                 }
             }

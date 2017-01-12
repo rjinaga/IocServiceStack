@@ -25,23 +25,17 @@
 
 namespace IocServiceStack
 {
-    public class ServicePostConfiguration
+    using System;
+    /// <summary>
+    /// This attribute bypasses the dependency injector and set the default value of the type for specified parameter.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Constructor, AllowMultiple = false)]
+    public sealed class IgnoreAttribute : Attribute
     {
-        private IocContainer _container;
-        
-        public ServicePostConfiguration(IocContainer container)
+        public readonly string[] ParameterNames;
+        public IgnoreAttribute(params string[] parameterNames)
         {
-            if (container == null)
-                ExceptionHelper.ThrowArgumentNullException(nameof(container));
-
-            _container = container;
-        }
-
-        public IocContainer GetIocContainer() => _container;
-
-        public IRootBasicService GetServiceFactory()
-        {
-            return _container.ServiceProvider.GetServiceFactory();
+            ParameterNames = parameterNames;
         }
     }
 }

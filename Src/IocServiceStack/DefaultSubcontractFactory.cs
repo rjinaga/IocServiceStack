@@ -41,7 +41,7 @@ namespace IocServiceStack
                 throw new ArgumentNullException(nameof(interfaceType));
 
             //Register current subcontract service with ServiceRegistrar
-            //Root service will refresh with the updated service when ther's replacement with new service
+            //Root service will refresh with the updated service when there's replacement with new service
             registrar.Register(interfaceType);
 
             ServiceInfo serviceMeta = ServicesMapTable?[interfaceType];

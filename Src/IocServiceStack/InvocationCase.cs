@@ -25,23 +25,10 @@
 
 namespace IocServiceStack
 {
-    public class ServicePostConfiguration
+    public enum InvocationCase
     {
-        private IocContainer _container;
-        
-        public ServicePostConfiguration(IocContainer container)
-        {
-            if (container == null)
-                ExceptionHelper.ThrowArgumentNullException(nameof(container));
-
-            _container = container;
-        }
-
-        public IocContainer GetIocContainer() => _container;
-
-        public IRootBasicService GetServiceFactory()
-        {
-            return _container.ServiceProvider.GetServiceFactory();
-        }
+        Before,
+        After
     }
+
 }

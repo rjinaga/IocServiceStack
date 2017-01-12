@@ -58,7 +58,7 @@ namespace IocServiceStack
                 {
                     Assembly[] assmblies = GetAssemblies(_config.ServiceOptions.Assemblies);
 
-                    //if userdefined ServiceFactory is configured then set that factory, otherise set the default one
+                    //if user defined ServiceFactory is configured then set that factory, otherise set the default one
                     if (_config.ServiceOptions.ServiceFactory != null)
                     {
                         _serviceFactory = _config.ServiceOptions.ServiceFactory;
@@ -83,7 +83,7 @@ namespace IocServiceStack
 
             while (dependencies  != null)
             {
-                //if userdefined ServiceFactory is configured then set that factory, otherise set the default one
+                //if user defined ServiceFactory is configured then set that factory, otherise set the default one
                 if (dependencies.ServiceFactory != null)
                 {
                     serviceNode.Subcontract = dependencies.ServiceFactory;

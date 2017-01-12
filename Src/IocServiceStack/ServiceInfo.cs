@@ -26,6 +26,7 @@
 namespace IocServiceStack
 {
     using System;
+    using System.Collections.Generic;
     using System.Reflection;
 
     public class ServiceInfo
@@ -35,6 +36,7 @@ namespace IocServiceStack
 
         public readonly object SyncObject = new object();
         public readonly Type ServiceType;
+        public readonly DecoratorAttribute[] Decorators;
 
         /// <summary>
         /// if IsReusable set to true then multiple requests are served with the same instance.
@@ -72,13 +74,14 @@ namespace IocServiceStack
         public IServiceActivator Activator { get; set; }
 
 
-        public ServiceInfo(Type serviceType)
+        public ServiceInfo(Type serviceType, DecoratorAttribute[] decorators)
         {
             ServiceType = serviceType;
+            Decorators = decorators;
         }
-        public ServiceInfo(Type serviceType, bool isReusable)
+
+        public ServiceInfo(Type serviceType, DecoratorAttribute[] decorators, bool isReusable) : this(serviceType, decorators)
         {
-            ServiceType = serviceType;
             _isReusable = isReusable;
         }
 
@@ -110,5 +113,30 @@ namespace IocServiceStack
                 Activator = null;
             }
         }
+
+        public static DecoratorAttribute[] GetDecorators(Type contractType)
+        {
+            IEnumerable<Attribute> attributes;
+
+#if NET46
+            attributes = contractType.GetCustomAttributes();
+#else
+            attributes = contractType.GetTypeInfo().GetCustomAttributes();
+#endif
+            if (attributes != null)
+            {
+                List<DecoratorAttribute> decorators = new List<DecoratorAttribute>();
+                foreach (var attribute in attributes)
+                {
+                    if (typeof(DecoratorAttribute).IsAssignableFrom(attribute.GetType()))
+                    { 
+                        decorators.Add(attribute as DecoratorAttribute);
+                    }
+                }
+                return decorators.ToArray();
+            }
+            return null;
+        }
+
     }
 }

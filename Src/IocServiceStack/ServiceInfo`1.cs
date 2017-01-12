@@ -31,19 +31,19 @@ namespace IocServiceStack
     {
         private Func<T> _actionInfo;
 
-        public ServiceInfo() : base(typeof(T))
+        public ServiceInfo(DecoratorAttribute[] decorators) : base(typeof(T), decorators)
         {
         }
-        public ServiceInfo(bool isReusable) : base(typeof(T), isReusable)
+        public ServiceInfo(bool isReusable, DecoratorAttribute[] decorators) : base(typeof(T), decorators, isReusable)
         {
         }
 
-        public ServiceInfo(Func<T> serviceAction) : base(null)
+        public ServiceInfo(Func<T> serviceAction, DecoratorAttribute[] decorators) : base(null, decorators)
         {
             _actionInfo = serviceAction;
         }
 
-        public ServiceInfo(Func<T> serviceAction, bool isReusable) : base(null, isReusable)
+        public ServiceInfo(Func<T> serviceAction, DecoratorAttribute[] decorators, bool isReusable) : base(null, decorators, isReusable)
         {
             _actionInfo = serviceAction;
         }

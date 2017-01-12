@@ -26,6 +26,7 @@
 namespace IocServiceStack
 {
     using System;
+    using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
 
@@ -105,7 +106,7 @@ namespace IocServiceStack
         public virtual IBasicService Add<T>(Type service) where T : class
         {
             Type interfaceType = typeof(T);
-            var serviceMeta = new ServiceInfo(service);
+            var serviceMeta = new ServiceInfo(service, ServiceInfo.GetDecorators(interfaceType));
             ServicesMapTable.Add(interfaceType, serviceMeta);
 
             //send update to observer
@@ -121,7 +122,7 @@ namespace IocServiceStack
             where TS : class
         {
             Type interfaceType = typeof(TC);
-            var serviceMeta = new ServiceInfo<TS>(isReusable: true);
+            var serviceMeta = new ServiceInfo<TS>(isReusable: true, decorators: ServiceInfo.GetDecorators(interfaceType) );
 
             ServicesMapTable.Add(interfaceType, serviceMeta);
 
@@ -147,7 +148,7 @@ namespace IocServiceStack
         public virtual IBasicService Replace<T>(Type service) where T : class
         {
             Type interfaceType = typeof(T);
-            ServicesMapTable[interfaceType] = new ServiceInfo(service);
+            ServicesMapTable[interfaceType] = new ServiceInfo(service, ServiceInfo.GetDecorators(interfaceType));
 
             //send update to observer
             ContractObserver.Update(interfaceType);
@@ -160,7 +161,7 @@ namespace IocServiceStack
             where TS : class
         {
             Type interfaceType = typeof(TC);
-            var serviceMeta = new ServiceInfo<TS>(isReusable:true);
+            var serviceMeta = new ServiceInfo<TS>(isReusable:true, decorators: ServiceInfo.GetDecorators(interfaceType));
 
             ServicesMapTable[interfaceType] = serviceMeta;
 
@@ -178,6 +179,10 @@ namespace IocServiceStack
                 var attribute = serviceConstructor.GetCustomAttribute<ServiceInitAttribute>();
                 if (attribute != null)
                 {
+                    /* Get IgnoreAttribute for the constructor, find the constructor parameters 
+                      with the specified names, if parameter name is matched  then set NULL to the parameter. */
+                    var ignoreAttribute = serviceConstructor.GetCustomAttribute<IgnoreAttribute>();
+
                     /*Get parameters of service's constructor and inject corresponding repositories values to it */
                     ParameterInfo[] constructorParametersInfo = serviceConstructor.GetParameters();
                     Expression[] arguments = new Expression[constructorParametersInfo.Length];
@@ -185,7 +190,18 @@ namespace IocServiceStack
                     int index = 0;
                     foreach (var constrParameter in constructorParametersInfo)
                     {
-                        arguments[index] = Subcontract?.Create(constrParameter.ParameterType, registrar) ?? Expression.Default(constrParameter.GetType());
+
+                        bool ignore = ignoreAttribute?.ParameterNames.Contains(constrParameter.Name)??false;
+
+                        if (ignore)
+                        {
+                            arguments[index] = Expression.Default(constrParameter.ParameterType);
+                        }
+                        else
+                        {
+                            //let's subcontract take responsibility to create dependency objects 
+                            arguments[index] = Subcontract?.Create(constrParameter.ParameterType, registrar) ?? Expression.Default(constrParameter.ParameterType);
+                        }
                         index++;
                     }
                     return Expression.New(serviceConstructor, arguments);

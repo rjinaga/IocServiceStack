@@ -25,23 +25,15 @@
 
 namespace IocServiceStack
 {
-    public class ServicePostConfiguration
+    using System;
+    using System.Collections.Generic;
+
+    [AttributeUsage(AttributeTargets.Interface, AllowMultiple = true)]
+    public abstract class DecoratorAttribute : Attribute
     {
-        private IocContainer _container;
-        
-        public ServicePostConfiguration(IocContainer container)
-        {
-            if (container == null)
-                ExceptionHelper.ThrowArgumentNullException(nameof(container));
+        public virtual void OnBeforeInvoke(ServiceCallContext context) { }
 
-            _container = container;
-        }
-
-        public IocContainer GetIocContainer() => _container;
-
-        public IRootBasicService GetServiceFactory()
-        {
-            return _container.ServiceProvider.GetServiceFactory();
-        }
+        public virtual void OnAfterInvoke(ServiceCallContext context) { }
     }
+    
 }

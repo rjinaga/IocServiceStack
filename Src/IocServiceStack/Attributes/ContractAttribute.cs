@@ -25,23 +25,15 @@
 
 namespace IocServiceStack
 {
-    public class ServicePostConfiguration
+    using System;
+
+    /// <summary>
+    /// If a interface is decorated with the ContractAttribute then the discovery 
+    /// service if IocServiceStack will map that interface automatically with the implementation service.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Interface)]
+    public class ContractAttribute : Attribute
     {
-        private IocContainer _container;
-        
-        public ServicePostConfiguration(IocContainer container)
-        {
-            if (container == null)
-                ExceptionHelper.ThrowArgumentNullException(nameof(container));
 
-            _container = container;
-        }
-
-        public IocContainer GetIocContainer() => _container;
-
-        public IRootBasicService GetServiceFactory()
-        {
-            return _container.ServiceProvider.GetServiceFactory();
-        }
     }
 }

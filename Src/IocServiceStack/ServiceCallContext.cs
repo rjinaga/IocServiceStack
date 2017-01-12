@@ -26,8 +26,28 @@
 namespace IocServiceStack
 {
     using System;
-    [AttributeUsage(AttributeTargets.Constructor, AllowMultiple =false)]
-    public class ServiceInitAttribute : Attribute
+   
+    public sealed class ServiceCallContext
     {
+        public readonly Type ContractType;
+        public readonly Type ServiceType;
+
+        /// <summary>
+        /// if ServiceInstance is set then internal service creation will be skipped and returns
+        /// the instance that's supplied.
+        /// </summary>
+        public object ServiceInstance { get; set; }
+        
+        private ServiceCallContext(Type contractType, Type serviceType)
+        {
+            ContractType = contractType;
+            ServiceType = serviceType;
+        }
+
+        public static ServiceCallContext Create(Type contractType, Type serviceType)
+        {
+            return new ServiceCallContext(contractType, serviceType);
+        }
     }
+    
 }

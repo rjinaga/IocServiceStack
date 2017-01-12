@@ -39,19 +39,21 @@ namespace IocServiceStack
 
         }
 
-        public virtual T Create<T>() where T : class
+        public virtual ServiceInfo GetServiceInfo(Type contractType)
         {
-            Type interfaceType = typeof(T);
+            if (!ServicesMapTable.Contains(contractType))
+                throw ExceptionHelper.ThrowServiceNotRegisteredException(contractType.Name);
 
-            if (!ServicesMapTable.Contains(interfaceType))
-                throw ExceptionHelper.ThrowServiceNotRegisteredException(interfaceType.Name);
+            return ServicesMapTable[contractType];
+        }
 
-            ServiceInfo serviceMeta = ServicesMapTable[interfaceType];
-
+        public virtual T Create<T>(ServiceInfo serviceMeta) where T : class
+        {
             if (serviceMeta != null)
             {
                 if (serviceMeta.Activator == null)
                 {
+                    Type interfaceType = typeof(T);
                     //Compile
                     Compile<T>(interfaceType, serviceMeta);
                 }
@@ -60,14 +62,8 @@ namespace IocServiceStack
             return default(T);
         }
 
-        public object Create(Type contractType)
+        public object Create(Type contractType, ServiceInfo serviceMeta)
         {
-            
-            if (!ServicesMapTable.Contains(contractType))
-                throw ExceptionHelper.ThrowServiceNotRegisteredException(contractType.Name);
-
-            ServiceInfo serviceMeta = ServicesMapTable[contractType];
-
             if (serviceMeta != null)
             {
                 if (serviceMeta.Activator == null)
@@ -98,7 +94,7 @@ namespace IocServiceStack
         public IRootBasicService Add<TC>(Func<TC> serviceAction) where TC : class
         {
             Type interfaceType = typeof(TC);
-            var serviceMeta = new ServiceInfo<TC>(serviceAction);
+            var serviceMeta = new ServiceInfo<TC>(serviceAction, ServiceInfo.GetDecorators(interfaceType));
 
             ServicesMapTable.Add(interfaceType, serviceMeta);
 
@@ -111,7 +107,7 @@ namespace IocServiceStack
         public IRootBasicService Replace<TC>(Func<TC> expression) where TC : class
         {
             Type interfaceType = typeof(TC);
-            var serviceMeta = new ServiceInfo<TC>(expression);
+            var serviceMeta = new ServiceInfo<TC>(expression, ServiceInfo.GetDecorators(interfaceType));
 
             ServicesMapTable[interfaceType] = serviceMeta;
 

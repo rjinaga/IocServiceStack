@@ -63,6 +63,7 @@ namespace IocServiceStack
                 }
             }
         }
+
         public SubcontractFactory ServiceFactory
         {
             get
@@ -77,6 +78,7 @@ namespace IocServiceStack
                 }
             }
         }
+
         public ServiceDependencyOptions Dependencies
         {
             get

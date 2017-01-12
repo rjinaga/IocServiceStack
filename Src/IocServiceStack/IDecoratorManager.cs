@@ -25,23 +25,12 @@
 
 namespace IocServiceStack
 {
-    public class ServicePostConfiguration
+    using System.Collections.Generic;
+    
+    public interface IDecoratorManager
     {
-        private IocContainer _container;
-        
-        public ServicePostConfiguration(IocContainer container)
-        {
-            if (container == null)
-                ExceptionHelper.ThrowArgumentNullException(nameof(container));
-
-            _container = container;
-        }
-
-        public IocContainer GetIocContainer() => _container;
-
-        public IRootBasicService GetServiceFactory()
-        {
-            return _container.ServiceProvider.GetServiceFactory();
-        }
+        List<DecoratorAttribute> GlobalDecorators { get; set; }
+        void Execute(ServiceCallContext context, InvocationCase @case, IEnumerable<DecoratorAttribute> localDecorators);
     }
+    
 }

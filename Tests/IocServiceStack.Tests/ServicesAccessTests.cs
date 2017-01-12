@@ -40,6 +40,10 @@ namespace IocServiceStack.Tests
 
             //Assert
             Assert.IsInstanceOf<CustomerService>(customerService);
+
+            //Test Custom Decorator
+            Assert.AreEqual(customerService.AdditionalData, "Gold Customer");
+
             //Assert.IsInstanceOf<CustomerRepository>(customerService.GetRepository());
         }
     }

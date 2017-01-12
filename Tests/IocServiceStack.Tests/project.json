@@ -2,16 +2,17 @@
   "version": "1.0.0-*",
   "testRunner": "nunit",
   "dependencies": {
-    "IocServiceStack": "1.0.0-rc-1",
+    "IocServiceStack": { "target": "project" },
     "Moq": "4.5.29",
     "NUnit": "3.5.0",
     "dotnet-test-nunit": "3.4.0-beta-3",
-    "BusinessServiceLibrary": "1.0.0-*",
-    "DataServiceLibrary": "1.0.0-*",
-    "RepositoryServiceLibrary": "1.0.0-*"
+    "BusinessServiceLibrary": { "target": "project" },
+    "DataServiceLibrary": { "target": "project" },
+    "RepositoryServiceLibrary": { "target": "project" }
   },
 
   "frameworks": {
-    "net46": {}
+    "net46": {
+    }
   }
 }
