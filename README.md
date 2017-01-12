@@ -12,7 +12,8 @@ IocServiceStack is a open source .NET library for multi-services communication t
 - Multi level dependencies
 - Replace or Add dependencies
 - Highly extensible
-- Strict mode enables that ServiceAttribute attribute cannot be set more than one implemention of same interface while automap the services.
+- Strict mode feature enables that ServiceAttribute attribute cannot be set more than one implemention of same interface while automap the services.
+- [Gateway](https://rjinaga.github.io/IocServiceStack.Gateway) and [Client](https://rjinaga.github.io/IocServiceStack.Client) libraries are helping to build SOA application with very minimal effort.
 
 
 ### Supports
@@ -252,7 +253,7 @@ namespace Example
 ```
 
 ### Decorators 
-you can build and configure service decorators globally or contract (interface) level. Decorators will be executed when instance is being created. You can modify the object or inject concrete objects at runtime using decorators.
+You can build and configure service decorators globally or contract (interface) level. Decorators will be executed when instance is being created. You can modify the object or inject concrete objects at runtime using decorators.
 
 ### Register Decorators with the Global IoC Container
 You can also register decorators with the isolated containers.
@@ -312,7 +313,7 @@ namespace BusinessContractLibrary
 
 ### Relationship with the [IocServiceStack.Gateway](https://rjinaga.github.io/IocServiceStack.Gateway) and [IocServiceStack.Client](https://rjinaga.github.io/IocServiceStack.Client) Repositories
 
->  **IocServiceStack.Gateway** and **IocServiceStack.Client** libraries helps to make the logical layered application into physical layer application that builts using IocServiceStack.
+>  **IocServiceStack.Gateway** and **IocServiceStack.Client** libraries make the logical layered application into physical layered application that builts using IocServiceStack.
 
 
 ### Web Application Architecture using IocServiceStack
