@@ -23,13 +23,25 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace IocServiceStack
+namespace IocServiceStack.Tests
 {
-    using System;
-
-    [AttributeUsage(AttributeTargets.Interface)]
-    public class ContractAttribute : Attribute
+    using NUnit.Framework;
+    
+    public class ContainerServiceTests
     {
+        [Test]
+        public void GetDependecyFactory_Test()
+        {
+            //Arrange & Act
+            var repoFactory = Helper.TestsHelper.FactoryServicePointer.GetDependecyFactory("Repository");
 
+            var dataFactory = Helper.TestsHelper.FactoryServicePointer.GetDependecyFactory("Data");
+            
+
+            //Assert
+            Assert.IsNotNull(repoFactory);
+            Assert.IsNotNull(dataFactory);
+            Assert.AreNotEqual(repoFactory, dataFactory);
+        }
     }
 }

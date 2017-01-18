@@ -31,23 +31,27 @@ namespace IocServiceStack
     {
         public readonly Type ContractType;
         public readonly Type ServiceType;
+        public readonly IocContainer IocContainer;
+
+        private ServiceCallContext(Type contractType, Type serviceType, IocContainer container)
+        {
+            ContractType = contractType;
+            ServiceType = serviceType;
+        }
 
         /// <summary>
         /// if ServiceInstance is set then internal service creation will be skipped and returns
         /// the instance that's supplied.
         /// </summary>
         public object ServiceInstance { get; set; }
-        
-        private ServiceCallContext(Type contractType, Type serviceType)
-        {
-            ContractType = contractType;
-            ServiceType = serviceType;
-        }
 
-        public static ServiceCallContext Create(Type contractType, Type serviceType)
+        #region Static Members  
+        public static ServiceCallContext Create(Type contractType, Type serviceType, IocContainer container)
         {
-            return new ServiceCallContext(contractType, serviceType);
+            return new ServiceCallContext(contractType, serviceType, container);
         }
+        #endregion
+
     }
     
 }

@@ -44,15 +44,17 @@ namespace IocServiceStack.Tests
                     opt.Namespaces = new[] { "BusinessService" };
                     opt.Assemblies = new[] { "BusinessServiceLibrary" };
 
-                    opt.AddDependencies((dopt) =>
+                    opt.AddDependencies((repository) =>
                     {
-                        dopt.Namespaces = new[] { "RepositoryService" }; ;
-                        dopt.Assemblies = new[] { "RepositoryServiceLibrary" };
+                        repository.Name = "Repository"; //optional, but it can be used to access the Factory object.
+                        repository.Namespaces = new[] { "RepositoryService" }; ;
+                        repository.Assemblies = new[] { "RepositoryServiceLibrary" };
 
-                        dopt.AddDependencies(ddopt =>
+                        repository.AddDependencies(data =>
                         {
-                            ddopt.Namespaces = new[] { "DataService" };
-                            ddopt.Assemblies = new[] { "DataServiceLibrary" };
+                            data.Name = "Data";
+                            data.Namespaces = new[] { "DataService" };
+                            data.Assemblies = new[] { "DataServiceLibrary" };
                         });
                     });
                     opt.StrictMode = true;
@@ -61,7 +63,8 @@ namespace IocServiceStack.Tests
                 config.Decorators.Add(new TestDecoratorAttribute());
             });
 
-            //Hold the pointer of serviceConfig in a static field to run further tests of dependecy injection.
+            
+            //Hold the pointer of serviceConfig in a static field to run further tests of dependency injection.
             Helper.TestsHelper.FactoryServicePointer = configRef;
         }
     }

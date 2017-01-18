@@ -26,9 +26,31 @@
 namespace IocServiceStack
 {
     using System;
-    public interface IRootBasicService : IBasicService
+    public static class ContainerServiceExtensions
     {
-        IRootBasicService Add<TC>(Func<TC> expression) where TC : class;
-        IRootBasicService Replace<TC>(Func<TC> expression) where TC : class;
+        public static IContainerExtension Add<TC>(this IContainerService service, Func<TC> expression) where TC : class
+        {
+            var containerExtension = service as IContainerExtension;
+            if (containerExtension != null)
+            {
+                containerExtension.Add<TC>(expression);
+            }
+            else
+                throw new Exception("Service factory is not implemented IContainerExtension");
+
+            return containerExtension;
+        }
+        public static IContainerExtension Replace<TC>(this IContainerService service, Func<TC> expression) where TC : class
+        {
+            var containerExtension = service as IContainerExtension;
+            if (containerExtension != null)
+            {
+                containerExtension.Replace<TC>(expression);
+            }
+            else
+                throw new Exception("Service factory is not implemented IContainerExtension");
+
+            return containerExtension;
+        }
     }
 }

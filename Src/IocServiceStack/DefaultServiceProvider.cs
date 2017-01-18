@@ -32,14 +32,19 @@ namespace IocServiceStack
     {
         private InternalServiceManager _internalsm;
 
+        public DefaultServiceProvider(ServiceConfig config)
+        {
+            _internalsm = new InternalServiceManager(config);
+        }
+
         public IDecoratorManager DecoratorManager
         {
             get; set;
         }
 
-        public DefaultServiceProvider(ServiceConfig config)
+        public IocContainer IocContainer
         {
-            _internalsm = new InternalServiceManager(config);
+            get;set;
         }
 
         public virtual T GetService<T>() where T : class
@@ -69,12 +74,32 @@ namespace IocServiceStack
             return _internalsm.GetServiceFactory();
         }
 
+        /// <summary>
+        /// Gets dependency factory by specified name
+        /// </summary>
+        /// <param name="name">The name of the dependency factory. Value of name is not case sensitive</param>
+        /// <returns>Returns <see cref="IContainerService"/> if found, otherwise returns null</returns>
+        public IContainerService GetDependencyFactory(string name)
+        {
+            var factoryNode = GetServiceFactory().DependencyFactory;
+            while (factoryNode != null)
+            {
+                if (string.Equals(factoryNode.Name, name, StringComparison.OrdinalIgnoreCase))
+                {
+                    return factoryNode;
+                }
+                factoryNode = factoryNode.DependencyFactory;
+            }
+            return null;
+        }
+
+
         protected InvocationInfo BeforeInvoke(Type contractType)
         {
             var factory = _internalsm.GetServiceFactory();
             ServiceInfo serviceInfo = factory.GetServiceInfo(contractType);
 
-            ServiceCallContext callContext = ServiceCallContext.Create(contractType, serviceInfo.ServiceType);
+            ServiceCallContext callContext = ServiceCallContext.Create(contractType, serviceInfo.ServiceType, IocContainer);
             InvokeDecorator(callContext, InvocationCase.Before, serviceInfo.Decorators);
 
             return new InvocationInfo() { ServiceInfo = serviceInfo, ServiceCallContext = callContext };
@@ -91,6 +116,7 @@ namespace IocServiceStack
             DecoratorManager.Execute(context, @case, localDecorators);
         }
 
+   
         protected struct InvocationInfo
         {
             public ServiceInfo ServiceInfo;

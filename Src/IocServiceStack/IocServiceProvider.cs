@@ -31,14 +31,14 @@ namespace IocServiceStack
     {
         public static ServicePostConfiguration Configure(Action<ServiceConfig> configuration)
         {
-            var postConfig = CreateNewIocContainer(configuration);
+            var postConfig = CreateIocContainer(configuration);
             
             IocContainer.GlobalIocContainer = postConfig.GetIocContainer();
             
             return postConfig;
         }
 
-        public static ServicePostConfiguration CreateNewIocContainer(Action<ServiceConfig> configuration)
+        public static ServicePostConfiguration CreateIocContainer(Action<ServiceConfig> configuration)
         {
             ServiceConfig config = new ServiceConfig();
             configuration(config);

@@ -26,7 +26,6 @@
 namespace IocServiceStack
 {
     using System;
-    using System.Collections.Generic;
 
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = true)]
     public abstract class DecoratorAttribute : Attribute

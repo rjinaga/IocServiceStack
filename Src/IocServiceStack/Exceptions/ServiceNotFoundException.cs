@@ -34,7 +34,7 @@ namespace IocServiceStack
     {
 
         /// <summary>
-        /// Initializes a new instance of the DuplicateServiceImplementaionException class with a
+        /// Initializes a new instance of the <see cref="ServiceNotFoundException"/> class with a
         /// specified error message.
         /// </summary>
         /// <param name="message">The error message that explains the reason for the exception.</param>

@@ -29,7 +29,7 @@ namespace IocServiceStack
     using System.Linq.Expressions;
     using System.Reflection;
 
-    public class DefaultServiceFactory : AbstractFactory, IServiceFactory, IRootBasicService
+    public class DefaultServiceFactory : AbstractFactory, IServiceFactory, IContainerExtension
     {
         private ServiceNotifier _notifier;
 
@@ -91,7 +91,7 @@ namespace IocServiceStack
 
         }
 
-        public IRootBasicService Add<TC>(Func<TC> serviceAction) where TC : class
+        public IContainerExtension Add<TC>(Func<TC> serviceAction) where TC : class
         {
             Type interfaceType = typeof(TC);
             var serviceMeta = new ServiceInfo<TC>(serviceAction, ServiceInfo.GetDecorators(interfaceType));
@@ -104,7 +104,7 @@ namespace IocServiceStack
             return this;
         }
 
-        public IRootBasicService Replace<TC>(Func<TC> expression) where TC : class
+        public IContainerExtension Replace<TC>(Func<TC> expression) where TC : class
         {
             Type interfaceType = typeof(TC);
             var serviceMeta = new ServiceInfo<TC>(expression, ServiceInfo.GetDecorators(interfaceType));

@@ -2,7 +2,7 @@
 
 [![Gitter](https://badges.gitter.im/IocServiceStack/Lobby.svg)](https://gitter.im/IocServiceStack/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
 
-IocServiceStack is a open source .NET library for multi-services communication through multi-level dependency injection. This clearly separates the concerns of application layers. This makes the layers configurable, but not required to reference the dependent layer at design time. This library offers several ways to inject dependencies. 
+IocServiceStack is a open source .NET library for multi-services communication through multi-level dependency injection. This clearly separates the concerns of application layers. This makes the layers configurable, and it offers several ways to inject dependencies. 
 
 ### Features:
 - Global IoC Container
@@ -12,7 +12,6 @@ IocServiceStack is a open source .NET library for multi-services communication t
 - Multi level dependencies
 - Replace or Add dependencies
 - Highly extensible
-- Convert web application as SOA with very minimal effort using [Gateway](https://rjinaga.github.io/IocServiceStack.Gateway) and [Client](https://rjinaga.github.io/IocServiceStack.Client) libraries.
 
 
 ### Supports
@@ -22,9 +21,9 @@ IocServiceStack is a open source .NET library for multi-services communication t
 
 ## [NuGet](https://www.nuget.org/packages/IocServiceStack/)
 ```
-PM> Install-Package IocServiceStack -Pre
+PM> Install-Package IocServiceStack
 ```
-[![NuGet Pre Release](https://img.shields.io/badge/nuget-Pre%20Release-yellow.svg)](https://www.nuget.org/packages/IocServiceStack/)
+[![NuGet Release](https://img.shields.io/badge/nuget-v1.0.0-blue.svg)](https://www.nuget.org/packages/IocServiceStack/)
 
 
 ## Usage
@@ -34,21 +33,23 @@ PM> Install-Package IocServiceStack -Pre
 ```c#
 var configRef = IocServiceProvider.Configure(config =>
 {
-    config.Services((opt) =>
+    config.Services((service) =>
     {
 	/*if namespaces are not specfied, it finds for services in entire assembly.*/
-        opt.Namespaces = new[] { "BusinessService" };
-        opt.Assemblies = new[] { "BusinessServiceLibrary" };
+        service.Namespaces = new[] { "BusinessService" };
+        service.Assemblies = new[] { "BusinessServiceLibrary" };
 
-        opt.AddDependencies((dopt) =>
+        service.AddDependencies((repository) =>
         {
-            dopt.Namespaces = new[] { "RepositoryService" }; ;
-            dopt.Assemblies = new[] { "RepositoryServiceLibrary" };
+            repository.Name = "Repository";
+            repository.Namespaces = new[] { "RepositoryService" }; ;
+            repository.Assemblies = new[] { "RepositoryServiceLibrary" };
 
-            dopt.AddDependencies(ddopt =>
+            repository.AddDependencies((data) =>
             {
-                ddopt.Namespaces = new[] { "DataService" };
-                ddopt.Assemblies = new[] { "DataServiceLibrary" };
+                data.Name = "Data";
+                data.Namespaces = new[] { "DataService" };
+                data.Assemblies = new[] { "DataServiceLibrary" };
             });
         });
 
@@ -60,10 +61,7 @@ var configRef = IocServiceProvider.Configure(config =>
 
 ### Services and Contracts Implementations
 
-> To automatically map the interface and its implementaion class, 
-> set attribute ```[Contract]``` for the interface
-> and attribute ```[Service]``` for the class that implements contract interface.
-
+IocServiceStack can map the services to their interfaces automatically, in order to work this function, set the Contract attribute to the interface and Service attribute to the class that implements the interface.
 
 ```c#
 namespace BusinessContractLibrary
@@ -206,8 +204,13 @@ var factoryService = configRef.GetFactoryService();
 
 /*Dependency Injection*/
 factoryService.Replace<ICustomer, CustomerService2>()
-              .Subcontract
+              .DependencyFactory
               .Replace<ICustomerRepository, CustomerRepository2>();
+/*
+Above dependencies can be configured in other way also:
+factoryService.Replace<ICustomer, CustomerService2>();
+configRef.GetDependencyFactory("Repository").Replace<ICustomerRepository, CustomerRepository2>();
+*/
 
 /*Add new service*/
 factoryService.Add<IPayment, PaypalPayment>();
@@ -220,15 +223,13 @@ factoryService.Add<IPayment, PaypalPayment>();
 
 /*setup container*/
 
-var container = IocServiceProvider.CreateNewIocContainer(config=> { /* */  });
+var container = IocServiceProvider.CreateIocContainer(config=> { /* */  });
 
 /* You can add services by calling container.Add<Interface>(()=> new Service()) */
-/*set new container to a static field */
-
+/*set a new container to a static field */
 Example.AppServiceManager.Container = container;
 
-/* Create IoC service manager class(Eg: AppServiceManager
-) to access services in the container. */
+/* Create IoC service manager class(Eg: AppServiceManager) to access services in the container. */
 
 namespace Example 
 {
@@ -252,10 +253,10 @@ namespace Example
 ```
 
 ### Decorators 
-You can build and configure service decorators globally or contract (interface) level. Decorators will be executed when instance is being created. You can modify the object or inject concrete objects at runtime using decorators.
+You can build and configure service decorators globally or interface level. Decorators of tha interface will be executed when the instance is being created. It provides the flexibility of modifying the object or inject concrete objects at runtime.
 
-### Register Decorators with the Global IoC Container
-You can also register decorators with the isolated containers.
+### Register decorators with the global IoC container
+> You can also register decorators with the isolated containers.
 
 ```c#
 
@@ -267,7 +268,7 @@ var configRef = IocServiceProvider.Configure(config =>
 
 ```
 
-#### Contract (Interface) level decorators
+#### Register and implement Interface level decorators
 
 ```c#
 
@@ -299,26 +300,30 @@ namespace BusinessContractLibrary
         public override void OnAfterInvoke(ServiceCallContext context)
         {
             //Set Default Value
-            if (context.ServiceInstance is ICustomer)
+	    var customer = context.ServiceInstance as ICustomer;	
+            if (customer != null)
             {
-                dynamic obj = context.ServiceInstance;
-                obj.AdditionalData = "Gold Customer";
+                customer.AdditionalData = "Gold Customer";
             }
         }
     }
 }
+
 ```
 
 
 ### Relationship with the [IocServiceStack.Gateway](https://rjinaga.github.io/IocServiceStack.Gateway) and [IocServiceStack.Client](https://rjinaga.github.io/IocServiceStack.Client) Repositories
 
->  **IocServiceStack.Gateway** and **IocServiceStack.Client** libraries make the logical layered application into physical layered application that builts using IocServiceStack.
+IocServiceStack.Gateway and IocServiceStack.Client libraries make the logical layered application into physical layered application that builts using IocServiceStack.
 
 
 ### Web Application Architecture using IocServiceStack
 
 [https://github.com/rjinaga/Web-App-Architecture-Using-IocServiceStack](https://github.com/rjinaga/Web-App-Architecture-Using-IocServiceStack)
 
+### Web Application N-Tier Architecture
+
+[https://github.com/rjinaga/Web-N-Tier-Architecture](https://github.com/rjinaga/Web-N-Tier-Architecture)
 
 
 

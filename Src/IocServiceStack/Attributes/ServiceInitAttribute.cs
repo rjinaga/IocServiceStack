@@ -27,7 +27,7 @@ namespace IocServiceStack
 {
     using System;
     /// <summary>
-    /// Dependency injectors look for the constructor with the ServiceInitAttribute to execute that particular constructor.
+    /// Dependency injector looks for the constructor with the ServiceInitAttribute to execute that particular constructor.
     /// </summary>
     [AttributeUsage(AttributeTargets.Constructor, AllowMultiple = false)]
     public sealed class ServiceInitAttribute : Attribute

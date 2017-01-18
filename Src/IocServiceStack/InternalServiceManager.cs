@@ -79,25 +79,27 @@ namespace IocServiceStack
         private void InitChainOfSubctractFactories()
         {
             ServiceDependencyOptions dependencies = _config.ServiceOptions.Dependencies;
-            IBasicService serviceNode = _serviceFactory;
+            IContainerService serviceNode = _serviceFactory;
 
             while (dependencies  != null)
             {
                 //if user defined ServiceFactory is configured then set that factory, otherise set the default one
                 if (dependencies.ServiceFactory != null)
                 {
-                    serviceNode.Subcontract = dependencies.ServiceFactory;
+                    serviceNode.DependencyFactory = dependencies.ServiceFactory;
+                    serviceNode.DependencyFactory.Name = dependencies.Name;
                 }
                 //if Subcontract is defined along with ServiceFactory configuration, then don't set the default contract factory.
-                else if (serviceNode.Subcontract == null)
+                else if (serviceNode.DependencyFactory == null)
                 {
                     Assembly[] subcontractAssmblies = GetAssemblies(dependencies.Assemblies);
-                    serviceNode.Subcontract = new DefaultSubcontractFactory(dependencies.Namespaces, subcontractAssmblies, _config.ServiceOptions.StrictMode);
+                    serviceNode.DependencyFactory = new DefaultSubcontractFactory(dependencies.Namespaces, subcontractAssmblies, _config.ServiceOptions.StrictMode);
+                    serviceNode.DependencyFactory.Name = dependencies.Name;
                 }
 
                 //set child node of current dependencies
                 dependencies = dependencies.Dependencies;
-                serviceNode = serviceNode.Subcontract;
+                serviceNode = serviceNode.DependencyFactory;
             }
         }
 

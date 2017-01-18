@@ -32,7 +32,7 @@ namespace IocServiceStack.Tests
         [Test]
         public void IsolateTest()
         {
-            var configRef = IocServiceProvider.CreateNewIocContainer(config =>
+            var configRef = IocServiceProvider.CreateIocContainer(config =>
             {
                 config.Services((opt) =>
                 {

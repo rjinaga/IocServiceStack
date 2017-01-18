@@ -30,27 +30,27 @@ namespace IocServiceStack
     /// <summary>
     /// Represents basic service methods of factory
     /// </summary>
-    public interface IBasicService
+    public interface IContainerService
     {
         /// <summary>
-        /// Gets or sets Subcontract factory
+        /// Gets or sets dependency factory
         /// </summary>
-        SubcontractFactory Subcontract { get; set; }
+        SubcontractFactory DependencyFactory { get; set; }
 
-        IBasicService Add<TC, TS>() where TC : class where TS : class;
+        IContainerService Add<TC, TS>() where TC : class where TS : class;
         
         /// <summary>
         /// Adds the specified service to the factory
         /// </summary>
         /// <typeparam name="T">The class of the service</typeparam>
         /// <param name="service">The type of the service</param>
-        /// <returns>Instance <see cref="IBasicService"/> of current object</returns>
-        IBasicService Add<T>(Type service) where T : class;
+        /// <returns>Instance <see cref="IContainerService"/> of current object</returns>
+        IContainerService Add<T>(Type service) where T : class;
 
-        IBasicService AddSingleton<TC, TS>() where TC : class where TS : class;
+        IContainerService AddSingleton<TC, TS>() where TC : class where TS : class;
 
 
-        IBasicService Replace<TC, TS>() where TC : class where TS : class;
+        IContainerService Replace<TC, TS>() where TC : class where TS : class;
         
         
         /// <summary>
@@ -58,9 +58,9 @@ namespace IocServiceStack
         /// </summary>
         /// <typeparam name="T">The class of the service</typeparam>
         /// <param name="service">The type of the service</param>
-        /// <returns>Instance <see cref="IBasicService"/> of current object</returns>
-        IBasicService Replace<T>(Type service) where T : class;
+        /// <returns>Instance <see cref="IContainerService"/> of current object</returns>
+        IContainerService Replace<T>(Type service) where T : class;
 
-        IBasicService ReplaceSingleton<TC, TS>() where TC : class where TS : class;
+        IContainerService ReplaceSingleton<TC, TS>() where TC : class where TS : class;
     }
 }

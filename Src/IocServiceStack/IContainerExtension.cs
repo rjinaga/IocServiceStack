@@ -26,10 +26,9 @@
 namespace IocServiceStack
 {
     using System;
-
-    [AttributeUsage(AttributeTargets.Interface)]
-    public class ContractAttribute : Attribute
+    public interface IContainerExtension : IContainerService
     {
-
+        IContainerExtension Add<TC>(Func<TC> expression) where TC : class;
+        IContainerExtension Replace<TC>(Func<TC> expression) where TC : class;
     }
 }

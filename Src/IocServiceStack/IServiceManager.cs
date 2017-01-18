@@ -26,10 +26,9 @@
 namespace IocServiceStack
 {
     using System;
-
-    [AttributeUsage(AttributeTargets.Interface)]
-    public class ContractAttribute : Attribute
+    public interface IServiceManager
     {
-
+        T GetService<T>() where T : class;
+        object GetService(Type contractType);
     }
 }

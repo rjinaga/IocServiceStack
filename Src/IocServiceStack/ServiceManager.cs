@@ -26,17 +26,45 @@
 namespace IocServiceStack
 {
     using System;
-    public static class ServiceManager
+    public sealed class ServiceManager : IServiceManager
     {
-        public static T GetService<T>() where T : class
+
+        T IServiceManager.GetService<T>() 
         {
             var provider = IocContainer.GlobalIocContainer.ServiceProvider;
             return provider.GetService<T>();
         }
-        public static object GetService(Type contractType) 
+
+        object IServiceManager.GetService(Type contractType)
         {
             var provider = IocContainer.GlobalIocContainer.ServiceProvider;
             return provider.GetService(contractType);
         }
+
+        #region Static Members
+        private static IServiceManager _serviceManager;
+
+        static ServiceManager()
+        {
+            _serviceManager = new ServiceManager();
+        }
+
+        public static IServiceManager Instance
+        {
+            get
+            {
+                return _serviceManager;
+            }
+        }
+
+        public static T GetService<T>() where T : class
+        {
+            return _serviceManager.GetService<T>();
+        }
+        public static object GetService(Type contractType)
+        {
+            return _serviceManager.GetService(contractType);
+        }
+        #endregion
     }
 }

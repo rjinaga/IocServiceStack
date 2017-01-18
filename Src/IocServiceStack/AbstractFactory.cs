@@ -33,20 +33,31 @@ namespace IocServiceStack
     /// <summary>
     /// Represents abstract factory of services
     /// </summary>
-    public abstract class AbstractFactory : IBasicService
+    public abstract class AbstractFactory : IContainerService
     {
         private IContractObserver _observer;
 
         /// <summary>
-        /// Get readonly ServiceMapTable object
+        /// Get read-only ServiceMapTable object
         /// </summary>
         protected readonly ContractServiceAutoMapper ServicesMapTable;
 
+        /// <summary>
+        /// Initializes a new instance of AbstractFactory class with the specified namespaces, assemblies and strictmode
+        /// </summary>
+        /// <param name="namespaces">The namespaces of services</param>
+        /// <param name="assemblies">The assemblies of services</param>
+        /// <param name="strictMode">The value indicating whether strict mode is on or off</param>
+        public AbstractFactory(string[] namespaces, Assembly[] assemblies, bool strictMode)
+        {
+            ServicesMapTable = new ContractServiceAutoMapper(namespaces, assemblies, strictMode);
+            ServicesMapTable.Map();
+        }
 
         /// <summary>
         /// Gets or sets factory of Subcontract of the current service
         /// </summary>
-        public SubcontractFactory Subcontract
+        public SubcontractFactory DependencyFactory
         {
             get; set;
         }
@@ -66,8 +77,8 @@ namespace IocServiceStack
                 {
                     _observer = value;
                     /*Set observers to all its sub contractors*/
-                    if (Subcontract != null)
-                        Subcontract.ContractObserver = _observer;
+                    if (DependencyFactory != null)
+                        DependencyFactory.ContractObserver = _observer;
                 }
                 else
                 {
@@ -78,19 +89,7 @@ namespace IocServiceStack
         }
 
 
-        /// <summary>
-        /// Initializes a new instance of AbstractFactory class with the specified namespaces, assemblies and strictmode
-        /// </summary>
-        /// <param name="namespaces">The namespaces of services</param>
-        /// <param name="assemblies">The assemblies of services</param>
-        /// <param name="strictMode">The value indicating whether strict mode is on or off</param>
-        public AbstractFactory(string[] namespaces, Assembly[] assemblies, bool strictMode)
-        {
-            ServicesMapTable = new ContractServiceAutoMapper(namespaces, assemblies, strictMode);
-            ServicesMapTable.Map();
-        }
-
-        public IBasicService Add<TC, TS>()
+        public IContainerService Add<TC, TS>()
           where TC : class
           where TS : class
         {
@@ -102,8 +101,8 @@ namespace IocServiceStack
         /// </summary>
         /// <typeparam name="T">The class of the service</typeparam>
         /// <param name="service">The type of the service</param>
-        /// <returns>Instance <see cref="IBasicService"/> of current object</returns>
-        public virtual IBasicService Add<T>(Type service) where T : class
+        /// <returns>Instance <see cref="IContainerService"/> of current object</returns>
+        public virtual IContainerService Add<T>(Type service) where T : class
         {
             Type interfaceType = typeof(T);
             var serviceMeta = new ServiceInfo(service, ServiceInfo.GetDecorators(interfaceType));
@@ -115,9 +114,7 @@ namespace IocServiceStack
             return this;
         }
 
-     
-
-        public IBasicService AddSingleton<TC, TS>()
+        public IContainerService AddSingleton<TC, TS>()
             where TC : class
             where TS : class
         {
@@ -132,7 +129,7 @@ namespace IocServiceStack
             return this;
         }
 
-        public IBasicService Replace<TC, TS>()
+        public IContainerService Replace<TC, TS>()
           where TC : class
           where TS : class
         {
@@ -145,7 +142,7 @@ namespace IocServiceStack
         /// <typeparam name="T">The class of the service</typeparam>
         /// <param name="service"></param>
         /// <returns></returns>
-        public virtual IBasicService Replace<T>(Type service) where T : class
+        public virtual IContainerService Replace<T>(Type service) where T : class
         {
             Type interfaceType = typeof(T);
             ServicesMapTable[interfaceType] = new ServiceInfo(service, ServiceInfo.GetDecorators(interfaceType));
@@ -156,7 +153,7 @@ namespace IocServiceStack
             return this;
         }
 
-        public IBasicService ReplaceSingleton<TC, TS>()
+        public IContainerService ReplaceSingleton<TC, TS>()
             where TC : class
             where TS : class
         {
@@ -200,7 +197,7 @@ namespace IocServiceStack
                         else
                         {
                             //let's subcontract take responsibility to create dependency objects 
-                            arguments[index] = Subcontract?.Create(constrParameter.ParameterType, registrar) ?? Expression.Default(constrParameter.ParameterType);
+                            arguments[index] = DependencyFactory?.Create(constrParameter.ParameterType, registrar) ?? Expression.Default(constrParameter.ParameterType);
                         }
                         index++;
                     }

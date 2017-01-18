@@ -39,9 +39,14 @@ namespace IocServiceStack
 
         public IocContainer GetIocContainer() => _container;
 
-        public IRootBasicService GetServiceFactory()
+        public IContainerExtension GetServiceFactory()
         {
             return _container.ServiceProvider.GetServiceFactory();
+        }
+
+        public IContainerService GetDependecyFactory(string name)
+        {
+            return _container.ServiceProvider.GetDependencyFactory(name);
         }
     }
 }

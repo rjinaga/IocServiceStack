@@ -25,7 +25,7 @@
 
 namespace IocServiceStack
 {
-    public interface IServiceWorker : IRootBasicService
+    public interface IServiceWorker : IContainerExtension
     {
         void StartWork();
     }

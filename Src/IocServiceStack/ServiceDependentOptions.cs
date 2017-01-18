@@ -33,6 +33,22 @@ namespace IocServiceStack
         private string[] _namespaces, _assemblies;
         private SubcontractFactory _serviceFactory;
         private ServiceDependencyOptions _dependencies;
+        private string _name;
+
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                if (!_readOnly)
+                {
+                    _name = value;
+                }
+            }
+        }
 
         public string[] Namespaces
         {

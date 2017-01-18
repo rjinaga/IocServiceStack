@@ -38,6 +38,18 @@ namespace IocServiceStack
         public readonly Type ServiceType;
         public readonly DecoratorAttribute[] Decorators;
 
+        public ServiceInfo(Type serviceType, DecoratorAttribute[] decorators)
+        {
+            ServiceType = serviceType;
+            Decorators = decorators;
+        }
+
+        public ServiceInfo(Type serviceType, DecoratorAttribute[] decorators, bool isReusable) : this(serviceType, decorators)
+        {
+            _isReusable = isReusable;
+        }
+
+
         /// <summary>
         /// if IsReusable set to true then multiple requests are served with the same instance.
         /// </summary>
@@ -74,17 +86,7 @@ namespace IocServiceStack
         public IServiceActivator Activator { get; set; }
 
 
-        public ServiceInfo(Type serviceType, DecoratorAttribute[] decorators)
-        {
-            ServiceType = serviceType;
-            Decorators = decorators;
-        }
-
-        public ServiceInfo(Type serviceType, DecoratorAttribute[] decorators, bool isReusable) : this(serviceType, decorators)
-        {
-            _isReusable = isReusable;
-        }
-
+        
         public virtual Func<T> GetActionInfo<T>() where T: class
         {
             return null;

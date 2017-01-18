@@ -41,8 +41,12 @@ namespace IocServiceStack.Tests
             var factoryService = Helper.TestsHelper.FactoryServicePointer.GetServiceFactory();
 
             /*Dependency Injection*/
+
+            //factoryService.Add<ICustomer, CustomerService2>()
+            //    .Add<ICustomer>(()=> null)
+            
             factoryService.Replace<ICustomer, CustomerService2>()
-                          .Subcontract
+                          .DependencyFactory
                           .Replace<ICustomerRepository, CustomerRepository2>();
             //Act
             var service = ServiceManager.GetService<ICustomer>();
@@ -63,7 +67,7 @@ namespace IocServiceStack.Tests
 
             /*Dependency Injection*/
             serviceFactory.Replace<ICustomer, CustomerService2>()
-                          .Subcontract
+                          .DependencyFactory
                           .Replace<ICustomerRepository, CustomerRepository2>();
             //Act
             var service = ServiceManager.GetService(typeof(ICustomer));
@@ -103,7 +107,7 @@ namespace IocServiceStack.Tests
             var serviceFactory = Helper.TestsHelper.FactoryServicePointer.GetServiceFactory();
 
             serviceFactory.Replace<ICustomer, CustomerService>()
-                          .Subcontract
+                          .DependencyFactory
                           .Replace<ICustomerRepository, CustomerRepository>();
 
         }

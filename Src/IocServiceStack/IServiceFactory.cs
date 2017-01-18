@@ -23,11 +23,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-
 namespace IocServiceStack
 {
-   
+    using System;
     public interface IServiceFactory : IServiceWorker
     {
         ServiceInfo GetServiceInfo(Type contractType);

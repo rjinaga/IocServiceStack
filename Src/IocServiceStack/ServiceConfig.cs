@@ -34,15 +34,16 @@ namespace IocServiceStack
         private IServiceProvider _serviceProvider;
         private List<DecoratorAttribute> _decorators;
 
-        internal ServiceOptions ServiceOptions => _serviceOptions;
-        internal IServiceProvider ServiceProvider => _serviceProvider;
-        public List<DecoratorAttribute> Decorators => _decorators;
-
         public ServiceConfig()
         {
             _serviceOptions = new ServiceOptions();
             _decorators = new List<DecoratorAttribute>();
         }
+
+        public List<DecoratorAttribute> Decorators => _decorators;
+        internal ServiceOptions ServiceOptions => _serviceOptions;
+        internal IServiceProvider ServiceProvider => _serviceProvider;
+        
 
         public IServiceConfig Services(Action<ServiceOptions> config)
         {

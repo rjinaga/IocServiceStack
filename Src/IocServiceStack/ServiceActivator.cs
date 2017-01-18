@@ -34,6 +34,12 @@ namespace IocServiceStack
         private readonly Func<T> _creator;
         private readonly bool _isReusable;
 
+        public ServiceActivator(Func<T> creator, bool isReusable)
+        {
+            _creator = creator;
+            _isReusable = isReusable;
+        }
+
         TService IServiceActivator.CreateInstance<TService>() 
         {
             if (_isReusable)
@@ -56,10 +62,6 @@ namespace IocServiceStack
             }
         }
 
-        public ServiceActivator(Func<T> creator, bool isReusable)
-        {
-            _creator = creator;
-            _isReusable = isReusable;
-        }
+      
     }
 }

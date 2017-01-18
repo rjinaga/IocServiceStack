@@ -28,10 +28,32 @@ namespace IocServiceStack
     using System;
     public interface IServiceProvider
     {
+        /// <summary>
+        /// Sets decorator manager
+        /// </summary>
         IDecoratorManager DecoratorManager { set; }
+
+        /// <summary>
+        /// Sets current instance's container
+        /// </summary>
+        IocContainer IocContainer { set; }
+
+        /// <summary>
+        /// Get root service factory
+        /// </summary>
+        /// <returns></returns>
+        IServiceFactory GetServiceFactory();
+
+        /// <summary>
+        /// Get dependency factory by specified name.
+        /// </summary>
+        /// <param name="name">The name of the dependency factory</param>
+        /// <returns></returns>
+        IContainerService GetDependencyFactory(string name);
+
 
         T GetService<T>() where T : class;
         object GetService(Type contractType);
-        IServiceFactory GetServiceFactory();
+        
     }
 }

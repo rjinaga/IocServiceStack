@@ -30,14 +30,14 @@ namespace IocServiceStack
         private IServiceProvider _serviceProvider;
         private readonly ServiceConfig _config;
         
-        internal ServiceConfig Config => _config;
-        public IServiceProvider ServiceProvider => _serviceProvider;
-
         public IocContainer(ServiceConfig config)
         {
             _config = config;
             Prepare();
         }
+
+        internal ServiceConfig Config => _config;
+        public IServiceProvider ServiceProvider => _serviceProvider;
 
         private void Prepare()
         {

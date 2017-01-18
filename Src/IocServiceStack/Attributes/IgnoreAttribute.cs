@@ -27,7 +27,7 @@ namespace IocServiceStack
 {
     using System;
     /// <summary>
-    /// This attribute bypasses the dependency injector and set the default value of the type for specified parameter.
+    /// This attribute bypasses the dependency injector and set the default value of the type of the specified parameters.
     /// </summary>
     [AttributeUsage(AttributeTargets.Constructor, AllowMultiple = false)]
     public sealed class IgnoreAttribute : Attribute

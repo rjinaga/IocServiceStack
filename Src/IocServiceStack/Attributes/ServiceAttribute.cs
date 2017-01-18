@@ -31,7 +31,7 @@ namespace IocServiceStack
     public class ServiceAttribute : Attribute
     {
         /// <summary>
-        /// if IsReusable set to true then multiple requests are served with the same instance.
+        /// if IsReusable property set to true then multiple requests are served with the same instance.
         /// </summary>
         public bool IsReusable { get; set; }
     }

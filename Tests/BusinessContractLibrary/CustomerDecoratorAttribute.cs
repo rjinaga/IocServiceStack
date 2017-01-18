@@ -36,10 +36,10 @@ namespace BusinessContractLibrary
         public override void OnAfterInvoke(ServiceCallContext context)
         {
             //Set Default Value
-            if (context.ServiceInstance is ICustomer)
+            var customer = context.ServiceInstance as ICustomer;
+            if (customer != null)
             {
-                dynamic obj = context.ServiceInstance;
-                obj.AdditionalData = "Gold Customer";
+                customer.AdditionalData = "Gold Customer";
             }
         }
     }
