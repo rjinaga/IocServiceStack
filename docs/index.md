@@ -189,7 +189,6 @@ namespace DataService
 ```
 
 ### Accessing service from the Global IoC Container
-`ServiceManager` static class is a wrapper for global IoC container.
 
 ```c#
 var customerService = ServiceManager.GetService<ICustomer>();
