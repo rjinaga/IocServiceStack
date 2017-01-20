@@ -200,7 +200,7 @@ var customerService = ServiceManager.GetService<ICustomer>();
 You can replace with another service which is already discovered by the IocServiceStack, or add a new service.
 
 ```c#
-var factoryService = configRef.GetFactoryService();
+var factoryService = configRef.GetServiceFactory();
 
 /*Dependency Injection*/
 factoryService.Replace<ICustomer, CustomerService2>()
@@ -317,11 +317,11 @@ namespace BusinessContractLibrary
 IocServiceStack.Gateway and IocServiceStack.Client libraries make the logical layered application into physical layered application that builts using IocServiceStack.
 
 
-### Web Application Architecture using IocServiceStack
+### ASP.NET Web Application Architecture using IocServiceStack
 
 [https://github.com/rjinaga/Web-App-Architecture-Using-IocServiceStack](https://github.com/rjinaga/Web-App-Architecture-Using-IocServiceStack)
 
-### Web Application N-Tier Architecture
+### ASP.NET Web Application N-Tier Architecture
 
 [https://github.com/rjinaga/Web-N-Tier-Architecture](https://github.com/rjinaga/Web-N-Tier-Architecture)
 
