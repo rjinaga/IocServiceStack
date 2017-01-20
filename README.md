@@ -13,7 +13,7 @@ IocServiceStack is a open source .NET library for multi-services communication t
 ```
 PM> Install-Package IocServiceStack 
 ```
-[![NuGet Pre Release](https://img.shields.io/badge/nuget-Pre%20Release-yellow.svg)](https://www.nuget.org/packages/IocServiceStack/)
+[![NuGet Release](https://img.shields.io/badge/nuget-v1.0.0-blue.svg)](https://www.nuget.org/packages/IocServiceStack/)
 
 
 ## Documentation Url
