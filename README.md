@@ -19,3 +19,7 @@ PM> Install-Package IocServiceStack
 ## Documentation Url
 
 [http://www.iocservicestack.net](http://www.iocservicestack.net)
+
+### Wiki
+
+[https://github.com/rjinaga/IocServiceStack/wiki](https://github.com/rjinaga/IocServiceStack/wiki)
