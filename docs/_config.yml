@@ -2,7 +2,7 @@ theme: jekyll-theme-cayman
 
 # Setup
 title: IocServiceStack .Net
-tagline: A multi-service and multi-level dependency injection .net libraray
+tagline: A multi-service and multi-level dependency injection .net framework
 baseurl: ""
 paginate: 1
 
