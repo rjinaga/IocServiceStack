@@ -1,6 +1,6 @@
 {
   "title": "IocServiceStack",
-  "version": "1.0.0",
+  "version": "1.1.0-beta-1",
   "dependencies": {
   },
 
@@ -17,6 +17,7 @@
   },
 
   "buildOptions": {
+    "warningsAsErrors": true,
     "keyFile": "../../tools/servicerouter.snk"
     //"xmlDoc": true
   },
@@ -29,7 +30,7 @@
 
   "packOptions": {
     "summary": "IocServiceStack is a open source .NET library for multi-services communication through multi-level dependency injection. This separates the concerns of application layers. This makes the layers configurable. Check out http://www.iocservicestack.net for more information.",
-    "tags": [ ".NET", "DependencyInjection", "IoC" ],
+    "tags": [ "DependencyInjection", "IoC", "IocServiecStack" ],
     "owners": [ "Rajeswara Rao Jinaga" ],
     "projectUrl": "https://github.com/rjinaga/IocServiceStack"
   }

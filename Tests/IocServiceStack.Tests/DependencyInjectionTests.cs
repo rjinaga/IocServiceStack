@@ -48,6 +48,7 @@ namespace IocServiceStack.Tests
             factoryService.Replace<ICustomer, CustomerService2>()
                           .DependencyFactory
                           .Replace<ICustomerRepository, CustomerRepository2>();
+
             //Act
             var service = ServiceManager.GetService<ICustomer>();
 

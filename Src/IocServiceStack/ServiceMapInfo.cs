@@ -1,5 +1,5 @@
 ﻿#region License
-// Copyright (c) 2016 Rajeswara-Rao-Jinaga
+// Copyright (c) 2016-2017 Rajeswara-Rao-Jinaga
 //
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
@@ -25,11 +25,9 @@
 
 namespace IocServiceStack
 {
-    using System;
-
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple =false)]
-    public class ContractAttribute : Attribute
+    public sealed class ServiceMapInfo
     {
-
+        public ServiceInfo DefaultService;
+        public ServicesPoint Services;
     }
 }

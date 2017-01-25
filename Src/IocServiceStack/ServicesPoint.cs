@@ -1,5 +1,5 @@
 ﻿#region License
-// Copyright (c) 2016 Rajeswara-Rao-Jinaga
+// Copyright (c) 2016-2017 Rajeswara-Rao-Jinaga
 //
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
@@ -23,13 +23,14 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
+
 namespace IocServiceStack
 {
     using System;
+    using System.Collections.Generic;
 
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple =false)]
-    public class ContractAttribute : Attribute
+    public class ServicesPoint : Dictionary<string, ServiceInfo>
     {
-
+        public ServicesPoint() : base(StringComparer.OrdinalIgnoreCase) { }
     }
 }

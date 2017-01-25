@@ -44,12 +44,18 @@ namespace IocServiceStack
 
         public IocContainer IocContainer
         {
-            get;set;
+            get; set;
         }
 
         public virtual T GetService<T>() where T : class
         {
-            InvocationInfo info = BeforeInvoke(typeof(T));
+            InvocationInfo info = BeforeInvoke(typeof(T), null);
+
+            //if no service information is returned, we cannot process further return with default value.
+            if (info.ServiceInfo == null)
+            {
+                return default(T);
+            }
 
             var objectInstance = _internalsm.GetServiceFactory()?.Create<T>(info.ServiceInfo);
 
@@ -58,9 +64,66 @@ namespace IocServiceStack
             return objectInstance;
 
         }
+
+        public virtual T GetService<T>(string serviceName) where T : class
+        {
+            if (string.IsNullOrWhiteSpace(serviceName))
+            {
+                ExceptionHelper.ThrowArgumentNullException(nameof(serviceName));
+            }
+
+            InvocationInfo info = BeforeInvoke(typeof(T), serviceName);
+
+            //if no service information is returned, we cannot process further return with default value.
+            if (info.ServiceInfo == null)
+            {
+                return default(T);
+            }
+
+            var objectInstance = _internalsm.GetServiceFactory()?.Create<T>(info.ServiceInfo);
+
+            AfterInvoke(objectInstance, info.ServiceCallContext, info.ServiceInfo.Decorators);
+
+            return objectInstance;
+
+        }
+
         public virtual object GetService(Type contractType)
         {
-            InvocationInfo info = BeforeInvoke(contractType);
+            if (contractType == null)
+            {
+                ExceptionHelper.ThrowArgumentNullException(nameof(contractType));
+            }
+
+            InvocationInfo info = BeforeInvoke(contractType, null);
+
+            //if no service information is returned, we cannot process further return with default value.
+            if (info.ServiceInfo == null)
+            {
+                return null;
+            }
+
+            var objectInstance = _internalsm.GetServiceFactory()?.Create(contractType, info.ServiceInfo);
+
+            AfterInvoke(objectInstance, info.ServiceCallContext, info.ServiceInfo.Decorators);
+
+            return objectInstance;
+        }
+
+        public virtual object GetService(Type contractType, string serviceName)
+        {
+            if (string.IsNullOrWhiteSpace(serviceName))
+            {
+                ExceptionHelper.ThrowArgumentNullException(nameof(serviceName));
+            }
+
+            InvocationInfo info = BeforeInvoke(contractType, serviceName);
+
+            //if no service information is returned, we cannot process further return with default value.
+            if (info.ServiceInfo == null)
+            {
+                return null;
+            }
 
             var objectInstance = _internalsm.GetServiceFactory()?.Create(contractType, info.ServiceInfo);
 
@@ -94,10 +157,15 @@ namespace IocServiceStack
         }
 
 
-        protected InvocationInfo BeforeInvoke(Type contractType)
+        protected InvocationInfo BeforeInvoke(Type contractType, string serviceName)
         {
             var factory = _internalsm.GetServiceFactory();
-            ServiceInfo serviceInfo = factory.GetServiceInfo(contractType);
+            ServiceInfo serviceInfo = factory.GetServiceInfo(contractType, serviceName);
+
+            if (serviceInfo == null)
+            {
+                return default(InvocationInfo);
+            }
 
             ServiceCallContext callContext = ServiceCallContext.Create(contractType, serviceInfo.ServiceType, IocContainer);
             InvokeDecorator(callContext, InvocationCase.Before, serviceInfo.Decorators);
@@ -116,7 +184,6 @@ namespace IocServiceStack
             DecoratorManager.Execute(context, @case, localDecorators);
         }
 
-   
         protected struct InvocationInfo
         {
             public ServiceInfo ServiceInfo;

@@ -53,7 +53,10 @@ namespace IocServiceStack
 
 
         T GetService<T>() where T : class;
+        T GetService<T>(string serviceName) where T : class;
+
         object GetService(Type contractType);
-        
+        object GetService(Type contractType, string serviceName);
+
     }
 }

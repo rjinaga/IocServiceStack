@@ -38,13 +38,30 @@ namespace IocServiceStack
         public readonly Type ServiceType;
         public readonly DecoratorAttribute[] Decorators;
 
-        public ServiceInfo(Type serviceType, DecoratorAttribute[] decorators)
+        /// <summary>
+        /// Name of the service
+        /// </summary>
+        public readonly string ServiceName;
+
+
+        public ServiceInfo(Type serviceType, DecoratorAttribute[] decorators) : this(serviceType, decorators, null)
         {
             ServiceType = serviceType;
             Decorators = decorators;
         }
 
-        public ServiceInfo(Type serviceType, DecoratorAttribute[] decorators, bool isReusable) : this(serviceType, decorators)
+        public ServiceInfo(Type serviceType, DecoratorAttribute[] decorators, string serviceName)
+        {
+            ServiceType = serviceType;
+            Decorators = decorators;
+        }
+
+        public ServiceInfo(Type serviceType, DecoratorAttribute[] decorators, bool isReusable, string serviceName) : this(serviceType, decorators, serviceName)
+        {
+            _isReusable = isReusable;
+        }
+
+        public ServiceInfo(Type serviceType, DecoratorAttribute[] decorators, bool isReusable) : this(serviceType, decorators, null)
         {
             _isReusable = isReusable;
         }

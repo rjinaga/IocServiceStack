@@ -39,12 +39,23 @@ namespace IocServiceStack
 
         }
 
-        public virtual ServiceInfo GetServiceInfo(Type contractType)
+        public virtual ServiceInfo GetServiceInfo(Type contractType, string serviceName)
         {
             if (!ServicesMapTable.Contains(contractType))
                 throw ExceptionHelper.ThrowServiceNotRegisteredException(contractType.Name);
 
-            return ServicesMapTable[contractType];
+            if (string.IsNullOrEmpty(serviceName))
+            {
+                return ServicesMapTable[contractType];
+            }
+            {
+                return ServicesMapTable[contractType, serviceName];
+            }
+        }
+
+        public virtual ServiceInfo GetServiceInfo(Type contractType)
+        {
+            return GetServiceInfo(contractType, null);
         }
 
         public virtual T Create<T>(ServiceInfo serviceMeta) where T : class
@@ -91,10 +102,38 @@ namespace IocServiceStack
 
         }
 
-        public IContainerExtension Add<TC>(Func<TC> serviceAction) where TC : class
+        public IContainerExtension Add<TC>(Func<TC> expression) where TC: class
+        {
+            return AddInternal<TC>(expression, null);
+        }
+        public IContainerExtension Add<TC>(Func<TC> expression, string serviceName) where TC : class
+        {
+            if (string.IsNullOrEmpty(serviceName))
+            {
+                ExceptionHelper.ThrowArgumentNullException(nameof(serviceName));
+            }
+
+            return AddInternal<TC>(expression, serviceName);
+        }
+
+        public IContainerExtension Replace<TC>(Func<TC> expression) where TC : class
+        {
+            return ReplaceInternal<TC>(expression, null);
+        }
+        public IContainerExtension Replace<TC>(Func<TC> expression, string serviceName) where TC : class
+        {
+            if (string.IsNullOrEmpty(serviceName))
+            {
+                ExceptionHelper.ThrowArgumentNullException(nameof(serviceName));
+            }
+
+            return ReplaceInternal<TC>(expression, serviceName);
+        }
+
+        private IContainerExtension AddInternal<TC>(Func<TC> serviceAction, string serviceName) where TC : class
         {
             Type interfaceType = typeof(TC);
-            var serviceMeta = new ServiceInfo<TC>(serviceAction, ServiceInfo.GetDecorators(interfaceType));
+            var serviceMeta = new ServiceInfo<TC>(serviceAction, ServiceInfo.GetDecorators(interfaceType), serviceName);
 
             ServicesMapTable.Add(interfaceType, serviceMeta);
 
@@ -104,12 +143,12 @@ namespace IocServiceStack
             return this;
         }
 
-        public IContainerExtension Replace<TC>(Func<TC> expression) where TC : class
+        private IContainerExtension ReplaceInternal<TC>(Func<TC> expression, string serviceName) where TC : class
         {
             Type interfaceType = typeof(TC);
-            var serviceMeta = new ServiceInfo<TC>(expression, ServiceInfo.GetDecorators(interfaceType));
+            var serviceMeta = new ServiceInfo<TC>(expression, ServiceInfo.GetDecorators(interfaceType), serviceName);
 
-            ServicesMapTable[interfaceType] = serviceMeta;
+            ServicesMapTable.AddOrReplace(interfaceType,serviceMeta);
 
             //send update to observer
             ContractObserver.Update(interfaceType);

@@ -29,6 +29,9 @@ namespace IocServiceStack
     public interface IContainerExtension : IContainerService
     {
         IContainerExtension Add<TC>(Func<TC> expression) where TC : class;
+        IContainerExtension Add<TC>(Func<TC> expression, string serviceName) where TC : class;
+
         IContainerExtension Replace<TC>(Func<TC> expression) where TC : class;
+        IContainerExtension Replace<TC>(Func<TC> expression, string serviceName) where TC : class;
     }
 }

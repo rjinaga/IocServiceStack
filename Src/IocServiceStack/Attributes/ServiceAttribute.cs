@@ -31,6 +31,11 @@ namespace IocServiceStack
     public class ServiceAttribute : Attribute
     {
         /// <summary>
+        /// Sets or Gets name of the service, name of the service must be unique for that particular contract
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// if IsReusable property set to true then multiple requests are served with the same instance.
         /// </summary>
         public bool IsReusable { get; set; }

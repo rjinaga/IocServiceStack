@@ -88,12 +88,11 @@ namespace IocServiceStack
             }
         }
 
-
         public IContainerService Add<TC, TS>()
           where TC : class
           where TS : class
         {
-            return Add<TC>(typeof(TS));
+            return AddInternal<TC>(typeof(TS), null);
         }
 
         /// <summary>
@@ -104,36 +103,59 @@ namespace IocServiceStack
         /// <returns>Instance <see cref="IContainerService"/> of current object</returns>
         public virtual IContainerService Add<T>(Type service) where T : class
         {
-            Type interfaceType = typeof(T);
-            var serviceMeta = new ServiceInfo(service, ServiceInfo.GetDecorators(interfaceType));
-            ServicesMapTable.Add(interfaceType, serviceMeta);
-
-            //send update to observer
-            ContractObserver.Update(interfaceType);
-
-            return this;
+            return AddInternal<T>(typeof(T), null);
         }
 
+        public IContainerService Add<TC, TS>(string serviceName)
+           where TC : class
+           where TS : class
+        {
+            if (string.IsNullOrEmpty(serviceName))
+            {
+                ExceptionHelper.ThrowArgumentNullException(nameof(serviceName));
+            }
+
+            return AddInternal<TC>(typeof(TS), serviceName);
+        }
+
+        public IContainerService Add<T>(Type service, string serviceName) where T : class
+        {
+            if (string.IsNullOrEmpty(serviceName))
+            {
+                ExceptionHelper.ThrowArgumentNullException(nameof(serviceName));
+            }
+
+            return AddInternal<T>(service, serviceName);
+        }
+
+
+
         public IContainerService AddSingleton<TC, TS>()
+        where TC : class
+        where TS : class
+        {
+            return AddSingletonInternal<TC, TS>(null);
+        }
+
+        public IContainerService AddSingleton<TC, TS>(string serviceName)
             where TC : class
             where TS : class
         {
-            Type interfaceType = typeof(TC);
-            var serviceMeta = new ServiceInfo<TS>(isReusable: true, decorators: ServiceInfo.GetDecorators(interfaceType) );
-
-            ServicesMapTable.Add(interfaceType, serviceMeta);
-
-            //send update to observer
-            ContractObserver.Update(interfaceType);
-
-            return this;
+            if (string.IsNullOrEmpty(serviceName))
+            {
+                ExceptionHelper.ThrowArgumentNullException(nameof(serviceName));
+            }
+            return AddSingletonInternal<TC, TS>(serviceName);
         }
+
+
+
 
         public IContainerService Replace<TC, TS>()
           where TC : class
           where TS : class
         {
-            return Replace<TC>(typeof(TS));
+            return ReplaceInternal<TC>(typeof(TS), null);
         }
 
         /// <summary>
@@ -144,29 +166,40 @@ namespace IocServiceStack
         /// <returns></returns>
         public virtual IContainerService Replace<T>(Type service) where T : class
         {
-            Type interfaceType = typeof(T);
-            ServicesMapTable[interfaceType] = new ServiceInfo(service, ServiceInfo.GetDecorators(interfaceType));
+            return ReplaceInternal<T>(service, null);
+        }
 
-            //send update to observer
-            ContractObserver.Update(interfaceType);
+        public IContainerService Replace<TC, TS>(string serviceName)
+          where TC : class
+          where TS : class
+        {
+            return ReplaceInternal<TC>(typeof(TS), serviceName);
+        }
 
-            return this;
+        public IContainerService Replace<T>(Type service, string serviceName) where T : class
+        {
+            return ReplaceInternal<T>(service, serviceName);
+        }
+
+
+        public IContainerService ReplaceSingleton<TC, TS>(string serviceName)
+            where TC : class
+            where TS : class
+        {
+            if (string.IsNullOrEmpty(serviceName))
+            {
+                ExceptionHelper.ThrowArgumentNullException(nameof(serviceName));
+            }
+            return ReplaceSingletonInternal<TC, TS>(serviceName);
         }
 
         public IContainerService ReplaceSingleton<TC, TS>()
             where TC : class
             where TS : class
         {
-            Type interfaceType = typeof(TC);
-            var serviceMeta = new ServiceInfo<TS>(isReusable:true, decorators: ServiceInfo.GetDecorators(interfaceType));
-
-            ServicesMapTable[interfaceType] = serviceMeta;
-
-            //send update to observer
-            ContractObserver.Update(interfaceType);
-
-            return this;
+            return ReplaceSingletonInternal<TC, TS>(null);
         }
+
 
         protected Expression CreateConstructorExpression(Type interfaceType, Type serviceType, ServiceRegistrar registrar)
         {
@@ -188,7 +221,7 @@ namespace IocServiceStack
                     foreach (var constrParameter in constructorParametersInfo)
                     {
 
-                        bool ignore = ignoreAttribute?.ParameterNames.Contains(constrParameter.Name)??false;
+                        bool ignore = ignoreAttribute?.ParameterNames.Contains(constrParameter.Name) ?? false;
 
                         if (ignore)
                         {
@@ -207,6 +240,61 @@ namespace IocServiceStack
 
             //Default constructor
             return Expression.New(serviceType);
+        }
+
+
+        private IContainerService AddInternal<T>(Type service, string serviceName) where T : class
+        {
+            Type interfaceType = typeof(T);
+            var serviceMeta = new ServiceInfo(service, ServiceInfo.GetDecorators(interfaceType));
+            ServicesMapTable.Add(interfaceType, serviceMeta);
+
+            //send update to observer
+            ContractObserver.Update(interfaceType);
+
+            return this;
+        }
+
+
+        private IContainerService ReplaceInternal<T>(Type service, string serviceName) where T : class
+        {
+            Type interfaceType = typeof(T);
+            ServicesMapTable.AddOrReplace(interfaceType, new ServiceInfo(service, ServiceInfo.GetDecorators(interfaceType), serviceName));
+
+            //send update to observer
+            ContractObserver.Update(interfaceType);
+
+            return this;
+        }
+
+        private IContainerService AddSingletonInternal<TC, TS>(string serviceName)
+        where TC : class
+        where TS : class
+        {
+            Type interfaceType = typeof(TC);
+            var serviceMeta = new ServiceInfo<TS>(isReusable: true, decorators: ServiceInfo.GetDecorators(interfaceType), serviceName: serviceName);
+
+            ServicesMapTable.Add(interfaceType, serviceMeta);
+
+            //send update to observer
+            ContractObserver.Update(interfaceType);
+
+            return this;
+        }
+
+        private IContainerService ReplaceSingletonInternal<TC, TS>(string serviceName)
+        where TC : class
+        where TS : class
+        {
+            Type interfaceType = typeof(TC);
+            var serviceMeta = new ServiceInfo<TS>(isReusable: true, decorators: ServiceInfo.GetDecorators(interfaceType), serviceName: serviceName);
+
+            ServicesMapTable.AddOrReplace(interfaceType, serviceMeta);
+
+            //send update to observer
+            ContractObserver.Update(interfaceType);
+
+            return this;
         }
     }
 }

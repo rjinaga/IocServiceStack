@@ -46,5 +46,46 @@ namespace IocServiceStack.Tests
 
             //Assert.IsInstanceOf<CustomerRepository>(customerService.GetRepository());
         }
+
+        [Test]
+        public void Sale_DefaultService_Test()
+        {
+            //Arrange & Act
+            var sale = GetService<AbastractSale>();
+
+            //Assert
+            Assert.IsNull(sale);
+
+        }
+
+        [Test]
+        public void Sale_Online_Test()
+        {
+            //Arrange & Act
+            var sale = GetService<AbastractSale>("Online");
+
+            //Assert
+            Assert.IsNotNull(sale);
+
+            var orderSuccess = sale.ProcessOrder();
+
+            Assert.IsInstanceOf<OnlineSale>(sale);
+            Assert.AreEqual(orderSuccess, "Online");
+        }
+
+        [Test]
+        public void Sale_Direct_Test()
+        {
+            //Arrange & Act
+            var sale = GetService<AbastractSale>("direct");
+
+            //Assert
+            Assert.IsNotNull(sale);
+
+            var orderSuccess = sale.ProcessOrder();
+
+            Assert.IsInstanceOf<DirectSale>(sale);
+            Assert.AreEqual(orderSuccess, "Direct");
+        }
     }
 }

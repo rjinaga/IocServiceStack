@@ -38,7 +38,8 @@ namespace IocServiceStack
         SubcontractFactory DependencyFactory { get; set; }
 
         IContainerService Add<TC, TS>() where TC : class where TS : class;
-        
+        IContainerService Add<TC, TS>(string serviceName) where TC : class where TS : class;
+
         /// <summary>
         /// Adds the specified service to the factory
         /// </summary>
@@ -46,13 +47,15 @@ namespace IocServiceStack
         /// <param name="service">The type of the service</param>
         /// <returns>Instance <see cref="IContainerService"/> of current object</returns>
         IContainerService Add<T>(Type service) where T : class;
+        IContainerService Add<T>(Type service, string serviceName) where T : class;
 
         IContainerService AddSingleton<TC, TS>() where TC : class where TS : class;
+        IContainerService AddSingleton<TC, TS>(string serviceName) where TC : class where TS : class;
 
 
         IContainerService Replace<TC, TS>() where TC : class where TS : class;
-        
-        
+        IContainerService Replace<TC, TS>(string serviceName) where TC : class where TS : class;
+
         /// <summary>
         /// Replaces the specified service in the factory.
         /// </summary>
@@ -60,7 +63,9 @@ namespace IocServiceStack
         /// <param name="service">The type of the service</param>
         /// <returns>Instance <see cref="IContainerService"/> of current object</returns>
         IContainerService Replace<T>(Type service) where T : class;
+        IContainerService Replace<T>(Type service, string serviceName) where T : class;
 
         IContainerService ReplaceSingleton<TC, TS>() where TC : class where TS : class;
+        IContainerService ReplaceSingleton<TC, TS>(string serviceName) where TC : class where TS : class;
     }
 }

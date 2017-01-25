@@ -23,13 +23,14 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace IocServiceStack
+namespace BusinessContractLibrary
 {
-    using System;
+    using IocServiceStack;
 
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple =false)]
-    public class ContractAttribute : Attribute
+    [Contract]
+    public abstract class AbastractSale
     {
-
+        public abstract string ProcessOrder();
     }
 }
+
