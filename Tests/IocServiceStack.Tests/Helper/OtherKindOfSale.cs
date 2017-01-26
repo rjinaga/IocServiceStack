@@ -13,4 +13,12 @@
             return "OtherKind";
         }
     }
+
+    public class MiscSale : AbstractSale
+    {
+        public override string ProcessOrder()
+        {
+            return "MiscSale";
+        }
+    }
 }

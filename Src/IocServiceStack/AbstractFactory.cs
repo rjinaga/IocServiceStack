@@ -246,7 +246,7 @@ namespace IocServiceStack
         private IContainerService AddInternal<T>(Type service, string serviceName) where T : class
         {
             Type interfaceType = typeof(T);
-            var serviceMeta = new ServiceInfo(service, ServiceInfo.GetDecorators(interfaceType));
+            var serviceMeta = new ServiceInfo(service, ServiceInfo.GetDecorators(interfaceType), serviceName);
             ServicesMapTable.Add(interfaceType, serviceMeta);
 
             //send update to observer

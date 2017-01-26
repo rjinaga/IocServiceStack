@@ -84,12 +84,15 @@ namespace IocServiceStack.Tests
             //Arrange
             var serviceFactory = Helper.TestsHelper.FactoryServicePointer.GetServiceFactory();
             serviceFactory.Add<AbstractSale>(() => new Helper.OtherKindOfSale(), "OtherKind");
+            serviceFactory.Add<AbstractSale, Helper.MiscSale>("MiscSale");
 
             //Act
             var sale = GetService<AbstractSale>("OtherKind");
+            var miscSale = GetService<AbstractSale>("MiscSale");
 
             //Assert
             Assert.IsInstanceOf<Helper.OtherKindOfSale>(sale);
+            Assert.IsInstanceOf<Helper.MiscSale>(miscSale);
         }
 
         [Test, Order(5)]
