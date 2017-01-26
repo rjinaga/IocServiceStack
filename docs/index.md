@@ -78,10 +78,10 @@ var configRef = IocServiceProvider.Configure(config =>
 configRef.GetServiceFactory()
          .Add<ICustomer, CustomerService>()
          .Add<IOrder, OrderService>()
-	 .Add<AbstractSale, OnlineSale>("Online")   /*Access: var onlineSale = ServiceManager.GetService<AbstractSale>("Online");  //get OnlineSale object */
-	 .Add<AbstractSale, PointOfSale>("Pos");    /*Access: var posSale = ServiceManager.GetService<AbstractSale>("Pos");  //get PointOfSale object */
+	 .Add<AbstractSale, OnlineSale>("Online")   /*Access: var onlineSale = ServiceManager.GetService<AbstractSale>("Online");  //Get OnlineSale object */
+	 .Add<AbstractSale, PointOfSale>("Pos");    /*Access: var posSale = ServiceManager.GetService<AbstractSale>("Pos");  //Get PointOfSale object */
 
-//Check multiple impelemenations of interface -> https://github.com/rjinaga/IocServiceStack/wiki/Accessing%20service%20by%20Name
+//Check multiple implementations of interface -> https://github.com/rjinaga/IocServiceStack/wiki/Accessing%20service%20by%20Name
 
 // Add dependencies at level - 2 
 configRef.GetDependencyFactory("DataContext") /* get dependency factory by name */
