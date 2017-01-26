@@ -3,7 +3,7 @@
 [![Gitter](https://badges.gitter.im/IocServiceStack/Lobby.svg)](https://gitter.im/IocServiceStack/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
 [![Build status](https://ci.appveyor.com/api/projects/status/bylhcbchnjas953q?svg=true)](https://ci.appveyor.com/project/rjinaga/iocservicestack)
 
-IocServiceStack is a open source .NET library for multi-services communication through multi-level dependency injection. This clearly separates the concerns of application layers. This makes the layers configurable, and it offers several ways to inject dependencies. 
+IocServiceStack is a open source .NET dependency injection framework. It supports multi-service communication through multi-level dependency injection. This clearly separates the concerns of application layers, and makes the layers configurable and it offers several ways to inject dependencies.
 
 ### Features:
 - Global IoC Container
@@ -11,7 +11,7 @@ IocServiceStack is a open source .NET library for multi-services communication t
 - Automatically maps the services to their contracts
 - Inject dependencies through decorators
 - Multi level dependencies
-- Replace or Add dependencies
+- Add or Replace dependencies
 - Highly extensible
 
 
@@ -325,6 +325,8 @@ IocServiceStack.Gateway and IocServiceStack.Client libraries make the logical la
 
 [https://github.com/rjinaga/Web-N-Tier-Architecture](https://github.com/rjinaga/Web-N-Tier-Architecture)
 
+### Wiki
+[https://github.com/rjinaga/IocServiceStack/wiki](https://github.com/rjinaga/IocServiceStack/wiki)
 
 
 
