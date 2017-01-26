@@ -4,7 +4,7 @@
     using IocServiceStack;
 
     [Service(Name = "Online")]
-    public class OnlineSale : AbastractSale
+    public class OnlineSale : AbstractSale
     {
         public override string ProcessOrder()
         {

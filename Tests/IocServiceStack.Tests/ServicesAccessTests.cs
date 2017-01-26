@@ -28,11 +28,12 @@ namespace IocServiceStack.Tests
     using BusinessContractLibrary;
     using BusinessService;
     using NUnit.Framework;
-    using static IocServiceStack.ServiceManager;
+    using static ServiceManager;
 
     public class ServicesAccessTests
     {
         [Test]
+        [Order(1)]
         public void CustomerService_Test()
         {
             //Arrange & Act
@@ -48,10 +49,11 @@ namespace IocServiceStack.Tests
         }
 
         [Test]
+        [Order(2)]
         public void Sale_DefaultService_Test()
         {
             //Arrange & Act
-            var sale = GetService<AbastractSale>();
+            var sale = GetService<AbstractSale>();
 
             //Assert
             Assert.IsNull(sale);
@@ -59,33 +61,47 @@ namespace IocServiceStack.Tests
         }
 
         [Test]
-        public void Sale_Online_Test()
+        [TestCase("Direct", typeof(DirectSale))]
+        [TestCase("Online", typeof(OnlineSale))]
+        [Order(3)]
+        public void Sale_Abstract_Test(string serviceName, System.Type expected)
         {
             //Arrange & Act
-            var sale = GetService<AbastractSale>("Online");
+            var sale = GetService<AbstractSale>(serviceName);
 
             //Assert
             Assert.IsNotNull(sale);
 
             var orderSuccess = sale.ProcessOrder();
-
-            Assert.IsInstanceOf<OnlineSale>(sale);
-            Assert.AreEqual(orderSuccess, "Online");
+            Assert.IsInstanceOf(expected,sale);
+            Assert.AreEqual(orderSuccess, serviceName);
         }
 
         [Test]
-        public void Sale_Direct_Test()
+        [Order(4)]
+        public void Inject_OtherKindOfSale_Test()
         {
-            //Arrange & Act
-            var sale = GetService<AbastractSale>("direct");
+            //Arrange
+            var serviceFactory = Helper.TestsHelper.FactoryServicePointer.GetServiceFactory();
+            serviceFactory.Add<AbstractSale>(() => new Helper.OtherKindOfSale(), "OtherKind");
+
+            //Act
+            var sale = GetService<AbstractSale>("OtherKind");
 
             //Assert
-            Assert.IsNotNull(sale);
+            Assert.IsInstanceOf<Helper.OtherKindOfSale>(sale);
+        }
 
-            var orderSuccess = sale.ProcessOrder();
-
-            Assert.IsInstanceOf<DirectSale>(sale);
-            Assert.AreEqual(orderSuccess, "Direct");
+        [Test, Order(5)]
+        //[Ignore("Ignore this test")]
+        public void GetService_Performance_DirectExpression_Test()
+        {
+            //Arrange & Act
+            const int OneMillionTimes = 1000000;
+            for (int i = 0; i < OneMillionTimes; i++)
+            {
+                var sale = GetService<AbstractSale>("OtherKind");
+            }
         }
     }
 }

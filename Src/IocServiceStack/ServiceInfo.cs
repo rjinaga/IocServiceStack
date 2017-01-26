@@ -54,6 +54,7 @@ namespace IocServiceStack
         {
             ServiceType = serviceType;
             Decorators = decorators;
+            ServiceName = serviceName;
         }
 
         public ServiceInfo(Type serviceType, DecoratorAttribute[] decorators, bool isReusable, string serviceName) : this(serviceType, decorators, serviceName)
@@ -65,7 +66,6 @@ namespace IocServiceStack
         {
             _isReusable = isReusable;
         }
-
 
         /// <summary>
         /// if IsReusable set to true then multiple requests are served with the same instance.

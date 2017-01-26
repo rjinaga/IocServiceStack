@@ -4,7 +4,7 @@
     using IocServiceStack;
 
     [Service(Name = "Direct")]
-    public class DirectSale : AbastractSale
+    public class DirectSale : AbstractSale
     {
         public override string ProcessOrder()
         {

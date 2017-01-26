@@ -30,6 +30,14 @@ namespace IocServiceStack
     [AttributeUsage(AttributeTargets.Class)]
     public class ServiceAttribute : Attribute
     {
+        public ServiceAttribute()
+        {
+        }
+        public ServiceAttribute(string serviceName)
+        {
+            Name = serviceName;
+        }
+
         /// <summary>
         /// Sets or Gets name of the service, name of the service must be unique for that particular contract
         /// </summary>

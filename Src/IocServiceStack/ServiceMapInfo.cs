@@ -29,5 +29,13 @@ namespace IocServiceStack
     {
         public ServiceInfo DefaultService;
         public ServicesPoint Services;
+
+        internal void CreateServicesIfNotInitialized()
+        {
+            if (Services == null)
+            {
+                Services = new ServicesPoint();
+            }
+        } 
     }
 }

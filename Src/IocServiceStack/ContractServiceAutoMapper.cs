@@ -129,13 +129,28 @@ namespace IocServiceStack
         /// <param name="serviceMeta"></param>
         public void Add(Type contractType, ServiceInfo serviceMeta)
         {
-            if (string.IsNullOrEmpty(serviceMeta.ServiceName))
+            if (string.IsNullOrEmpty(serviceMeta.ServiceName)) //if there's no default service
             {
-                _mapTable.Add(contractType, new ServiceMapInfo() { DefaultService = serviceMeta });
+                if (_mapTable.ContainsKey(contractType))
+                {
+                    _mapTable[contractType].DefaultService = serviceMeta;
+                }
+                else
+                {
+                    _mapTable.Add(contractType, new ServiceMapInfo() { DefaultService = serviceMeta });
+                }
             }
             else
             {
-                _mapTable.Add(contractType, new ServiceMapInfo() { Services = new ServicesPoint() { [serviceMeta.ServiceName] = serviceMeta } });
+                if (_mapTable.ContainsKey(contractType))
+                {
+                    _mapTable[contractType].CreateServicesIfNotInitialized();
+                    _mapTable[contractType].Services.Add(serviceMeta.ServiceName, serviceMeta);
+                }
+                else
+                {
+                    _mapTable.Add(contractType, new ServiceMapInfo() { Services = new ServicesPoint() { [serviceMeta.ServiceName] = serviceMeta } });
+                }
             }
         }
 

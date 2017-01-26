@@ -28,7 +28,7 @@ namespace BusinessContractLibrary
     using IocServiceStack;
 
     [Contract]
-    public abstract class AbastractSale
+    public abstract class AbstractSale
     {
         public abstract string ProcessOrder();
     }
