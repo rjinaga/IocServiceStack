@@ -61,7 +61,7 @@ var configRef = IocServiceProvider.Configure(config =>
 });
 ```
 
-### Manually wires up the services - Setup
+#### Manually wires up the services - Setup
 ```c#
 //Initialization
 var configRef = IocServiceProvider.Configure(config =>
