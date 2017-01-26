@@ -83,8 +83,9 @@ namespace IocServiceStack.Tests
         {
             //Arrange
             var serviceFactory = Helper.TestsHelper.FactoryServicePointer.GetServiceFactory();
-            serviceFactory.Add<AbstractSale>(() => new Helper.OtherKindOfSale(), "OtherKind");
-            serviceFactory.Add<AbstractSale, Helper.MiscSale>("MiscSale");
+
+            serviceFactory.Add<AbstractSale>(() => new Helper.OtherKindOfSale(), "OtherKind")
+                          .Add<AbstractSale, Helper.MiscSale>("MiscSale");
 
             //Act
             var sale = GetService<AbstractSale>("OtherKind");
@@ -104,6 +105,18 @@ namespace IocServiceStack.Tests
             for (int i = 0; i < OneMillionTimes; i++)
             {
                 var sale = GetService<AbstractSale>("OtherKind");
+            }
+        }
+
+        [Test, Order(6)]
+        //[Ignore("Ignore this test")]
+        public void GetService_Performance_IndirectExpression_Test()
+        {
+            //Arrange & Act
+            const int OneMillionTimes = 1000000;
+            for (int i = 0; i < OneMillionTimes; i++)
+            {
+                var sale = GetService<AbstractSale>("MiscSale");
             }
         }
     }

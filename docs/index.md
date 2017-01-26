@@ -32,7 +32,6 @@ PM> Install-Package IocServiceStack -Version 1.0.0
 ### IocServiceStack Setup 
 
 #### Automatically wires up the services - Setup
-
 ```c#
 var configRef = IocServiceProvider.Configure(config =>
 {
@@ -62,8 +61,7 @@ var configRef = IocServiceProvider.Configure(config =>
 });
 ```
 
-#### Manually wires up the services - Setup
-
+### Manually wires up the services - Setup
 ```c#
 //Initialization
 var configRef = IocServiceProvider.Configure(config =>
