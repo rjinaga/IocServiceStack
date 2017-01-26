@@ -22,15 +22,16 @@ IocServiceStack is a open source .NET dependency injection framework. It support
 
 ## [NuGet](https://www.nuget.org/packages/IocServiceStack/)
 ```
-PM> Install-Package IocServiceStack
+PM> Install-Package IocServiceStack -Version 1.0.0
 ```
 [![NuGet Release](https://img.shields.io/badge/nuget-v1.0.0-blue.svg)](https://www.nuget.org/packages/IocServiceStack/)
 
 
 ## Usage
 
-### IoC Service Stack Setup
+### IocServiceStack Setup 
 
+#### Automatically wires up the services - Setup
 ```c#
 var configRef = IocServiceProvider.Configure(config =>
 {
@@ -58,6 +59,29 @@ var configRef = IocServiceProvider.Configure(config =>
     });
   //.RegisterServiceProvider(new ProxyServiceProvider());
 });
+```
+#### Manually wires up the services - Setup
+
+```c#
+//Initialization
+var configRef = IocServiceProvider.Configure(config =>
+{
+    config.Services((service) =>
+    {
+       service.AddDependencies((dopt) => {
+            dopt.Name = "DataContext"; /*Dependency factory name */ 
+       });
+    });
+});
+
+//Add dependencies at level - 1 
+configRef.GetServiceFactory()
+         .Add<ICustomer, CustomerService>()
+         .Add<IOrder, OrderService>();
+
+// Add dependencies at level - 2 
+configRef.GetDependencyFactory("DataContext") /* get dependency factory by name */
+         .Add<IDbContext>(()=>new AdventureDbContext());
 ```
 
 ### Services and Contracts Implementations
@@ -318,11 +342,9 @@ IocServiceStack.Gateway and IocServiceStack.Client libraries make the logical la
 
 
 ### ASP.NET Web Application Architecture using IocServiceStack
-
 [https://github.com/rjinaga/Web-App-Architecture-Using-IocServiceStack](https://github.com/rjinaga/Web-App-Architecture-Using-IocServiceStack)
 
 ### ASP.NET Web Application N-Tier Architecture
-
 [https://github.com/rjinaga/Web-N-Tier-Architecture](https://github.com/rjinaga/Web-N-Tier-Architecture)
 
 ### Wiki
