@@ -156,7 +156,6 @@ namespace IocServiceStack
             return null;
         }
 
-
         protected InvocationInfo BeforeInvoke(Type contractType, string serviceName)
         {
             var factory = _internalsm.GetServiceFactory();

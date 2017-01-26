@@ -47,7 +47,6 @@ namespace IocServiceStack
             ServiceInfo serviceMeta = ServicesMapTable?[interfaceType];
 
             return CreateConstructorExpression(interfaceType, serviceMeta.ServiceType, registrar)?? Expression.Default(interfaceType);
-
         }
     }
 }

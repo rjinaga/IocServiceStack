@@ -82,15 +82,12 @@ namespace IocServiceStack
                 }
                 else
                 {
-                    //TODO
-                    //ExceptionHelper.ThrowOverrideObserverExpection
+                    ExceptionHelper.ThrowOverrideObserverExpection();
                 }
             }
         }
 
-        public IContainerService Add<TC, TS>()
-          where TC : class
-          where TS : class
+        public IContainerService Add<TC, TS>() where TC : class where TS : class
         {
             return AddInternal<TC>(typeof(TS), null);
         }
@@ -106,9 +103,7 @@ namespace IocServiceStack
             return AddInternal<T>(typeof(T), null);
         }
 
-        public IContainerService Add<TC, TS>(string serviceName)
-           where TC : class
-           where TS : class
+        public IContainerService Add<TC, TS>(string serviceName) where TC : class where TS : class
         {
             if (string.IsNullOrEmpty(serviceName))
             {
@@ -128,18 +123,12 @@ namespace IocServiceStack
             return AddInternal<T>(service, serviceName);
         }
 
-
-
-        public IContainerService AddSingleton<TC, TS>()
-        where TC : class
-        where TS : class
+        public IContainerService AddSingleton<TC, TS>() where TC : class where TS : class
         {
             return AddSingletonInternal<TC, TS>(null);
         }
 
-        public IContainerService AddSingleton<TC, TS>(string serviceName)
-            where TC : class
-            where TS : class
+        public IContainerService AddSingleton<TC, TS>(string serviceName) where TC : class where TS : class
         {
             if (string.IsNullOrEmpty(serviceName))
             {
@@ -148,12 +137,7 @@ namespace IocServiceStack
             return AddSingletonInternal<TC, TS>(serviceName);
         }
 
-
-
-
-        public IContainerService Replace<TC, TS>()
-          where TC : class
-          where TS : class
+        public IContainerService Replace<TC, TS>() where TC : class where TS : class
         {
             return ReplaceInternal<TC>(typeof(TS), null);
         }
@@ -182,9 +166,7 @@ namespace IocServiceStack
         }
 
 
-        public IContainerService ReplaceSingleton<TC, TS>(string serviceName)
-            where TC : class
-            where TS : class
+        public IContainerService ReplaceSingleton<TC, TS>(string serviceName) where TC : class where TS : class
         {
             if (string.IsNullOrEmpty(serviceName))
             {
@@ -193,13 +175,10 @@ namespace IocServiceStack
             return ReplaceSingletonInternal<TC, TS>(serviceName);
         }
 
-        public IContainerService ReplaceSingleton<TC, TS>()
-            where TC : class
-            where TS : class
+        public IContainerService ReplaceSingleton<TC, TS>() where TC : class where TS : class
         {
             return ReplaceSingletonInternal<TC, TS>(null);
         }
-
 
         protected Expression CreateConstructorExpression(Type interfaceType, Type serviceType, ServiceRegistrar registrar)
         {
@@ -242,7 +221,6 @@ namespace IocServiceStack
             return Expression.New(serviceType);
         }
 
-
         private IContainerService AddInternal<T>(Type service, string serviceName) where T : class
         {
             Type interfaceType = typeof(T);
@@ -255,7 +233,6 @@ namespace IocServiceStack
             return this;
         }
 
-
         private IContainerService ReplaceInternal<T>(Type service, string serviceName) where T : class
         {
             Type interfaceType = typeof(T);
@@ -267,9 +244,7 @@ namespace IocServiceStack
             return this;
         }
 
-        private IContainerService AddSingletonInternal<TC, TS>(string serviceName)
-        where TC : class
-        where TS : class
+        private IContainerService AddSingletonInternal<TC, TS>(string serviceName) where TC : class where TS : class
         {
             Type interfaceType = typeof(TC);
             var serviceMeta = new ServiceInfo<TS>(isReusable: true, decorators: ServiceInfo.GetDecorators(interfaceType), serviceName: serviceName);
@@ -282,9 +257,7 @@ namespace IocServiceStack
             return this;
         }
 
-        private IContainerService ReplaceSingletonInternal<TC, TS>(string serviceName)
-        where TC : class
-        where TS : class
+        private IContainerService ReplaceSingletonInternal<TC, TS>(string serviceName) where TC : class where TS : class
         {
             Type interfaceType = typeof(TC);
             var serviceMeta = new ServiceInfo<TS>(isReusable: true, decorators: ServiceInfo.GetDecorators(interfaceType), serviceName: serviceName);

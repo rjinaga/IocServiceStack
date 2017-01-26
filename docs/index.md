@@ -22,9 +22,9 @@ IocServiceStack is a open source .NET dependency injection framework. It support
 
 ## [NuGet](https://www.nuget.org/packages/IocServiceStack/)
 ```
-PM> Install-Package IocServiceStack -Version 1.0.0
+PM> Install-Package IocServiceStack -Pre
 ```
-[![NuGet Release](https://img.shields.io/badge/nuget-v1.0.0-blue.svg)](https://www.nuget.org/packages/IocServiceStack/)
+[![NuGet Release](https://img.shields.io/badge/nuget-v1.1.0--beta--2-blue.svg)](https://www.nuget.org/packages/IocServiceStack/)
 
 
 ## Usage
@@ -77,7 +77,11 @@ var configRef = IocServiceProvider.Configure(config =>
 //Add dependencies at level - 1 
 configRef.GetServiceFactory()
          .Add<ICustomer, CustomerService>()
-         .Add<IOrder, OrderService>();
+         .Add<IOrder, OrderService>()
+	 .Add<AbstractSale, OnlineSale>("Online")   /*Access: var onlineSale = ServiceManager.GetService<AbstractSale>("Online");  //get OnlineSale object */
+	 .Add<AbstractSale, PointOfSale>("Pos");    /*Access: var posSale = ServiceManager.GetService<AbstractSale>("Pos");  //get PointOfSale object */
+
+//Check multiple impelemenations of interface -> https://github.com/rjinaga/IocServiceStack/wiki/Accessing%20service%20by%20Name
 
 // Add dependencies at level - 2 
 configRef.GetDependencyFactory("DataContext") /* get dependency factory by name */
@@ -86,7 +90,7 @@ configRef.GetDependencyFactory("DataContext") /* get dependency factory by name 
 
 ### Services and Contracts Implementations
 
-IocServiceStack can map the services to their interfaces automatically, in order to work this function, set the Contract attribute to the interface and Service attribute to the class that implements the interface.
+IocServiceStack can map the services to their interfaces automatically, in order to work this function, set the Contract attribute to the interface and Service attribute to the class that implements the interface. ServiceInit attribute must be set to the constructor to be invoked.
 
 ```c#
 namespace BusinessContractLibrary

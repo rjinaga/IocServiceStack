@@ -61,7 +61,5 @@ namespace IocServiceStack
                 return _creator() as TService;
             }
         }
-
-      
     }
 }

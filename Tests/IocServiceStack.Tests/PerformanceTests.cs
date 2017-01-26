@@ -69,6 +69,7 @@ namespace IocServiceStack.Tests
             }
 
         }
+
         [Test, Order(3)]
         // [Ignore("Ignore this test")]
         public void GetService_Performance3_Test()

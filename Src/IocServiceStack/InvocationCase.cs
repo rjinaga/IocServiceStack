@@ -30,5 +30,4 @@ namespace IocServiceStack
         Before,
         After
     }
-
 }

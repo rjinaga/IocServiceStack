@@ -31,6 +31,7 @@ namespace IocServiceStack
     public class DefaultContractWorkObserver : IContractObserver
     {
         private Action<Type> _updateAction;
+
         public void OnUpdate(Action<Type> updateAction)
         {
             _updateAction = updateAction;

@@ -34,6 +34,7 @@ namespace IocServiceStack
         public ServiceInfo(DecoratorAttribute[] decorators, string serviceName) : base(typeof(T), decorators, serviceName)
         {
         }
+
         public ServiceInfo(bool isReusable, DecoratorAttribute[] decorators, string serviceName) : base(typeof(T), decorators, isReusable, serviceName)
         {
         }

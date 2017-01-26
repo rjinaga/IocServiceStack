@@ -43,7 +43,6 @@ namespace IocServiceStack
         /// </summary>
         public readonly string ServiceName;
 
-
         public ServiceInfo(Type serviceType, DecoratorAttribute[] decorators) : this(serviceType, decorators, null)
         {
             ServiceType = serviceType;
@@ -102,18 +101,11 @@ namespace IocServiceStack
         /// </summary>
         public IServiceActivator Activator { get; set; }
 
-
-        
         public virtual Func<T> GetActionInfo<T>() where T: class
         {
             return null;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="interfaceType"></param>
-        /// <param name="notifier"></param>
-        /// <returns></returns>
+  
         public ServiceRegistrar InitNewRegistrar(Type interfaceType, IServiceNotifier notifier)
         {
             _registrar = new ServiceRegistrar();
@@ -156,6 +148,5 @@ namespace IocServiceStack
             }
             return null;
         }
-
     }
 }

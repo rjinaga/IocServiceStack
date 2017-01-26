@@ -36,7 +36,14 @@ namespace IocServiceStack
             Prepare();
         }
 
+        /// <summary>
+        /// Gets <see cref="ServiceConfig"/> 
+        /// </summary>
         internal ServiceConfig Config => _config;
+
+        /// <summary>
+        /// Gets <see cref="IServiceProvider"/> 
+        /// </summary>
         public IServiceProvider ServiceProvider => _serviceProvider;
 
         private void Prepare()

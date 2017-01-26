@@ -53,6 +53,7 @@ namespace IocServiceStack
         }
 
         #region Static Members
+
         private static IServiceManager _serviceManager;
 
         static ServiceManager()
@@ -72,18 +73,22 @@ namespace IocServiceStack
         {
             return _serviceManager.GetService<T>();
         }
+
         public static T GetService<T>(string serviceName) where T : class
         {
             return _serviceManager.GetService<T>(serviceName);
         }
+
         public static object GetService(Type contractType)
         {
             return _serviceManager.GetService(contractType);
         }
+
         public static object GetService(Type contractType, string serviceName)
         {
             return _serviceManager.GetService(contractType, serviceName);
         }
+
         #endregion
     }
 }

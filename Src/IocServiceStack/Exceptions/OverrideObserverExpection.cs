@@ -1,5 +1,5 @@
 ﻿#region License
-// Copyright (c) 2016 Rajeswara-Rao-Jinaga
+// Copyright (c) 2016-2017 Rajeswara-Rao-Jinaga
 //
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
@@ -26,32 +26,12 @@
 namespace IocServiceStack
 {
     using System;
-    public static class ContainerServiceExtensions
+
+    /// <summary>
+    /// The exception that is thrown when observer is trying to overridden.
+    /// </summary>
+    public class OverrideObserverExpection : Exception
     {
-        public static IContainerExtension Add<TC>(this IContainerService service, Func<TC> expression) where TC : class
-        {
-            var containerExtension = service as IContainerExtension;
-            if (containerExtension != null)
-            {
-                containerExtension.Add<TC>(expression);
-            }
-            else
-                throw new Exception("Service factory is not implemented IContainerExtension");
 
-            return containerExtension;
-        }
-
-        public static IContainerExtension Replace<TC>(this IContainerService service, Func<TC> expression) where TC : class
-        {
-            var containerExtension = service as IContainerExtension;
-            if (containerExtension != null)
-            {
-                containerExtension.Replace<TC>(expression);
-            }
-            else
-                throw new Exception("Service factory is not implemented IContainerExtension");
-
-            return containerExtension;
-        }
     }
 }

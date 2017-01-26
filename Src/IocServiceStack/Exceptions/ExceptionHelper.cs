@@ -46,5 +46,10 @@ namespace IocServiceStack
         {
             throw new ArgumentNullException(name);
         }
+
+        internal static void ThrowOverrideObserverExpection()
+        {
+            throw new OverrideObserverExpection();
+        }
     }
 }

@@ -40,8 +40,19 @@ namespace IocServiceStack
             _decorators = new List<DecoratorAttribute>();
         }
 
+        /// <summary>
+        /// Gets collection of decorators of specified type
+        /// </summary>
         public List<DecoratorAttribute> Decorators => _decorators;
+
+        /// <summary>
+        /// Gets <see cref="ServiceOptions"/> 
+        /// </summary>
         internal ServiceOptions ServiceOptions => _serviceOptions;
+
+        /// <summary>
+        /// Gets <see cref="IServiceProvider"/>
+        /// </summary>
         internal IServiceProvider ServiceProvider => _serviceProvider;
         
 

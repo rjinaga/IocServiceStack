@@ -31,11 +31,12 @@ namespace IocServiceStack
 
     public abstract class SubcontractFactory : AbstractFactory
     {
-        public string Name { get; set; }
         public SubcontractFactory(string[] namespaces, Assembly[] assemblies, bool strictMode) : base(namespaces, assemblies, strictMode)
         {
-
         }
+
+        public string Name { get; set; }
+
         public abstract Expression Create(Type interfaceType, ServiceRegistrar register);
     }
 }

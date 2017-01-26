@@ -95,7 +95,6 @@ namespace IocServiceStack
             }
         }
 
-
         /// <summary>
         /// Determines whether <see cref="ContractServiceAutoMapper"/> contains specified contract type.
         /// </summary>
@@ -268,6 +267,7 @@ namespace IocServiceStack
                 }
             }
         }
+
         private void MapWithExistingService(ServiceAttribute serviceAttribute, ServiceMapTable services, Type interfaceType, Type serviceType)
         {
             var mapInfo = services[interfaceType];

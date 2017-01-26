@@ -106,6 +106,7 @@ namespace IocServiceStack
         {
             return AddInternal<TC>(expression, null);
         }
+
         public IContainerExtension Add<TC>(Func<TC> expression, string serviceName) where TC : class
         {
             if (string.IsNullOrEmpty(serviceName))
@@ -120,6 +121,7 @@ namespace IocServiceStack
         {
             return ReplaceInternal<TC>(expression, null);
         }
+
         public IContainerExtension Replace<TC>(Func<TC> expression, string serviceName) where TC : class
         {
             if (string.IsNullOrEmpty(serviceName))
