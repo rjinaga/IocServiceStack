@@ -125,15 +125,12 @@ namespace IocServiceStack
             }
         }
 
+        #region Static Members
         public static DecoratorAttribute[] GetDecorators(Type contractType)
         {
             IEnumerable<Attribute> attributes;
-
-#if NET46
-            attributes = contractType.GetCustomAttributes();
-#else
             attributes = contractType.GetTypeInfo().GetCustomAttributes();
-#endif
+
             if (attributes != null)
             {
                 List<DecoratorAttribute> decorators = new List<DecoratorAttribute>();
@@ -148,5 +145,7 @@ namespace IocServiceStack
             }
             return null;
         }
+        #endregion
+
     }
 }

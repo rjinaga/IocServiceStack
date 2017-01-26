@@ -27,6 +27,13 @@ namespace IocServiceStack
 {
     using System;
 
+    /*don't support the decorator for classes because there's a possibility to 
+     set default values in default constructor and allow the derived classes to
+     override. But the global decorator has a flexibility to override the constructed object.
+     
+    Not recommended decorators for classes, because it has alternate, 
+    but there's no alternate set some defaults for an interface.    */
+
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = true)]
     public abstract class DecoratorAttribute : Attribute
     {
@@ -34,5 +41,5 @@ namespace IocServiceStack
 
         public virtual void OnAfterInvoke(ServiceCallContext context) { }
     }
-    
+
 }

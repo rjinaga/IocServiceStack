@@ -1,6 +1,6 @@
 # IocServiceStack
 
-[![Gitter](https://badges.gitter.im/IocServiceStack/Lobby.svg)](https://gitter.im/IocServiceStack/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
+[![Gitter](https://badges.gitter.im/IocServiceStack/Lobby.svg)](https://gitter.im/IocServiceStack/IocServiceStack)
 [![Build status](https://ci.appveyor.com/api/projects/status/bylhcbchnjas953q?svg=true)](https://ci.appveyor.com/project/rjinaga/iocservicestack)
 
 IocServiceStack is a open source .NET dependency injection framework. It supports multi-service communication through multi-level dependency injection. This clearly separates the concerns of application layers, and makes the layers configurable and it offers several ways to inject dependencies.
@@ -14,18 +14,15 @@ IocServiceStack is a open source .NET dependency injection framework. It support
 - Add or Replace dependencies
 - Highly extensible
 
-
 ### Supports
 - .NET Core 1.0 (.NET Standard 1.6)
 - .NET Framework 4.6
-
 
 ## [NuGet](https://www.nuget.org/packages/IocServiceStack/)
 ```
 PM> Install-Package IocServiceStack -Pre
 ```
 [![NuGet Release](https://img.shields.io/badge/nuget-v1.1.0--beta--2-blue.svg)](https://www.nuget.org/packages/IocServiceStack/)
-
 
 ## Usage
 
@@ -135,7 +132,6 @@ namespace BusinessService
     }
 }
 
-
 namespace RepositoryService
 {
     using IocServiceStack;
@@ -188,7 +184,6 @@ namespace RepositoryService
     }
 }
 
-
 namespace DataContractLibrary
 {
     using IocServiceStack;
@@ -221,7 +216,6 @@ namespace DataService
 
 ```c#
 var customerService = ServiceManager.GetService<ICustomer>();
-
 ```
 
 ### Dependency Injection
