@@ -30,7 +30,7 @@ namespace IocServiceStack
 
     public interface IServiceConfig
     {
-        IServiceConfig Services(Action<ServiceOptions> config);
+        IServiceConfig AddServices(Action<ServiceOptions> config);
 
         IServiceConfig RegisterServiceProvider(IServiceProvider serviceProvider);
     }

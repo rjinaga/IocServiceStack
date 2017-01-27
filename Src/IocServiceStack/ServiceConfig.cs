@@ -54,9 +54,16 @@ namespace IocServiceStack
         /// Gets <see cref="IServiceProvider"/>
         /// </summary>
         internal IServiceProvider ServiceProvider => _serviceProvider;
-        
 
+
+        [Obsolete("Use AddServices method instead of this method",true)]
         public IServiceConfig Services(Action<ServiceOptions> config)
+        {
+            config(_serviceOptions);
+            return this;
+        }
+
+        public IServiceConfig AddServices(Action<ServiceOptions> config)
         {
             config(_serviceOptions);
             return this;

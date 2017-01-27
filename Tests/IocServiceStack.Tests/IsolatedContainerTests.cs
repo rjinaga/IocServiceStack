@@ -34,17 +34,20 @@ namespace IocServiceStack.Tests
         {
             var configRef = IocServiceProvider.CreateIocContainer(config =>
             {
-                config.Services((opt) =>
+                config.AddServices((opt) =>
                 {
                 });
             });
 
-            configRef.GetServiceFactory().Add<IEmployee, Employee>();
+            configRef.GetServiceFactory().Add<IEmployee, Employee>()
+                .Add<IEmployee, SeniorEmployee>("Senior");
 
             var employee = configRef.GetIocContainer().ServiceProvider.GetService<IEmployee>();
+            var seniorEmployee = configRef.GetIocContainer().ServiceProvider.GetService<IEmployee>("Senior");
 
             //Assert
             Assert.IsInstanceOf<Employee>(employee);
+            Assert.IsInstanceOf<SeniorEmployee>(seniorEmployee);
 
         }
 
@@ -52,6 +55,11 @@ namespace IocServiceStack.Tests
         {
         }
         class Employee : IEmployee
+        {
+
+        }
+
+        class SeniorEmployee : IEmployee
         {
 
         }

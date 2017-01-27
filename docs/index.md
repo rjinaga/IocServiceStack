@@ -32,7 +32,7 @@ PM> Install-Package IocServiceStack -Pre
 ```c#
 var configRef = IocServiceProvider.Configure(config =>
 {
-    config.Services((service) =>
+    config.AddServices((service) =>
     {
 	/*if namespaces are not specfied, it finds for services in entire assembly.*/
         service.Namespaces = new[] { "BusinessService" };

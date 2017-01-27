@@ -38,7 +38,7 @@ namespace IocServiceStack.Tests
         {
             var configRef = IocServiceProvider.Configure(config =>
             {
-                config.Services((opt) =>
+                config.AddServices((opt) =>
                 {
                     /*if namespaces are not specfied, it finds for services in entire assembly irrespective of namespaces.*/
                     opt.Namespaces = new[] { "BusinessService" };
