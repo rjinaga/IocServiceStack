@@ -63,7 +63,7 @@ var configRef = IocServiceProvider.Configure(config =>
 //Initialization
 var configRef = IocServiceProvider.Configure(config =>
 {
-    config.Services((service) =>
+    config.AddServices((service) =>
     {
        service.AddDependencies((dopt) => {
             dopt.Name = "DataContext"; /*Dependency factory name */ 
