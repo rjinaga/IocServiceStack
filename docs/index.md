@@ -52,7 +52,7 @@ var configRef = IocServiceProvider.Configure(config =>
             });
         });
 
-        opt.StrictMode = true;
+        service.StrictMode = true;
     });
   //.RegisterServiceProvider(new ProxyServiceProvider());
 });
