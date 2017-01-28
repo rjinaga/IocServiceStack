@@ -27,7 +27,9 @@ PM> Install-Package IocServiceStack -Pre
 ## Usage Examples
 
 ### IocServiceStack Setup 
+
 #### Automatically wires up the services - Setup
+
 ```c#
 var configRef = IocServiceProvider.Configure(config =>
 {
