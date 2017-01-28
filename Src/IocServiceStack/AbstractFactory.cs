@@ -87,7 +87,7 @@ namespace IocServiceStack
             }
         }
 
-        public IContainerService Add<TC, TS>() where TC : class where TS : class
+        public IContainerService Add<TC, TS>() where TC : class where TS : TC
         {
             return AddInternal<TC>(typeof(TS), null);
         }
@@ -100,10 +100,10 @@ namespace IocServiceStack
         /// <returns>Instance <see cref="IContainerService"/> of current object</returns>
         public virtual IContainerService Add<T>(Type service) where T : class
         {
-            return AddInternal<T>(typeof(T), null);
+            return AddInternal<T>(service, null);
         }
 
-        public IContainerService Add<TC, TS>(string serviceName) where TC : class where TS : class
+        public IContainerService Add<TC, TS>(string serviceName) where TC : class where TS : TC
         {
             if (string.IsNullOrEmpty(serviceName))
             {
@@ -123,12 +123,12 @@ namespace IocServiceStack
             return AddInternal<T>(service, serviceName);
         }
 
-        public IContainerService AddSingleton<TC, TS>() where TC : class where TS : class
+        public IContainerService AddSingleton<TC, TS>() where TC : class where TS : TC
         {
             return AddSingletonInternal<TC, TS>(null);
         }
 
-        public IContainerService AddSingleton<TC, TS>(string serviceName) where TC : class where TS : class
+        public IContainerService AddSingleton<TC, TS>(string serviceName) where TC : class where TS : TC
         {
             if (string.IsNullOrEmpty(serviceName))
             {
@@ -137,7 +137,7 @@ namespace IocServiceStack
             return AddSingletonInternal<TC, TS>(serviceName);
         }
 
-        public IContainerService Replace<TC, TS>() where TC : class where TS : class
+        public IContainerService Replace<TC, TS>() where TC : class where TS : TC
         {
             return ReplaceInternal<TC>(typeof(TS), null);
         }
@@ -153,9 +153,7 @@ namespace IocServiceStack
             return ReplaceInternal<T>(service, null);
         }
 
-        public IContainerService Replace<TC, TS>(string serviceName)
-          where TC : class
-          where TS : class
+        public IContainerService Replace<TC, TS>(string serviceName) where TC : class where TS : TC
         {
             return ReplaceInternal<TC>(typeof(TS), serviceName);
         }
@@ -165,8 +163,7 @@ namespace IocServiceStack
             return ReplaceInternal<T>(service, serviceName);
         }
 
-
-        public IContainerService ReplaceSingleton<TC, TS>(string serviceName) where TC : class where TS : class
+        public IContainerService ReplaceSingleton<TC, TS>(string serviceName) where TC : class where TS : TC
         {
             if (string.IsNullOrEmpty(serviceName))
             {
@@ -175,7 +172,7 @@ namespace IocServiceStack
             return ReplaceSingletonInternal<TC, TS>(serviceName);
         }
 
-        public IContainerService ReplaceSingleton<TC, TS>() where TC : class where TS : class
+        public IContainerService ReplaceSingleton<TC, TS>() where TC : class where TS : TC
         {
             return ReplaceSingletonInternal<TC, TS>(null);
         }
@@ -244,10 +241,10 @@ namespace IocServiceStack
             return this;
         }
 
-        private IContainerService AddSingletonInternal<TC, TS>(string serviceName) where TC : class where TS : class
+        private IContainerService AddSingletonInternal<TC, TS>(string serviceName) where TC : class where TS : TC 
         {
             Type interfaceType = typeof(TC);
-            var serviceMeta = new ServiceInfo<TS>(isReusable: true, decorators: ServiceInfo.GetDecorators(interfaceType), serviceName: serviceName);
+            var serviceMeta = new ServiceInfo<TC,TS>(isReusable: true, decorators: ServiceInfo.GetDecorators(interfaceType), serviceName: serviceName);
 
             ServicesMapTable.Add(interfaceType, serviceMeta);
 
@@ -257,10 +254,10 @@ namespace IocServiceStack
             return this;
         }
 
-        private IContainerService ReplaceSingletonInternal<TC, TS>(string serviceName) where TC : class where TS : class
+        private IContainerService ReplaceSingletonInternal<TC, TS>(string serviceName) where TC : class where TS : TC
         {
             Type interfaceType = typeof(TC);
-            var serviceMeta = new ServiceInfo<TS>(isReusable: true, decorators: ServiceInfo.GetDecorators(interfaceType), serviceName: serviceName);
+            var serviceMeta = new ServiceInfo<TC,TS>(isReusable: true, decorators: ServiceInfo.GetDecorators(interfaceType), serviceName: serviceName);
 
             ServicesMapTable.AddOrReplace(interfaceType, serviceMeta);
 

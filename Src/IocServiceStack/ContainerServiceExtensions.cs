@@ -30,10 +30,47 @@ namespace IocServiceStack
     {
         public static IContainerExtension Add<TC>(this IContainerService service, Func<TC> expression) where TC : class
         {
+            return InternalAdd<TC>(service, expression, null);
+        }
+
+        public static IContainerExtension Add<TC>(this IContainerService service, Func<TC> expression, string serviceName) where TC : class
+        {
+            if (string.IsNullOrWhiteSpace(serviceName))
+            {
+                ExceptionHelper.ThrowArgumentNullException(nameof(serviceName));
+            }
+
+            return InternalAdd<TC>(service, expression, serviceName);
+        }
+
+        public static IContainerExtension Replace<TC>(this IContainerService service, Func<TC> expression) where TC : class
+        {
+            return InternalReplace<TC>(service, expression, null);
+        }
+
+        public static IContainerExtension Replace<TC>(this IContainerService service, Func<TC> expression, string serviceName) where TC : class
+        {
+            if (string.IsNullOrWhiteSpace(serviceName))
+            {
+                ExceptionHelper.ThrowArgumentNullException(nameof(serviceName));
+            }
+
+            return InternalReplace<TC>(service, expression, serviceName);
+        }
+
+        private static IContainerExtension InternalReplace<TC>(IContainerService service, Func<TC> expression, string serviceName) where TC : class
+        {
             var containerExtension = service as IContainerExtension;
             if (containerExtension != null)
             {
-                containerExtension.Add<TC>(expression);
+                if (string.IsNullOrWhiteSpace(serviceName))
+                {
+                    containerExtension.Replace<TC>(expression);
+                }
+                else
+                {
+                    containerExtension.Replace<TC>(expression, serviceName);
+                }
             }
             else
                 throw new Exception("Service factory is not implemented IContainerExtension");
@@ -41,12 +78,19 @@ namespace IocServiceStack
             return containerExtension;
         }
 
-        public static IContainerExtension Replace<TC>(this IContainerService service, Func<TC> expression) where TC : class
+        private static IContainerExtension InternalAdd<TC>(this IContainerService service, Func<TC> expression, string serviceName) where TC : class
         {
             var containerExtension = service as IContainerExtension;
             if (containerExtension != null)
             {
-                containerExtension.Replace<TC>(expression);
+                if (string.IsNullOrWhiteSpace(serviceName))
+                {
+                    containerExtension.Add<TC>(expression);
+                }
+                else
+                {
+                    containerExtension.Add<TC>(expression, serviceName);
+                }
             }
             else
                 throw new Exception("Service factory is not implemented IContainerExtension");

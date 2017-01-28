@@ -27,24 +27,24 @@ namespace IocServiceStack
 {
     using System;
     
-    public class ServiceInfo<T> : ServiceInfo where T: class
+    public class ServiceInfo<TC, TS> : ServiceInfo where TC: class where TS: TC
     {
-        private Func<T> _actionInfo;
+        private Func<TS> _actionInfo;
 
-        public ServiceInfo(DecoratorAttribute[] decorators, string serviceName) : base(typeof(T), decorators, serviceName)
+        public ServiceInfo(DecoratorAttribute[] decorators, string serviceName) : base(typeof(TS), decorators, serviceName)
         {
         }
 
-        public ServiceInfo(bool isReusable, DecoratorAttribute[] decorators, string serviceName) : base(typeof(T), decorators, isReusable, serviceName)
+        public ServiceInfo(bool isReusable, DecoratorAttribute[] decorators, string serviceName) : base(typeof(TS), decorators, isReusable, serviceName)
         {
         }
 
-        public ServiceInfo(Func<T> serviceAction, DecoratorAttribute[] decorators, string serviceName) : base(null, decorators, serviceName)
+        public ServiceInfo(Func<TS> serviceAction, DecoratorAttribute[] decorators, string serviceName) : base(null, decorators, serviceName)
         {
             _actionInfo = serviceAction;
         }
 
-        public ServiceInfo(Func<T> serviceAction, DecoratorAttribute[] decorators, bool isReusable, string serviceName) : base(null, decorators, isReusable, serviceName)
+        public ServiceInfo(Func<TS> serviceAction, DecoratorAttribute[] decorators, bool isReusable, string serviceName) : base(null, decorators, isReusable, serviceName)
         {
             _actionInfo = serviceAction;
         }

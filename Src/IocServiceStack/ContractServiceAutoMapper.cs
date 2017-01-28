@@ -91,7 +91,7 @@ namespace IocServiceStack
                 {
                     ExceptionHelper.ThrowArgumentNullException(nameof(serviceName));
                 }
-                return _mapTable[contractType]?.Services[serviceName];
+                return _mapTable[contractType]?.Services?[serviceName];
             }
         }
 
@@ -128,10 +128,20 @@ namespace IocServiceStack
         /// <param name="serviceMeta"></param>
         public void Add(Type contractType, ServiceInfo serviceMeta)
         {
+            if (serviceMeta.ServiceType != null && !CanTypeCast(contractType, serviceMeta.ServiceType))
+            {
+                ExceptionHelper.ThrowInvalidServiceType(contractType, serviceMeta.ServiceType);
+            }
+
             if (string.IsNullOrEmpty(serviceMeta.ServiceName)) //if there's no default service
             {
                 if (_mapTable.ContainsKey(contractType))
                 {
+                    if (_mapTable[contractType].DefaultService != null)
+                    {
+                        var msg = $"An element with the key '{contractType.FullName}' already exists.";
+                        ExceptionHelper.ThrowArgumentException(msg);
+                    }
                     _mapTable[contractType].DefaultService = serviceMeta;
                 }
                 else
@@ -144,6 +154,11 @@ namespace IocServiceStack
                 if (_mapTable.ContainsKey(contractType))
                 {
                     _mapTable[contractType].CreateServicesIfNotInitialized();
+                    if (_mapTable[contractType].Services.ContainsKey(serviceMeta.ServiceName))
+                    {
+                        var msg = $"An element with the key '{contractType.FullName}' already exists.";
+                        ExceptionHelper.ThrowArgumentException(msg);
+                    }
                     _mapTable[contractType].Services.Add(serviceMeta.ServiceName, serviceMeta);
                 }
                 else
@@ -155,6 +170,11 @@ namespace IocServiceStack
 
         public void AddOrReplace(Type contractType, ServiceInfo serviceMeta)
         {
+            if (serviceMeta.ServiceType != null && !CanTypeCast(contractType, serviceMeta.ServiceType))
+            {
+                ExceptionHelper.ThrowInvalidServiceType(contractType, serviceMeta.ServiceType);
+            }
+
             if (_mapTable.ContainsKey(contractType))
             {
                 if (string.IsNullOrEmpty(serviceMeta.ServiceName))
@@ -174,6 +194,11 @@ namespace IocServiceStack
             {
                 Add(contractType, serviceMeta);
             }
+        }
+
+        private bool CanTypeCast(Type contractType, Type serviceType)
+        {
+            return contractType.IsAssignableFrom(serviceType);
         }
 
         private void InternalMap(string[] namespaces, Assembly[] aseemblies, ServiceMapTable services)
@@ -252,7 +277,7 @@ namespace IocServiceStack
                 {
                     services.Add(interfaceType, new ServiceMapInfo()
                     {
-                       DefaultService = new ServiceInfo(serviceType, ServiceInfo.GetDecorators(interfaceType))
+                        DefaultService = new ServiceInfo(serviceType, ServiceInfo.GetDecorators(interfaceType))
                     });
                 }
                 else

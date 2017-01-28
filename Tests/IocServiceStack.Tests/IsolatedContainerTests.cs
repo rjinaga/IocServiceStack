@@ -25,6 +25,8 @@
 
 namespace IocServiceStack.Tests
 {
+    using BusinessContractLibrary;
+    using BusinessService;
     using NUnit.Framework;
 
     public class IsolatedContainerTests
@@ -32,38 +34,21 @@ namespace IocServiceStack.Tests
         [Test]
         public void IsolateTest()
         {
-            var configRef = IocServiceProvider.CreateIocContainer(config =>
-            {
-                config.AddServices((opt) =>
-                {
-                });
-            });
+            //Arrange
+            var ioc1 = IocServiceProvider.CreateIocContainer(config => { /*No auto setup*/ });
+            var ioc2 = IocServiceProvider.CreateIocContainer(config =>{ /*No auto setup*/ });
 
-            configRef.GetServiceFactory().Add<IEmployee, Employee>()
-                .Add<IEmployee, SeniorEmployee>("Senior");
+            ioc1.GetServiceFactory().Add<ICustomer, CustomerService>();
+            ioc2.GetServiceFactory().Add<ICustomer, Helper.CustomerService2>();
 
-            var employee = configRef.GetIocContainer().ServiceProvider.GetService<IEmployee>();
-            var seniorEmployee = configRef.GetIocContainer().ServiceProvider.GetService<IEmployee>("Senior");
+            //Act
+            var ioc1Customer = ioc1.GetIocContainer().ServiceProvider.GetService<ICustomer>();
+            var ioc2Customer = ioc2.GetIocContainer().ServiceProvider.GetService<ICustomer>();
 
             //Assert
-            Assert.IsInstanceOf<Employee>(employee);
-            Assert.IsInstanceOf<SeniorEmployee>(seniorEmployee);
-
-        }
-
-        interface IEmployee
-        {
-        }
-        class Employee : IEmployee
-        {
-
-        }
-
-        class SeniorEmployee : IEmployee
-        {
+            Assert.IsInstanceOf<CustomerService>(ioc1Customer);
+            Assert.IsInstanceOf<Helper.CustomerService2>(ioc2Customer);
 
         }
     }
-
-    
 }

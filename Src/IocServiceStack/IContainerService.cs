@@ -37,8 +37,8 @@ namespace IocServiceStack
         /// </summary>
         SubcontractFactory DependencyFactory { get; set; }
 
-        IContainerService Add<TC, TS>() where TC : class where TS : class;
-        IContainerService Add<TC, TS>(string serviceName) where TC : class where TS : class;
+        IContainerService Add<TC, TS>() where TC : class where TS : TC;
+        IContainerService Add<TC, TS>(string serviceName) where TC : class where TS : TC;
 
         /// <summary>
         /// Adds the specified service to the factory
@@ -49,12 +49,12 @@ namespace IocServiceStack
         IContainerService Add<T>(Type service) where T : class;
         IContainerService Add<T>(Type service, string serviceName) where T : class;
 
-        IContainerService AddSingleton<TC, TS>() where TC : class where TS : class;
-        IContainerService AddSingleton<TC, TS>(string serviceName) where TC : class where TS : class;
+        IContainerService AddSingleton<TC, TS>() where TC : class where TS : TC;
+        IContainerService AddSingleton<TC, TS>(string serviceName) where TC : class where TS : TC;
 
 
-        IContainerService Replace<TC, TS>() where TC : class where TS : class;
-        IContainerService Replace<TC, TS>(string serviceName) where TC : class where TS : class;
+        IContainerService Replace<TC, TS>() where TC : class where TS : TC;
+        IContainerService Replace<TC, TS>(string serviceName) where TC : class where TS : TC;
 
         /// <summary>
         /// Replaces the specified service in the factory.
@@ -65,7 +65,7 @@ namespace IocServiceStack
         IContainerService Replace<T>(Type service) where T : class;
         IContainerService Replace<T>(Type service, string serviceName) where T : class;
 
-        IContainerService ReplaceSingleton<TC, TS>() where TC : class where TS : class;
-        IContainerService ReplaceSingleton<TC, TS>(string serviceName) where TC : class where TS : class;
+        IContainerService ReplaceSingleton<TC, TS>() where TC : class where TS : TC;
+        IContainerService ReplaceSingleton<TC, TS>(string serviceName) where TC : class where TS : TC;
     }
 }

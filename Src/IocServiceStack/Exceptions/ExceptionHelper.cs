@@ -38,6 +38,16 @@ namespace IocServiceStack
             throw new DuplicateServiceImplementaionException(fullName);
         }
 
+        internal static void ThrowArgumentException(string message)
+        {
+            throw new ArgumentException(message);
+        }
+
+        internal static void ThrowInvalidServiceType(Type contractType,Type  serviceType)
+        {
+            throw new InvalidServiceTypeException($"'{serviceType.FullName}' cannot be assigned to '{contractType.FullName}'");
+        }
+
         internal static void ThrowContractNotRegisteredException(string fullName)
         {
             throw new ContractNotRegisteredException(fullName);

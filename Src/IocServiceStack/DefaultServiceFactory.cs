@@ -135,7 +135,7 @@ namespace IocServiceStack
         private IContainerExtension AddInternal<TC>(Func<TC> serviceAction, string serviceName) where TC : class
         {
             Type interfaceType = typeof(TC);
-            var serviceMeta = new ServiceInfo<TC>(serviceAction, ServiceInfo.GetDecorators(interfaceType), serviceName);
+            var serviceMeta = new ServiceInfo<TC,TC>(serviceAction, ServiceInfo.GetDecorators(interfaceType), serviceName);
 
             ServicesMapTable.Add(interfaceType, serviceMeta);
 
@@ -148,7 +148,7 @@ namespace IocServiceStack
         private IContainerExtension ReplaceInternal<TC>(Func<TC> expression, string serviceName) where TC : class
         {
             Type interfaceType = typeof(TC);
-            var serviceMeta = new ServiceInfo<TC>(expression, ServiceInfo.GetDecorators(interfaceType), serviceName);
+            var serviceMeta = new ServiceInfo<TC,TC>(expression, ServiceInfo.GetDecorators(interfaceType), serviceName);
 
             ServicesMapTable.AddOrReplace(interfaceType,serviceMeta);
 

@@ -22,12 +22,11 @@ IocServiceStack is a open source .NET dependency injection framework. It support
 ```
 PM> Install-Package IocServiceStack -Pre
 ```
-[![NuGet Release](https://img.shields.io/badge/nuget-v1.1.0--beta--3-blue.svg)](https://www.nuget.org/packages/IocServiceStack/)
+[![NuGet Release](https://img.shields.io/badge/nuget-v1.1.0--beta--3-blue.svg)](https://www.nuget.org/packages/IocServiceStack/1.1.0-beta-3)
 
-## Usage
+## Usage Examples
 
 ### IocServiceStack Setup 
-
 #### Automatically wires up the services - Setup
 ```c#
 var configRef = IocServiceProvider.Configure(config =>

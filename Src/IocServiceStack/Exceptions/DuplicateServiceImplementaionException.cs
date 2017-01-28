@@ -42,4 +42,13 @@ namespace IocServiceStack
             
         }
     }
+
+    public class InvalidServiceTypeException : Exception
+    {
+        public InvalidServiceTypeException(string message) : base(message)
+        {
+
+        }
+    }
+
 }
