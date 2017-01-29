@@ -1,5 +1,5 @@
 ﻿#region License
-// Copyright (c) 2016 Rajeswara-Rao-Jinaga
+// Copyright (c) 2016-2017 Rajeswara Rao Jinaga
 //
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
@@ -26,7 +26,11 @@
 namespace IocServiceStack
 {
     using System.Collections.Generic;
-    
+    /// <summary>
+    /// <see cref="DecoratorManager"/> executes the registered decorators. It contains
+    /// global decorators and while executing decorators for a service, it executes the global decorators first and
+    /// then executes specific decorators to the contract.
+    /// </summary>
     public class DecoratorManager : IDecoratorManager
     {
         public List<DecoratorAttribute> GlobalDecorators { set; get; }

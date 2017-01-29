@@ -1,5 +1,5 @@
 ﻿#region License
-// Copyright (c) 2016 Rajeswara-Rao-Jinaga
+// Copyright (c) 2016-2017 Rajeswara Rao Jinaga
 //
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
@@ -30,7 +30,7 @@ namespace IocServiceStack
     {
         internal static Exception ThrowServiceNotRegisteredException(string name)
         {
-            throw new ServiceNotFoundException($"Requested service of '{name}' contract was not found. Check your configuraion of {nameof(IocServiceProvider)}. You might have configured different namespaces or assemblies where the requested service was not found.");
+            throw new ServiceNotFoundException($"Requested service of '{name}' contract was not found. Check your configuraion of {nameof(IocServicelet)}. You might have configured different namespaces or assemblies where the requested service was not found.");
         }
 
         internal static void ThrowDuplicateServiceException(string fullName)

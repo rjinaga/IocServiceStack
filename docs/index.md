@@ -18,11 +18,11 @@ IocServiceStack is a open source .NET dependency injection framework. It support
 - .NET Core 1.0 (.NET Standard 1.6)
 - .NET Framework 4.6
 
-## [NuGet](https://www.nuget.org/packages/IocServiceStack/1.1.0-rc-1)
+## [NuGet](https://www.nuget.org/packages/IocServiceStack/1.1.0-rc-final)
 ```
 PM> Install-Package IocServiceStack -Pre
 ```
-[![NuGet Release](https://img.shields.io/badge/nuget-v1.1.0--rc--1-yellow.svg)](https://www.nuget.org/packages/IocServiceStack/1.1.0-rc-1)
+[![NuGet Release](https://img.shields.io/badge/nuget-v1.1.0--rc--final-yellow.svg)](https://www.nuget.org/packages/IocServiceStack/1.1.0-rc-final)
 
 ## Usage Examples
 
@@ -31,7 +31,7 @@ PM> Install-Package IocServiceStack -Pre
 #### Automatically wires up the services - Setup
 
 ```c#
-var configRef = IocServiceProvider.Configure(config =>
+var configRef = IocServicelet.Configure(config =>
 {
     config.AddServices((service) =>
     {
@@ -62,7 +62,7 @@ var configRef = IocServiceProvider.Configure(config =>
 #### Manually wires up the services - Setup
 ```c#
 //Initialization
-var configRef = IocServiceProvider.Configure(config =>
+var configRef = IocServicelet.Configure(config =>
 {
     config.AddServices((service) =>
     {
@@ -223,20 +223,20 @@ var customerService = ServiceManager.GetService<ICustomer>();
 You can replace with another service which is already discovered by the IocServiceStack, or add a new service.
 
 ```c#
-var factoryService = configRef.GetServiceFactory();
+var serviceFactory = configRef.GetServiceFactory();
 
 /*Dependency Injection*/
-factoryService.Replace<ICustomer, CustomerService2>()
+serviceFactory.Replace<ICustomer, CustomerService2>()
               .DependencyFactory
               .Replace<ICustomerRepository, CustomerRepository2>();
 /*
 Above dependencies can be configured in other way also:
-factoryService.Replace<ICustomer, CustomerService2>();
+serviceFactory.Replace<ICustomer, CustomerService2>();
 configRef.GetDependencyFactory("Repository").Replace<ICustomerRepository, CustomerRepository2>();
 */
 
 /*Add new service*/
-factoryService.Add<IPayment, PaypalPayment>();
+serviceFactory.Add<IPayment, PaypalPayment>();
 
 ```
 
@@ -246,7 +246,7 @@ factoryService.Add<IPayment, PaypalPayment>();
 
 /*setup container*/
 
-var container = IocServiceProvider.CreateIocContainer(config=> { /* */  });
+var container = IocServicelet.CreateIocContainer(config=> { /* */  });
 
 /* You can add services by calling container.Add<Interface>(()=> new Service()) */
 /*set a new container to a static field */
@@ -283,7 +283,7 @@ You can build and configure service decorators globally or interface level. Deco
 
 ```c#
 
-var configRef = IocServiceProvider.Configure(config =>
+var configRef = IocServicelet.Configure(config =>
 {
   /* ..... */
   config.Decorators.Add(new CustomInjectorDecorator());

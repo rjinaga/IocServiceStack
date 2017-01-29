@@ -1,5 +1,5 @@
 ﻿#region License
-// Copyright (c) 2016 Rajeswara-Rao-Jinaga
+// Copyright (c) 2016-2017 Rajeswara Rao Jinaga
 //
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
@@ -31,7 +31,7 @@ namespace IocServiceStack
     using System.Reflection;
 
     /// <summary>
-    /// Represents auto mapper of contact and it's correspondent service.
+    /// Represents auto mapper for contacts and correspondent services.
     /// </summary>
     public class ContractServiceAutoMapper
     {
@@ -63,10 +63,10 @@ namespace IocServiceStack
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="ServiceInfo"/> object associated with the specified contractType.
+        /// Gets the <see cref="ServiceInfo"/> object associated with the specified contractType.
         /// </summary>
         /// <param name="contractType"></param>
-        /// <returns></returns>
+        /// <returns><see cref="ServiceInfo"/></returns>
         public ServiceInfo this[Type contractType]
         {
             get
@@ -78,6 +78,12 @@ namespace IocServiceStack
             }
         }
 
+        /// <summary>
+        /// Gets the <see cref="ServiceInfo"/> object associated with the specified <paramref name="contractType"/> and <paramref name="serviceName"/>
+        /// </summary>
+        /// <param name="contractType">The type of the contract to be found.</param>
+        /// <param name="serviceName">The name of the service to be found.</param>
+        /// <returns><see cref="ServiceInfo"/></returns>
         public ServiceInfo this[Type contractType, string serviceName]
         {
             get
@@ -168,6 +174,11 @@ namespace IocServiceStack
             }
         }
 
+        /// <summary>
+        /// Add or replace if exists <paramref name="contractType"/> and <paramref name="serviceMeta"/> to the collection.
+        /// </summary>
+        /// <param name="contractType"></param>
+        /// <param name="serviceMeta"></param>
         public void AddOrReplace(Type contractType, ServiceInfo serviceMeta)
         {
             if (serviceMeta.ServiceType != null && !CanTypeCast(contractType, serviceMeta.ServiceType))

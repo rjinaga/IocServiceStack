@@ -1,5 +1,5 @@
 ﻿#region License
-// Copyright (c) 2016 Rajeswara-Rao-Jinaga
+// Copyright (c) 2016-2017 Rajeswara Rao Jinaga
 //
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
@@ -32,13 +32,13 @@ namespace IocServiceStack.Tests
     public class IsolatedContainerTests
     {
         [Test]
-        public void IsolateTest()
+        public void CreateIocContainer_AddDifferentServices_GetAssignedInstances()
         {
             //Arrange
-            var ioc1 = IocServiceProvider.CreateIocContainer(config => { /*No auto setup*/ });
-            var ioc2 = IocServiceProvider.CreateIocContainer(config =>{ /*No auto setup*/ });
+            var ioc1 = IocServicelet.CreateIocContainer(config => { /*No auto setup*/ });
+            var ioc2 = IocServicelet.CreateIocContainer(config =>{ /*No auto setup*/ });
 
-            ioc1.GetServiceFactory().Add<ICustomer, CustomerService>();
+            ioc1.GetServiceFactory().Add<ICustomer, CustomerServiceWithNoRepo>();
             ioc2.GetServiceFactory().Add<ICustomer, Helper.CustomerService2>();
 
             //Act
@@ -46,7 +46,7 @@ namespace IocServiceStack.Tests
             var ioc2Customer = ioc2.GetIocContainer().ServiceProvider.GetService<ICustomer>();
 
             //Assert
-            Assert.IsInstanceOf<CustomerService>(ioc1Customer);
+            Assert.IsInstanceOf<CustomerServiceWithNoRepo>(ioc1Customer);
             Assert.IsInstanceOf<Helper.CustomerService2>(ioc2Customer);
 
         }

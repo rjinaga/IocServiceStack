@@ -1,5 +1,5 @@
 ﻿#region License
-// Copyright (c) 2016 Rajeswara-Rao-Jinaga
+// Copyright (c) 2016-2017 Rajeswara Rao Jinaga
 //
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
@@ -34,23 +34,31 @@ namespace IocServiceStack.Tests
     {
         [Test]
         [Order(1)]
-        public void CustomerService_Test()
+        public void GetService_ICustomer_CustomerService()
         {
             //Arrange & Act
             var customerService = GetService<ICustomer>();
 
             //Assert
             Assert.IsInstanceOf<CustomerService>(customerService);
-
-            //Test Custom Decorator
-            Assert.AreEqual(customerService.AdditionalData, "Gold Customer");
-
-            //Assert.IsInstanceOf<CustomerRepository>(customerService.GetRepository());
         }
 
         [Test]
         [Order(2)]
-        public void Sale_DefaultService_Test()
+        public void GetService_ICustomer_Decorator()
+        {
+            //Arrange & Act
+            var customerService = GetService<ICustomer>();
+
+            //Assert
+            Assert.IsInstanceOf<CustomerService>(customerService);
+            //Test Custom Decorator
+            Assert.AreEqual(customerService.AdditionalData, "Gold Customer");
+        }
+
+        [Test]
+        [Order(3)]
+        public void GetService_AbstractSale_Null()
         {
             //Arrange & Act
             var sale = GetService<AbstractSale>();
@@ -63,8 +71,8 @@ namespace IocServiceStack.Tests
         [Test]
         [TestCase("Direct", typeof(DirectSale))]
         [TestCase("Online", typeof(OnlineSale))]
-        [Order(3)]
-        public void Sale_Abstract_Test(string serviceName, System.Type expected)
+        [Order(4)]
+        public void GetService_Abstract_NotNull(string serviceName, System.Type expected)
         {
             //Arrange & Act
             var sale = GetService<AbstractSale>(serviceName);
@@ -78,8 +86,8 @@ namespace IocServiceStack.Tests
         }
 
         [Test]
-        [Order(4)]
-        public void Inject_OtherKindOfSale_Test()
+        [Order(5)]
+        public void Inject_OtherKindOfSale_InstanceCheck()
         {
             //Arrange
             var serviceFactory = Helper.TestsHelper.FactoryServicePointer.GetServiceFactory();
@@ -94,30 +102,6 @@ namespace IocServiceStack.Tests
             //Assert
             Assert.IsInstanceOf<Helper.OtherKindOfSale>(sale);
             Assert.IsInstanceOf<Helper.MiscSale>(miscSale);
-        }
-
-        [Test, Order(5)]
-        //[Ignore("Ignore this test")]
-        public void GetService_Performance_DirectExpression_Test()
-        {
-            //Arrange & Act
-            const int OneMillionTimes = 1000000;
-            for (int i = 0; i < OneMillionTimes; i++)
-            {
-                var sale = GetService<AbstractSale>("OtherKind");
-            }
-        }
-
-        [Test, Order(6)]
-        //[Ignore("Ignore this test")]
-        public void GetService_Performance_IndirectExpression_Test()
-        {
-            //Arrange & Act
-            const int OneMillionTimes = 1000000;
-            for (int i = 0; i < OneMillionTimes; i++)
-            {
-                var sale = GetService<AbstractSale>("MiscSale");
-            }
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿#region License
-// Copyright (c) 2016 Rajeswara-Rao-Jinaga
+// Copyright (c) 2016-2017 Rajeswara Rao Jinaga
 //
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
@@ -32,13 +32,12 @@ namespace IocServiceStack.Tests
     using NUnit.Framework;
     using static ServiceManager;
 
-
+    [TestFixture]
     public class PerformanceTests
     {
-
         [Test, Order(1)]
         // [Ignore("Ignore this test")]
-        public void Warmup_Test()
+        public void Warmup()
         {
             //Arrange & Act
             var customerService = GetService<ICustomer>();
@@ -46,7 +45,7 @@ namespace IocServiceStack.Tests
 
         [Test, Order(2)]
         // [Ignore("Ignore this test")]
-        public void GetService_Performance_Test()
+        public void GetService_Performance_Time()
         {
             //Arrange & Act
             const int OneMillionTimes = 1000000;
@@ -59,7 +58,7 @@ namespace IocServiceStack.Tests
 
         [Test, Order(3)]
         // [Ignore("Ignore this test")]
-        public void GetService_Performance2_Test()
+        public void GetService_Performance2_Time()
         {
             //Arrange & Act
             const int OneMillionTimes = 1000000;
@@ -72,7 +71,7 @@ namespace IocServiceStack.Tests
 
         [Test, Order(3)]
         // [Ignore("Ignore this test")]
-        public void GetService_Performance3_Test()
+        public void GetService_Performance3_Time()
         {
             //Arrange & Act
             const int OneMillionTimes = 1000000;
@@ -84,7 +83,7 @@ namespace IocServiceStack.Tests
 
         [Test, Order(4)]
         // [Ignore("Ignore this test")]
-        public void Directcode_Performance_Test()
+        public void Directcode_Performance_Time()
         {
             //Arrange & Act
             const int OneMillionTimes = 1000000;
@@ -93,6 +92,7 @@ namespace IocServiceStack.Tests
                 CreateService();
             }
         }
+     
 
         private void CreateService()
         {

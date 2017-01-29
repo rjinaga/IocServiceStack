@@ -3,21 +3,21 @@
     using NUnit.Framework;
 
     [TestFixture]
-    public class ContainerAddMethodTests
+    public class ContainerReplaceServicesTests
     {
         [Test]
-        public void Add_Test()
+        public void Replace_GetWhatYouSet_InstanceOf()
         {
             //Arrange
-            var configRef = IocServiceProvider.CreateIocContainer(config => { /*No auto setup*/ });
+            var configRef = IocServicelet.CreateIocContainer();
 
             //Act
-            configRef.GetServiceFactory().Add<IEmployee, Employee>()
-                                         .Add<IEmployee>(() => new Employee1(), "Employee1")
-                                         .Add<IEmployee>(() => new Employee2(), "Employee2")
-                                         .Add<IEmployee>(typeof(Employee3), "Employee3")
-                                         .Add<IEmployee, SeniorEmployee>("Senior")
-                                         .Add<IExecutive>(typeof(Executive));
+            configRef.GetServiceFactory().Replace<IEmployee, Employee>()
+                                         .Replace<IEmployee>(() => new Employee1(), "Employee1")
+                                         .Replace<IEmployee>(() => new Employee2(), "Employee2")
+                                         .Replace<IEmployee>(typeof(Employee3), "Employee3")
+                                         .Replace<IEmployee, SeniorEmployee>("Senior")
+                                         .Replace<IExecutive>(typeof(Executive));
 
             var provider = configRef.GetIocContainer().ServiceProvider;
             var employee = provider.GetService<IEmployee>();
@@ -40,20 +40,20 @@
         }
 
         [Test]
-        public void Add_InvalidServiceType_Test()
+        public void Replace_InvalidServiceType_ThrowsException()
         {
             //Arrange
-            var configRef = IocServiceProvider.CreateIocContainer(config => { /*No auto setup*/ });
+            var configRef = IocServicelet.CreateIocContainer();
 
             //Act
-            TestDelegate test = ()=> configRef.GetServiceFactory().Add<IEmployee>(typeof(Executive));
+            TestDelegate test = () => configRef.GetServiceFactory().Replace<IEmployee>(typeof(Executive));
 
             //Assert
             Assert.Throws<InvalidServiceTypeException>(test);
 
         }
 
-
+        #region Tests Supporting Members
         interface IEmployee
         {
         }
@@ -79,5 +79,7 @@
         {
 
         }
+        #endregion
+
     }
 }

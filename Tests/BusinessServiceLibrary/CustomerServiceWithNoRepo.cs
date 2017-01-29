@@ -1,5 +1,5 @@
 ﻿#region License
-// Copyright (c) 2016 Rajeswara-Rao-Jinaga
+// Copyright (c) 2016-2017 Rajeswara Rao Jinaga
 //
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
@@ -23,31 +23,28 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace IocServiceStack
+namespace BusinessService
 {
-    using System;
+    using IocServiceStack;
+    using BusinessContractLibrary;
+    using Models;
 
-    public class IocServiceProvider
+    public class CustomerServiceWithNoRepo : ICustomer
     {
-        public static ServicePostConfiguration Configure(Action<ServiceConfig> configuration)
+
+        public string AdditionalData
         {
-            var postConfig = CreateIocContainer(configuration);
-            
-            IocContainer.GlobalIocContainer = postConfig.GetIocContainer();
-            
-            return postConfig;
+            get;set;
+        }
+        
+        public CustomerServiceWithNoRepo()
+        {
+
         }
 
-        public static ServicePostConfiguration CreateIocContainer(Action<ServiceConfig> configuration)
+        public void AddCustomer(Customer customer)
         {
-            ServiceConfig config = new ServiceConfig();
-            configuration(config);
-
-            //Make the ServiceOptions object read-only, don't allow the further changes to the object.
-            config.ServiceOptions.MakeReadOnly();
             
-
-            return new ServicePostConfiguration(new IocContainer(config));
         }
     }
 }

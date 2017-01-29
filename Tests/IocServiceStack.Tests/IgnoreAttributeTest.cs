@@ -7,7 +7,7 @@
     public class IgnoreAttributeTest
     {
         [Test]
-        public void IgnoreAttribute_Test()
+        public void IgnoreAttribute_IgnoreTheParameter_RepositoryNull()
         {
             //Arrange & Act
             var customerService = GetService<ISelfService>();

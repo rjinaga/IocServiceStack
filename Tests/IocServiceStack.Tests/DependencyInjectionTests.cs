@@ -1,5 +1,5 @@
 ﻿#region License
-// Copyright (c) 2016 Rajeswara-Rao-Jinaga
+// Copyright (c) 2016-2017 Rajeswara Rao Jinaga
 //
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
@@ -35,7 +35,7 @@ namespace IocServiceStack.Tests
     public class DependencyInjectionTests
     {
         [Test]
-        public void ReplaceService_Test()
+        public void Replace_AtTwoLelvels_Instance()
         {
             //Arrange
             var factoryService = Helper.TestsHelper.FactoryServicePointer.GetServiceFactory();
