@@ -276,7 +276,7 @@ namespace Example
 ```
 
 ### Decorators 
-You can build and configure service decorators globally or interface level. Decorators of tha interface will be executed when the instance is being created. It provides the flexibility of modifying the object or inject concrete objects at runtime.
+You can build and configure service decorators globally or interface level. Decorators of the interface will be executed when the instance is being created. It provides the flexibility of modifying the object or inject concrete objects at runtime.
 
 ### Register decorators with the global IoC container
 > You can also register decorators with the isolated containers.
