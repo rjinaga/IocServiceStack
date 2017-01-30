@@ -9,20 +9,20 @@ IocServiceStack is a open source .NET dependency injection framework. It support
 - Global IoC Container
 - Isolated IoC Containers
 - Automatically maps the services to their contracts
+- Add or Replace dependencies
 - Inject dependencies through decorators
 - Multi level dependencies
-- Add or Replace dependencies
 - Highly extensible
 
 ### Supports
 - .NET Core 1.0 (.NET Standard 1.6)
 - .NET Framework 4.6
 
-## [NuGet](https://www.nuget.org/packages/IocServiceStack/1.1.0-rc-final)
+## [NuGet](https://www.nuget.org/packages/IocServiceStack/)
 ```
 PM> Install-Package IocServiceStack -Pre
 ```
-[![NuGet Release](https://img.shields.io/badge/nuget-v1.1.0--rc--final-yellow.svg)](https://www.nuget.org/packages/IocServiceStack/1.1.0-rc-final)
+[![NuGet Release](https://img.shields.io/badge/nuget-v1.1.0-blue.svg)](https://www.nuget.org/packages/IocServiceStack/)
 
 ## Usage Examples
 
