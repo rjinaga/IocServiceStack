@@ -10,7 +10,7 @@ IocServiceStack is a open source .NET dependency injection framework. It support
 
 ## [NuGet](https://www.nuget.org/packages/IocServiceStack/)
 ```
-PM> Install-Package IocServiceStack -Pre
+PM> Install-Package IocServiceStack
 ```
 [![NuGet Release](https://img.shields.io/badge/nuget-v1.1.0-blue.svg)](https://www.nuget.org/packages/IocServiceStack/)
 
