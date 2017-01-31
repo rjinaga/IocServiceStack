@@ -135,7 +135,6 @@ namespace BusinessService
 }
 ```
 #### Repository Service Layer
-
 ```c#
 namespace RepositoryService
 {
@@ -191,7 +190,6 @@ namespace RepositoryService
 
 ```
 #### Data Service Layer
-
 ```c#
 namespace DataService
 {
