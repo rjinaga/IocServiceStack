@@ -91,6 +91,7 @@ configRef.GetDependencyFactory("DataContext") /* get dependency factory by name 
 IocServiceStack can map the services to their interfaces automatically, in order to work this function, set the Contract attribute to the interface and Service attribute to the class that implements the interface. ServiceInit attribute must be set to the constructor to be invoked.
 
 #### Business Service Layer
+
 ```c#
 namespace BusinessService
 {
@@ -134,7 +135,9 @@ namespace BusinessService
     }
 }
 ```
+
 #### Repository Service Layer
+
 ```c#
 namespace RepositoryService
 {
@@ -189,7 +192,9 @@ namespace RepositoryService
 }
 
 ```
+
 #### Data Service Layer
+
 ```c#
 namespace DataService
 {
