@@ -29,7 +29,7 @@ namespace IocServiceStack
 
     internal class InternalServiceManager
     {
-        private IServiceFactory _serviceFactory;
+        private IRootServiceFactory _serviceFactory;
         private readonly object _factorySyncObject = new object();
         private ServiceConfig _config;
 
@@ -41,7 +41,7 @@ namespace IocServiceStack
             _config = config;
         }
 
-        public IServiceFactory GetServiceFactory()
+        public IRootServiceFactory GetServiceFactory()
         {
             if (_serviceFactory == null)
             {
@@ -71,7 +71,7 @@ namespace IocServiceStack
                     InitChainOfSubctractFactories();
 
                     //Start work of service factory and chain of dependent factories
-                    _serviceFactory.StartWork();
+                    _serviceFactory.Initialize();
                 }
             }
         }
@@ -79,11 +79,11 @@ namespace IocServiceStack
         private void InitChainOfSubctractFactories()
         {
             ServiceDependencyOptions dependencies = _config.ServiceOptions.Dependencies;
-            IContainerService serviceNode = _serviceFactory;
+            IDependencyAttribute serviceNode = _serviceFactory;
 
             while (dependencies  != null)
             {
-                //if user defined ServiceFactory is configured then set that factory, otherise set the default one
+                //if user defined ServiceFactory is configured then set that factory, otherwise set the default one
                 if (dependencies.ServiceFactory != null)
                 {
                     serviceNode.DependencyFactory = dependencies.ServiceFactory;

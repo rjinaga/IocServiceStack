@@ -32,7 +32,7 @@ namespace IocServiceStack
         private bool _readOnly;
         private bool _strictMode;
         private string[] _namespaces, _assemblies;
-        private IServiceFactory _serviceFactory;
+        private IRootServiceFactory _serviceFactory;
         private ServiceDependencyOptions _dependencies;
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace IocServiceStack
             }
         }
 
-        public IServiceFactory ServiceFactory
+        public IRootServiceFactory ServiceFactory
         {
             get
             {

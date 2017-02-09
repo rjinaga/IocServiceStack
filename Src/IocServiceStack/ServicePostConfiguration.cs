@@ -25,28 +25,20 @@
 
 namespace IocServiceStack
 {
-    public class ServicePostConfiguration
-    {
-        private IocContainer _container;
+    //public class ContainerServiceConfiguration
+    //{
+    //    private IocContainer _container;
         
-        public ServicePostConfiguration(IocContainer container)
-        {
-            if (container == null)
-                ExceptionHelper.ThrowArgumentNullException(nameof(container));
+    //    public ContainerServiceConfiguration(IocContainer container)
+    //    {
+    //        if (container == null)
+    //            ExceptionHelper.ThrowArgumentNullException(nameof(container));
 
-            _container = container;
-        }
+    //        _container = container;
+    //    }
 
-        public IocContainer GetIocContainer() => _container;
+    //    internal IocContainer GetIocContainer() => _container;
 
-        public IContainerExtension GetServiceFactory()
-        {
-            return _container.ServiceProvider.GetServiceFactory();
-        }
-
-        public IContainerService GetDependecyFactory(string name)
-        {
-            return _container.ServiceProvider.GetDependencyFactory(name);
-        }
-    }
+      
+    //}
 }

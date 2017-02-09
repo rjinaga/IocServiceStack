@@ -37,13 +37,13 @@ namespace IocServiceStack
         /// </summary>
         /// <param name="configuration"></param>
         /// <returns></returns>
-        public static ServicePostConfiguration Configure(Action<ServiceConfig> configuration)
+        public static IocContainer Configure(Action<ServiceConfig> configuration)
         {
-            var postConfig = CreateIocContainer(configuration);
+            var container = CreateContainer(configuration);
 
-            IocContainer.GlobalIocContainer = postConfig.GetIocContainer();
+            IocContainer.GlobalIocContainer = container;
 
-            return postConfig;
+            return container;
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace IocServiceStack
         /// </summary>
         /// <param name="configuration"></param>
         /// <returns></returns>
-        public static ServicePostConfiguration CreateIocContainer(Action<ServiceConfig> configuration)
+        public static IocContainer CreateContainer(Action<ServiceConfig> configuration)
         {
             ServiceConfig config = new ServiceConfig();
             configuration(config);
@@ -59,49 +59,43 @@ namespace IocServiceStack
             //Make the ServiceOptions object read-only, don't allow the further changes to the object.
             config.ServiceOptions.MakeReadOnly();
 
-
-            return new ServicePostConfiguration(new IocContainer(config));
+            return new IocContainer(config);
         }
 
         /// <summary>
         /// Create new IoC container with defaults.
         /// </summary>
         /// <returns></returns>
-        public static ServicePostConfiguration CreateIocContainer()
+        public static IocContainer CreateIocContainer()
         {
-            return CreateIocContainer(config => { /*no default setup*/ });
+            return CreateContainer(config => { /*no default setup*/ });
         }
     }
 
-    [Obsolete("Use IocServicelet instead of IocServiceProvider", true)]
-    public class IocServiceProvider
-    {
-        public static ServicePostConfiguration Configure(Action<ServiceConfig> configuration)
-        {
+    //[Obsolete("Use IocServicelet instead of IocServiceProvider", true)]
+    //public class IocServiceProvider
+    //{
+    //    public static ContainerServiceConfiguration Configure(Action<ServiceConfig> configuration)
+    //    {
+    //        return null;
+    //    }
 
-            var postConfig = CreateIocContainer(configuration);
-            
-            IocContainer.GlobalIocContainer = postConfig.GetIocContainer();
-            
-            return postConfig;
-        }
+    //    public static ContainerServiceConfiguration CreateIocContainer(Action<ServiceConfig> configuration)
+    //    {
+    //        ServiceConfig config = new ServiceConfig();
+    //        configuration(config);
 
-        public static ServicePostConfiguration CreateIocContainer(Action<ServiceConfig> configuration)
-        {
-            ServiceConfig config = new ServiceConfig();
-            configuration(config);
-
-            //Make the ServiceOptions object read-only, don't allow the further changes to the object.
-            config.ServiceOptions.MakeReadOnly();
+    //        //Make the ServiceOptions object read-only, don't allow the further changes to the object.
+    //        config.ServiceOptions.MakeReadOnly();
             
 
-            return new ServicePostConfiguration(new IocContainer(config));
-        }
+    //        return new ContainerServiceConfiguration(new IocContainer(config));
+    //    }
 
-        public static ServicePostConfiguration CreateIocContainer()
-        {
-            return CreateIocContainer(config => { /*no default setup*/ });
-        }
-    }
+    //    public static ContainerServiceConfiguration CreateIocContainer()
+    //    {
+    //        return CreateIocContainer(config => { /*no default setup*/ });
+    //    }
+    //}
 
 }

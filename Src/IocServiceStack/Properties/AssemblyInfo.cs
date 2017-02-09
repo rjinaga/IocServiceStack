@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("IocServiceStack")]
 [assembly: AssemblyProduct("IocServiceStack")]
+[assembly: AssemblyCopyright("© Rajeswara Rao Jinaga")]
 [assembly: AssemblyTrademark("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible

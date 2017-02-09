@@ -29,7 +29,7 @@ namespace IocServiceStack
     using System.Linq.Expressions;
     using System.Reflection;
 
-    public class DefaultServiceFactory : AbstractFactory, IServiceFactory, IContainerExtension
+    public class DefaultServiceFactory : BaseServiceFactory, IRootServiceFactory
     {
         private ServiceNotifier _notifier;
 
@@ -90,7 +90,7 @@ namespace IocServiceStack
         /// <summary>
         /// 
         /// </summary>
-        public void StartWork()
+        public void Initialize()
         {
             ContractObserver = new DefaultContractWorkObserver();
             _notifier = new ServiceNotifier();
@@ -102,12 +102,12 @@ namespace IocServiceStack
 
         }
 
-        public IContainerExtension Add<TC>(Func<TC> expression) where TC: class
+        public IRootContainer Add<TC>(Func<TC> expression) where TC: class
         {
             return AddInternal<TC>(expression, null);
         }
 
-        public IContainerExtension Add<TC>(Func<TC> expression, string serviceName) where TC : class
+        public IRootContainer Add<TC>(Func<TC> expression, string serviceName) where TC : class
         {
             if (string.IsNullOrEmpty(serviceName))
             {
@@ -117,12 +117,12 @@ namespace IocServiceStack
             return AddInternal<TC>(expression, serviceName);
         }
 
-        public IContainerExtension Replace<TC>(Func<TC> expression) where TC : class
+        public IRootContainer Replace<TC>(Func<TC> expression) where TC : class
         {
             return ReplaceInternal<TC>(expression, null);
         }
 
-        public IContainerExtension Replace<TC>(Func<TC> expression, string serviceName) where TC : class
+        public IRootContainer Replace<TC>(Func<TC> expression, string serviceName) where TC : class
         {
             if (string.IsNullOrEmpty(serviceName))
             {
@@ -132,7 +132,95 @@ namespace IocServiceStack
             return ReplaceInternal<TC>(expression, serviceName);
         }
 
-        private IContainerExtension AddInternal<TC>(Func<TC> serviceAction, string serviceName) where TC : class
+        public IRootContainer Add<TC, TS>()
+           where TC : class
+           where TS : TC
+        {
+            AddService<TC, TS>();
+            return this;
+        }
+
+        public IRootContainer Add<TC, TS>(string serviceName)
+            where TC : class
+            where TS : TC
+        {
+            AddService<TC, TS>(serviceName);
+            return this;
+        }
+
+        public IRootContainer Add<T>(Type service) where T : class
+        {
+            AddService<T>(service);
+            return this;
+        }
+
+        public IRootContainer Add<T>(Type service, string serviceName) where T : class
+        {
+            AddService<T>(service, serviceName);
+            return this;
+        }
+
+        public IRootContainer AddSingleton<TC, TS>()
+            where TC : class
+            where TS : TC
+        {
+            AddSingletonService<TC, TS>();
+            return this;
+        }
+
+        public IRootContainer AddSingleton<TC, TS>(string serviceName)
+            where TC : class
+            where TS : TC
+        {
+            AddSingletonService<TC, TS>(serviceName);
+            return this;
+        }
+
+        public IRootContainer Replace<TC, TS>()
+            where TC : class
+            where TS : TC
+        {
+            ReplaceService<TC, TS>();
+            return this;
+        }
+
+        public IRootContainer Replace<TC, TS>(string serviceName)
+            where TC : class
+            where TS : TC
+        {
+            ReplaceService<TC, TS>(serviceName);
+            return this;
+        }
+
+        public IRootContainer Replace<T>(Type service) where T : class
+        {
+            ReplaceService<T>(service);
+            return this;
+        }
+
+        public IRootContainer Replace<T>(Type service, string serviceName) where T : class
+        {
+            ReplaceService<T>(service, serviceName);
+            return this;
+        }
+
+        public IRootContainer ReplaceSingleton<TC, TS>()
+            where TC : class
+            where TS : TC
+        {
+            ReplaceSingletonService<TC, TS>();
+            return this;
+        }
+
+        public IRootContainer ReplaceSingleton<TC, TS>(string serviceName)
+            where TC : class
+            where TS : TC
+        {
+            ReplaceSingletonService<TC, TS>(serviceName);
+            return this;
+        }
+
+        private IRootContainer AddInternal<TC>(Func<TC> serviceAction, string serviceName) where TC : class
         {
             Type interfaceType = typeof(TC);
             var serviceMeta = new ServiceInfo<TC,TC>(serviceAction, ServiceInfo.GetDecorators(interfaceType), serviceName);
@@ -145,7 +233,7 @@ namespace IocServiceStack
             return this;
         }
 
-        private IContainerExtension ReplaceInternal<TC>(Func<TC> expression, string serviceName) where TC : class
+        private IRootContainer ReplaceInternal<TC>(Func<TC> expression, string serviceName) where TC : class
         {
             Type interfaceType = typeof(TC);
             var serviceMeta = new ServiceInfo<TC,TC>(expression, ServiceInfo.GetDecorators(interfaceType), serviceName);
@@ -168,7 +256,7 @@ namespace IocServiceStack
                     {
                         var registrar = serviceMeta.InitNewRegistrar(interfaceType, _notifier);
 
-                        Func<T> serviceCreator  = serviceMeta.GetActionInfo<T>();
+                        Func<T> serviceCreator  = serviceMeta.GetServiceInstanceCallback<T>();
                         if (serviceCreator == null)
                         {
                             Expression newExpression = CreateConstructorExpression(interfaceType, serviceMeta.ServiceType, registrar);
@@ -180,5 +268,7 @@ namespace IocServiceStack
                 }
             }
         }
+
+       
     }
 }

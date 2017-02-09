@@ -27,6 +27,6 @@ namespace IocServiceStack.Tests.Helper
 {
     public class TestsHelper
     {
-        public static ServicePostConfiguration FactoryServicePointer { get; internal set; }
+        public static IocContainer FactoryServicePointer { get; internal set; }
     }
 }

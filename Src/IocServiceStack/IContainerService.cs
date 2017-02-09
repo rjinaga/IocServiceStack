@@ -26,46 +26,53 @@
 namespace IocServiceStack
 {
     using System;
+    using System.Linq.Expressions;
+
+
+  
 
     /// <summary>
     /// Represents basic service methods of factory
     /// </summary>
-    public interface IContainerService
-    {
-        /// <summary>
-        /// Gets or sets dependency factory
-        /// </summary>
-        SubcontractFactory DependencyFactory { get; set; }
+    //public interface IBaseServiceFactory : IDependencyAttribute
+    //{
+       
+    //    void AddService<TC, TS>() where TC : class where TS : TC;
+    //    void AddService<TC, TS>(string serviceName) where TC : class where TS : TC;
 
-        IContainerService Add<TC, TS>() where TC : class where TS : TC;
-        IContainerService Add<TC, TS>(string serviceName) where TC : class where TS : TC;
+    //    /// <summary>
+    //    /// Adds the specified service to the factory
+    //    /// </summary>
+    //    /// <typeparam name="T">The class of the service</typeparam>
+    //    /// <param name="service">The type of the service</param>
+    //    /// <returns>Instance <see cref="IContainerService"/> of current object</returns>
+    //    void AddService<T>(Type service) where T : class;
+    //    void AddService<T>(Type service, string serviceName) where T : class;
 
-        /// <summary>
-        /// Adds the specified service to the factory
-        /// </summary>
-        /// <typeparam name="T">The class of the service</typeparam>
-        /// <param name="service">The type of the service</param>
-        /// <returns>Instance <see cref="IContainerService"/> of current object</returns>
-        IContainerService Add<T>(Type service) where T : class;
-        IContainerService Add<T>(Type service, string serviceName) where T : class;
-
-        IContainerService AddSingleton<TC, TS>() where TC : class where TS : TC;
-        IContainerService AddSingleton<TC, TS>(string serviceName) where TC : class where TS : TC;
+    //    void AddSingletonService<TC, TS>() where TC : class where TS : TC;
+    //    void AddSingletonService<TC, TS>(string serviceName) where TC : class where TS : TC;
 
 
-        IContainerService Replace<TC, TS>() where TC : class where TS : TC;
-        IContainerService Replace<TC, TS>(string serviceName) where TC : class where TS : TC;
+    //    void ReplaceService<TC, TS>() where TC : class where TS : TC;
+    //    void ReplaceService<TC, TS>(string serviceName) where TC : class where TS : TC;
 
-        /// <summary>
-        /// Replaces the specified service in the factory.
-        /// </summary>
-        /// <typeparam name="T">The class of the service</typeparam>
-        /// <param name="service">The type of the service</param>
-        /// <returns>Instance <see cref="IContainerService"/> of current object</returns>
-        IContainerService Replace<T>(Type service) where T : class;
-        IContainerService Replace<T>(Type service, string serviceName) where T : class;
+    //    /// <summary>
+    //    /// Replaces the specified service in the factory.
+    //    /// </summary>
+    //    /// <typeparam name="T">The class of the service</typeparam>
+    //    /// <param name="service">The type of the service</param>
+    //    /// <returns>Instance <see cref="IContainerService"/> of current object</returns>
+    //    void ReplaceService<T>(Type service) where T : class;
+    //    void ReplaceService<T>(Type service, string serviceName) where T : class;
 
-        IContainerService ReplaceSingleton<TC, TS>() where TC : class where TS : TC;
-        IContainerService ReplaceSingleton<TC, TS>(string serviceName) where TC : class where TS : TC;
-    }
+    //    void ReplaceSingletonService<TC, TS>() where TC : class where TS : TC;
+    //    void ReplaceSingletonService<TC, TS>(string serviceName) where TC : class where TS : TC;
+
+
+    //    void AddService<TC>(Expression<Func<TC>> expression) where TC : class;
+    //    void AddService<TC>(Expression<Func<TC>> expression, string serviceName) where TC : class;
+
+    //    void ReplaceService<TC>(Expression<Func<TC>> expression) where TC : class;
+    //    void ReplaceService<TC>(Expression<Func<TC>> expression, string serviceName) where TC : class;
+    //}
 }

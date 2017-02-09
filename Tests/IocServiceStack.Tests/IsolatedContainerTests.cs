@@ -35,15 +35,15 @@ namespace IocServiceStack.Tests
         public void CreateIocContainer_AddDifferentServices_GetAssignedInstances()
         {
             //Arrange
-            var ioc1 = IocServicelet.CreateIocContainer(config => { /*No auto setup*/ });
-            var ioc2 = IocServicelet.CreateIocContainer(config =>{ /*No auto setup*/ });
+            var ioc1 = IocServicelet.CreateContainer(config => { /*No auto setup*/ });
+            var ioc2 = IocServicelet.CreateContainer(config =>{ /*No auto setup*/ });
 
-            ioc1.GetServiceFactory().Add<ICustomer, CustomerServiceWithNoRepo>();
-            ioc2.GetServiceFactory().Add<ICustomer, Helper.CustomerService2>();
+            ioc1.GetRootContainer().Add<ICustomer, CustomerServiceWithNoRepo>();
+            ioc2.GetRootContainer().Add<ICustomer, Helper.CustomerService2>();
 
             //Act
-            var ioc1Customer = ioc1.GetIocContainer().ServiceProvider.GetService<ICustomer>();
-            var ioc2Customer = ioc2.GetIocContainer().ServiceProvider.GetService<ICustomer>();
+            var ioc1Customer = ioc1.ServiceProvider.GetService<ICustomer>();
+            var ioc2Customer = ioc2.ServiceProvider.GetService<ICustomer>();
 
             //Assert
             Assert.IsInstanceOf<CustomerServiceWithNoRepo>(ioc1Customer);

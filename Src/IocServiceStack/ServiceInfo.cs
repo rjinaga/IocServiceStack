@@ -27,6 +27,7 @@ namespace IocServiceStack
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq.Expressions;
     using System.Reflection;
 
     public class ServiceInfo
@@ -101,11 +102,16 @@ namespace IocServiceStack
         /// </summary>
         public IServiceActivator Activator { get; set; }
 
-        public virtual Func<T> GetActionInfo<T>() where T: class
+        public virtual Func<T> GetServiceInstanceCallback<T>() where T: class
         {
             return null;
         }
-  
+
+        public virtual Expression<Func<object>> GetServiceInstanceExpression() 
+        {
+            return null;
+        }
+
         public ServiceRegistrar InitNewRegistrar(Type interfaceType, IServiceNotifier notifier)
         {
             _registrar = new ServiceRegistrar();

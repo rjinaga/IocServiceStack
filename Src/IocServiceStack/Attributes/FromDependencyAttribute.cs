@@ -25,8 +25,20 @@
 
 namespace IocServiceStack
 {
-    public interface IServiceWorker 
+    using System;
+
+    [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
+    public sealed class FromDependencyAttribute : Attribute
     {
-        
+        public readonly string FactoryName;
+        public FromDependencyAttribute(string factoryName)
+        {
+            if (string.IsNullOrWhiteSpace(factoryName))
+            {
+                throw new ArgumentNullException(factoryName);
+            }
+            FactoryName = factoryName;
+        }
     }
+
 }

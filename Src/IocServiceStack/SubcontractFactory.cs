@@ -29,14 +29,85 @@ namespace IocServiceStack
     using System.Linq.Expressions;
     using System.Reflection;
 
-    public abstract class SubcontractFactory : AbstractFactory
+    public abstract class SubcontractFactory : BaseServiceFactory, IDependencyFactory
     {
         public SubcontractFactory(string[] namespaces, Assembly[] assemblies, bool strictMode) : base(namespaces, assemblies, strictMode)
         {
+            
         }
 
         public string Name { get; set; }
 
+        IContractObserver IDependencyFactory.ContractObserver
+        {
+            get
+            {
+                return base.ContractObserver;
+            }
+
+            set
+            {
+                base.ContractObserver = value;
+            }
+        }
+
         public abstract Expression Create(Type interfaceType, ServiceRegistrar register);
+
+        public IDependencyFactory Add<T>(Type service) where T : class
+        {
+            AddService<T>(service);
+            return this;
+        }
+
+        public IDependencyFactory Add<T>(Type service, string serviceName) where T : class
+        {
+            AddService<T>(service, serviceName);
+            return this;
+        }
+
+        public IDependencyFactory Add<TC, TS>()
+            where TC : class
+            where TS : TC
+        {
+            AddService<TC,TS>();
+            return this;
+        }
+
+        public IDependencyFactory Add<TC, TS>(string serviceName)
+            where TC : class
+            where TS : TC
+        {
+            AddService<TC, TS>(serviceName);
+            return this;
+        }
+
+
+        public IDependencyFactory Replace<T>(Type service) where T : class
+        {
+            ReplaceService<T>(service);
+            return this;
+        }
+
+        public IDependencyFactory Replace<T>(Type service, string serviceName) where T : class
+        {
+            ReplaceService<T>(service, serviceName);
+            return this;
+        }
+
+        public IDependencyFactory Replace<TC, TS>()
+            where TC : class
+            where TS : TC
+        {
+            ReplaceService<TC, TS>();
+            return this;
+        }
+
+        public IDependencyFactory Replace<TC, TS>(string serviceName)
+            where TC : class
+            where TS : TC
+        {
+            ReplaceService<TC, TS>(serviceName);
+            return this;
+        }
     }
 }

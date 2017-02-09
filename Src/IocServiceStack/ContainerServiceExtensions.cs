@@ -28,74 +28,74 @@ namespace IocServiceStack
     using System;
     public static class ContainerServiceExtensions
     {
-        public static IContainerExtension Add<TC>(this IContainerService service, Func<TC> expression) where TC : class
-        {
-            return InternalAdd<TC>(service, expression, null);
-        }
+        //public static IRootContainer Add<TC>(this IContainerService service, Func<TC> expression) where TC : class
+        //{
+        //    return InternalAdd<TC>(service, expression, null);
+        //}
 
-        public static IContainerExtension Add<TC>(this IContainerService service, Func<TC> expression, string serviceName) where TC : class
-        {
-            if (string.IsNullOrWhiteSpace(serviceName))
-            {
-                ExceptionHelper.ThrowArgumentNullException(nameof(serviceName));
-            }
+        //public static IRootContainer Add<TC>(this IContainerService service, Func<TC> expression, string serviceName) where TC : class
+        //{
+        //    if (string.IsNullOrWhiteSpace(serviceName))
+        //    {
+        //        ExceptionHelper.ThrowArgumentNullException(nameof(serviceName));
+        //    }
 
-            return InternalAdd<TC>(service, expression, serviceName);
-        }
+        //    return InternalAdd<TC>(service, expression, serviceName);
+        //}
 
-        public static IContainerExtension Replace<TC>(this IContainerService service, Func<TC> expression) where TC : class
-        {
-            return InternalReplace<TC>(service, expression, null);
-        }
+        //public static IRootContainer Replace<TC>(this IContainerService service, Func<TC> expression) where TC : class
+        //{
+        //    return InternalReplace<TC>(service, expression, null);
+        //}
 
-        public static IContainerExtension Replace<TC>(this IContainerService service, Func<TC> expression, string serviceName) where TC : class
-        {
-            if (string.IsNullOrWhiteSpace(serviceName))
-            {
-                ExceptionHelper.ThrowArgumentNullException(nameof(serviceName));
-            }
+        //public static IRootContainer Replace<TC>(this IContainerService service, Func<TC> expression, string serviceName) where TC : class
+        //{
+        //    if (string.IsNullOrWhiteSpace(serviceName))
+        //    {
+        //        ExceptionHelper.ThrowArgumentNullException(nameof(serviceName));
+        //    }
 
-            return InternalReplace<TC>(service, expression, serviceName);
-        }
+        //    return InternalReplace<TC>(service, expression, serviceName);
+        //}
 
-        private static IContainerExtension InternalReplace<TC>(IContainerService service, Func<TC> expression, string serviceName) where TC : class
-        {
-            var containerExtension = service as IContainerExtension;
-            if (containerExtension != null)
-            {
-                if (string.IsNullOrWhiteSpace(serviceName))
-                {
-                    containerExtension.Replace<TC>(expression);
-                }
-                else
-                {
-                    containerExtension.Replace<TC>(expression, serviceName);
-                }
-            }
-            else
-                throw new Exception("Service factory is not implemented IContainerExtension");
+        //private static IRootContainer InternalReplace<TC>(IContainerService service, Func<TC> expression, string serviceName) where TC : class
+        //{
+        //    var containerExtension = service as IRootContainer;
+        //    if (containerExtension != null)
+        //    {
+        //        if (string.IsNullOrWhiteSpace(serviceName))
+        //        {
+        //            containerExtension.Replace<TC>(expression);
+        //        }
+        //        else
+        //        {
+        //            containerExtension.Replace<TC>(expression, serviceName);
+        //        }
+        //    }
+        //    else
+        //        throw new Exception("Service factory is not implemented IContainerExtension");
 
-            return containerExtension;
-        }
+        //    return containerExtension;
+        //}
 
-        private static IContainerExtension InternalAdd<TC>(this IContainerService service, Func<TC> expression, string serviceName) where TC : class
-        {
-            var containerExtension = service as IContainerExtension;
-            if (containerExtension != null)
-            {
-                if (string.IsNullOrWhiteSpace(serviceName))
-                {
-                    containerExtension.Add<TC>(expression);
-                }
-                else
-                {
-                    containerExtension.Add<TC>(expression, serviceName);
-                }
-            }
-            else
-                throw new Exception("Service factory is not implemented IContainerExtension");
+        //private static IRootContainer InternalAdd<TC>(this IContainerService service, Func<TC> expression, string serviceName) where TC : class
+        //{
+        //    var containerExtension = service as IRootContainer;
+        //    if (containerExtension != null)
+        //    {
+        //        if (string.IsNullOrWhiteSpace(serviceName))
+        //        {
+        //            containerExtension.Add<TC>(expression);
+        //        }
+        //        else
+        //        {
+        //            containerExtension.Add<TC>(expression, serviceName);
+        //        }
+        //    }
+        //    else
+        //        throw new Exception("Service factory is not implemented IContainerExtension");
 
-            return containerExtension;
-        }
+        //    return containerExtension;
+        //}
     }
 }

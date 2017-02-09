@@ -46,6 +46,13 @@ namespace IocServiceStack
 
             ServiceInfo serviceMeta = ServicesMapTable?[interfaceType];
 
+
+            var userdefinedExpression = serviceMeta.GetServiceInstanceExpression();
+            if (userdefinedExpression != null)
+            {
+                return userdefinedExpression;
+            }
+
             return CreateConstructorExpression(interfaceType, serviceMeta.ServiceType, registrar)?? Expression.Default(interfaceType);
         }
     }

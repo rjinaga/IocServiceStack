@@ -38,7 +38,7 @@ namespace IocServiceStack.Tests
         public void Replace_AtTwoLelvels_Instance()
         {
             //Arrange
-            var factoryService = Helper.TestsHelper.FactoryServicePointer.GetServiceFactory();
+            var factoryService = Helper.TestsHelper.FactoryServicePointer.GetRootContainer();
 
             /*Dependency Injection*/
 
@@ -64,7 +64,7 @@ namespace IocServiceStack.Tests
         public void ReplaceService_GetService_ByType_Test()
         {
             //Arrange
-            var serviceFactory = Helper.TestsHelper.FactoryServicePointer.GetServiceFactory();
+            var serviceFactory = Helper.TestsHelper.FactoryServicePointer.GetRootContainer();
 
             /*Dependency Injection*/
             serviceFactory.Replace<ICustomer, CustomerService2>()
@@ -85,7 +85,7 @@ namespace IocServiceStack.Tests
         public void ReplaceService_DirectInstance_Inject_Test()
         {
             //Arrange
-            var serviceFactory = Helper.TestsHelper.FactoryServicePointer.GetServiceFactory();
+            var serviceFactory = Helper.TestsHelper.FactoryServicePointer.GetRootContainer();
 
             /*Dependency Injection*/
             serviceFactory.Replace<ICustomer>(() => new CustomerService2(new CustomerRepository3()));
@@ -105,7 +105,7 @@ namespace IocServiceStack.Tests
 
         private void RevertToOrignal()
         {
-            var serviceFactory = Helper.TestsHelper.FactoryServicePointer.GetServiceFactory();
+            var serviceFactory = Helper.TestsHelper.FactoryServicePointer.GetRootContainer();
 
             serviceFactory.Replace<ICustomer, CustomerService>()
                           .DependencyFactory

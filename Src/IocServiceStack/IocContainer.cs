@@ -30,7 +30,7 @@ namespace IocServiceStack
         private IServiceProvider _serviceProvider;
         private readonly ServiceConfig _config;
         
-        public IocContainer(ServiceConfig config)
+        internal IocContainer(ServiceConfig config)
         {
             _config = config;
             Prepare();
@@ -51,6 +51,16 @@ namespace IocServiceStack
             _serviceProvider = _config.ServiceProvider ?? new DefaultServiceProvider(_config);
             //set decorators to service provider
             _serviceProvider.DecoratorManager = new DecoratorManager() { GlobalDecorators = _config.Decorators };
+        }
+
+        public IRootContainer GetRootContainer()
+        {
+            return ServiceProvider.GetServiceFactory();
+        }
+
+        public ISubContainer GetDependencyContainer(string name)
+        {
+            return ServiceProvider.GetDependencyFactory(name);
         }
 
         #region Static Members

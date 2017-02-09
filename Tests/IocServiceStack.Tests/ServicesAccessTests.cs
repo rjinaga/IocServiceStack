@@ -90,7 +90,7 @@ namespace IocServiceStack.Tests
         public void Inject_OtherKindOfSale_InstanceCheck()
         {
             //Arrange
-            var serviceFactory = Helper.TestsHelper.FactoryServicePointer.GetServiceFactory();
+            var serviceFactory = Helper.TestsHelper.FactoryServicePointer.GetRootContainer();
 
             serviceFactory.Add<AbstractSale>(() => new Helper.OtherKindOfSale(), "OtherKind")
                           .Add<AbstractSale, Helper.MiscSale>("MiscSale");

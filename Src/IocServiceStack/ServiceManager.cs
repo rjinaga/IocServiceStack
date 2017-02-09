@@ -30,26 +30,38 @@ namespace IocServiceStack
     {
         T IServiceManager.GetService<T>() 
         {
+            ThrowIfContainerNotConfigured();
             var provider = IocContainer.GlobalIocContainer.ServiceProvider;
             return provider.GetService<T>();
         }
 
         T IServiceManager.GetService<T>(string serviceName)
         {
+            ThrowIfContainerNotConfigured();
             var provider = IocContainer.GlobalIocContainer.ServiceProvider;
             return provider.GetService<T>(serviceName);
         }
 
         object IServiceManager.GetService(Type contractType)
         {
+            ThrowIfContainerNotConfigured();
             var provider = IocContainer.GlobalIocContainer.ServiceProvider;
             return provider.GetService(contractType);
         }
 
         object IServiceManager.GetService(Type contractType, string serviceName)
         {
+            ThrowIfContainerNotConfigured();
             var provider = IocContainer.GlobalIocContainer.ServiceProvider;
             return provider.GetService(contractType, serviceName);
+        }
+
+        private void ThrowIfContainerNotConfigured()
+        {
+            if (IocContainer.GlobalIocContainer == null)
+            {
+                throw new Exception("Global IoC container is not configured. Use IocServiceStack.Configure method to configure the IocServiceStack.");
+            }
         }
 
         #region Static Members

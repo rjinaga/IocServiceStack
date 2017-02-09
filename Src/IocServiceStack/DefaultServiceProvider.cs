@@ -132,7 +132,7 @@ namespace IocServiceStack
             return objectInstance;
         }
 
-        public virtual IServiceFactory GetServiceFactory()
+        public virtual IRootServiceFactory GetServiceFactory()
         {
             return _internalsm.GetServiceFactory();
         }
@@ -142,18 +142,9 @@ namespace IocServiceStack
         /// </summary>
         /// <param name="name">The name of the dependency factory. Value of name is not case sensitive</param>
         /// <returns>Returns <see cref="IContainerService"/> if found, otherwise returns null</returns>
-        public IContainerService GetDependencyFactory(string name)
+        public IDependencyFactory GetDependencyFactory(string name)
         {
-            var factoryNode = GetServiceFactory().DependencyFactory;
-            while (factoryNode != null)
-            {
-                if (string.Equals(factoryNode.Name, name, StringComparison.OrdinalIgnoreCase))
-                {
-                    return factoryNode;
-                }
-                factoryNode = factoryNode.DependencyFactory;
-            }
-            return null;
+            return ServiceProviderHelper.GetDependencyFactory(GetServiceFactory()?.DependencyFactory, name);
         }
 
         protected InvocationInfo BeforeInvoke(Type contractType, string serviceName)

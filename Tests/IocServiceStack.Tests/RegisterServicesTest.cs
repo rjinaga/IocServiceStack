@@ -36,7 +36,7 @@ namespace IocServiceStack.Tests
         [OneTimeSetUp]
         public void RegisterTest()
         {
-            var configRef = IocServicelet.Configure(config =>
+            var container = IocServicelet.Configure(config =>
             {
                 config.AddServices((opt) =>
                 {
@@ -63,9 +63,13 @@ namespace IocServiceStack.Tests
                 config.Decorators.Add(new TestDecoratorAttribute());
             });
 
+            //configRef.GetRootContainer().Add
             
+
+            //configRef.GetDependencyService().
+
             //Hold the pointer of serviceConfig in a static field to run further tests of dependency injection.
-            Helper.TestsHelper.FactoryServicePointer = configRef;
+            Helper.TestsHelper.FactoryServicePointer = container;
         }
     }
 }

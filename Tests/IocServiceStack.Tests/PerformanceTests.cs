@@ -89,14 +89,15 @@ namespace IocServiceStack.Tests
             const int OneMillionTimes = 1000000;
             for (int i = 0; i < OneMillionTimes; i++)
             {
-                CreateService();
+                var x = CreateService();
             }
         }
      
 
-        private void CreateService()
+        private ICustomer CreateService()
         {
-            ICustomer customer = new CustomerService(new CustomerRepository(new AdventureDbContext()));
+             var customer = new CustomerService(new CustomerRepository(new AdventureDbContext()));
+            return customer;
         }
     }
 }

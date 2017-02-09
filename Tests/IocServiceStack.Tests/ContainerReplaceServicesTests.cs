@@ -9,22 +9,22 @@
         public void Replace_GetWhatYouSet_InstanceOf()
         {
             //Arrange
-            var configRef = IocServicelet.CreateIocContainer();
+            var container = IocServicelet.CreateIocContainer();
 
             //Act
-            configRef.GetServiceFactory().Replace<IEmployee, Employee>()
+            container.GetRootContainer().Replace<IEmployee, Employee>()
                                          .Replace<IEmployee>(() => new Employee1(), "Employee1")
                                          .Replace<IEmployee>(() => new Employee2(), "Employee2")
                                          .Replace<IEmployee>(typeof(Employee3), "Employee3")
                                          .Replace<IEmployee, SeniorEmployee>("Senior")
                                          .Replace<IExecutive>(typeof(Executive));
 
-            var provider = configRef.GetIocContainer().ServiceProvider;
+            var provider = container.ServiceProvider;
             var employee = provider.GetService<IEmployee>();
             var employee1 = provider.GetService<IEmployee>("Employee1");
             var employee2 = provider.GetService<IEmployee>("Employee2");
             var employee3 = provider.GetService<IEmployee>("Employee3");
-            var seniorEmployee = configRef.GetIocContainer().ServiceProvider.GetService<IEmployee>("Senior");
+            var seniorEmployee = container.ServiceProvider.GetService<IEmployee>("Senior");
             var executive = provider.GetService<IExecutive>();
             var executive1 = provider.GetService<IExecutive>("NoExecutive");
 
@@ -43,10 +43,10 @@
         public void Replace_InvalidServiceType_ThrowsException()
         {
             //Arrange
-            var configRef = IocServicelet.CreateIocContainer();
+            var container = IocServicelet.CreateIocContainer();
 
             //Act
-            TestDelegate test = () => configRef.GetServiceFactory().Replace<IEmployee>(typeof(Executive));
+            TestDelegate test = () => container.GetRootContainer().Replace<IEmployee>(typeof(Executive));
 
             //Assert
             Assert.Throws<InvalidServiceTypeException>(test);

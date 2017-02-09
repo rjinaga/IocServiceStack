@@ -99,7 +99,7 @@ namespace BusinessService
     using Models;
  
     [Contract]
-    public interface ICustomer
+    public interface ICustomerService
     {
         void AddCustomer(Customer customer);
     }
@@ -113,7 +113,7 @@ namespace BusinessService
     using RepositoryService;
 
     [Service]
-    public class CustomerService : ICustomer
+    public class CustomerService : ICustomerService
     {
         private ICustomerRepository _repository;
 

@@ -26,10 +26,15 @@
 namespace IocServiceStack
 {
     using System;
-    public interface IServiceFactory : IServiceWorker
+    public interface IRootServiceFactory : IRootContainer
     {
+        void Initialize();
+
         ServiceInfo GetServiceInfo(Type contractType, string serviceName);
+
         T Create<T>(ServiceInfo serviceMeta) where T : class;
+
         object Create(Type contractType, ServiceInfo serviceMeta);
+        
     }
 }

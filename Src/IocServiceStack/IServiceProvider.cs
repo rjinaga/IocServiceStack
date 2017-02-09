@@ -42,14 +42,14 @@ namespace IocServiceStack
         /// Get root service factory
         /// </summary>
         /// <returns></returns>
-        IServiceFactory GetServiceFactory();
+        IRootServiceFactory GetServiceFactory();
 
         /// <summary>
         /// Get dependency factory by specified name.
         /// </summary>
         /// <param name="name">The name of the dependency factory</param>
         /// <returns></returns>
-        IContainerService GetDependencyFactory(string name);
+        IDependencyFactory GetDependencyFactory(string name);
 
 
         T GetService<T>() where T : class;

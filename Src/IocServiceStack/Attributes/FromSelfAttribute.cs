@@ -25,8 +25,16 @@
 
 namespace IocServiceStack
 {
-    public interface IServiceWorker 
+    using System;
+    
+    [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
+    public sealed class FromSelfAttribute : Attribute
     {
-        
+        public FromSelfAttribute()
+        {
+
+        }
     }
+
+   
 }

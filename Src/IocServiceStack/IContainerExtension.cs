@@ -26,12 +26,95 @@
 namespace IocServiceStack
 {
     using System;
-    public interface IContainerExtension : IContainerService
-    {
-        IContainerExtension Add<TC>(Func<TC> expression) where TC : class;
-        IContainerExtension Add<TC>(Func<TC> expression, string serviceName) where TC : class;
+    using System.Linq.Expressions;
 
-        IContainerExtension Replace<TC>(Func<TC> expression) where TC : class;
-        IContainerExtension Replace<TC>(Func<TC> expression, string serviceName) where TC : class;
+    public interface IDependencyAttribute
+    {
+        /// <summary>
+        /// Gets or sets dependency factory
+        /// </summary>
+        IDependencyFactory DependencyFactory { get; set; }
+    }
+
+    public interface IDependencyFactory : ISubContainer
+    {
+        string Name { get; set; }
+        Expression Create(Type interfaceType, ServiceRegistrar register);
+        IContractObserver ContractObserver { get; set; }
+
+    }
+    
+    public interface ISubContainer : IDependencyAttribute
+    {
+        
+
+        IDependencyFactory Add<TC, TS>() where TC : class where TS : TC;
+        IDependencyFactory Add<TC, TS>(string serviceName) where TC : class where TS : TC;
+
+        /// <summary>
+        /// Adds the specified service to the factory
+        /// </summary>
+        /// <typeparam name="T">The class of the service</typeparam>
+        /// <param name="service">The type of the service</param>
+        /// <returns>Instance <see cref="IContainerService"/> of current object</returns>
+        IDependencyFactory Add<T>(Type service) where T : class;
+        IDependencyFactory Add<T>(Type service, string serviceName) where T : class;
+
+
+        IDependencyFactory Replace<TC, TS>() where TC : class where TS : TC;
+        IDependencyFactory Replace<TC, TS>(string serviceName) where TC : class where TS : TC;
+
+        /// <summary>
+        /// Replaces the specified service in the factory.
+        /// </summary>
+        /// <typeparam name="T">The class of the service</typeparam>
+        /// <param name="service">The type of the service</param>
+        /// <returns>Instance <see cref="IContainerService"/> of current object</returns>
+        IDependencyFactory Replace<T>(Type service) where T : class;
+        IDependencyFactory Replace<T>(Type service, string serviceName) where T : class;
+        
+    }
+
+    public interface IRootContainer : IDependencyAttribute
+    {
+        
+        IRootContainer Add<TC>(Func<TC> expression) where TC : class;
+        IRootContainer Add<TC>(Func<TC> expression, string serviceName) where TC : class;
+
+        IRootContainer Replace<TC>(Func<TC> expression) where TC : class;
+        IRootContainer Replace<TC>(Func<TC> expression, string serviceName) where TC : class;
+
+
+
+        IRootContainer Add<TC, TS>() where TC : class where TS : TC;
+        IRootContainer Add<TC, TS>(string serviceName) where TC : class where TS : TC;
+
+        /// <summary>
+        /// Adds the specified service to the factory
+        /// </summary>
+        /// <typeparam name="T">The class of the service</typeparam>
+        /// <param name="service">The type of the service</param>
+        /// <returns>Instance <see cref="IContainerService"/> of current object</returns>
+        IRootContainer Add<T>(Type service) where T : class;
+        IRootContainer Add<T>(Type service, string serviceName) where T : class;
+
+        IRootContainer AddSingleton<TC, TS>() where TC : class where TS : TC;
+        IRootContainer AddSingleton<TC, TS>(string serviceName) where TC : class where TS : TC;
+
+
+        IRootContainer Replace<TC, TS>() where TC : class where TS : TC;
+        IRootContainer Replace<TC, TS>(string serviceName) where TC : class where TS : TC;
+
+        /// <summary>
+        /// Replaces the specified service in the factory.
+        /// </summary>
+        /// <typeparam name="T">The class of the service</typeparam>
+        /// <param name="service">The type of the service</param>
+        /// <returns>Instance <see cref="IContainerService"/> of current object</returns>
+        IRootContainer Replace<T>(Type service) where T : class;
+        IRootContainer Replace<T>(Type service, string serviceName) where T : class;
+
+        IRootContainer ReplaceSingleton<TC, TS>() where TC : class where TS : TC;
+        IRootContainer ReplaceSingleton<TC, TS>(string serviceName) where TC : class where TS : TC;
     }
 }

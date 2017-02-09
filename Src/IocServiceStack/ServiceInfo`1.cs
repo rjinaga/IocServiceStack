@@ -26,10 +26,12 @@
 namespace IocServiceStack
 {
     using System;
-    
+    using System.Linq.Expressions;
+
     public class ServiceInfo<TC, TS> : ServiceInfo where TC: class where TS: TC
     {
         private Func<TS> _actionInfo;
+        private Expression<Func<TS>> _expressionCallback;
 
         public ServiceInfo(DecoratorAttribute[] decorators, string serviceName) : base(typeof(TS), decorators, serviceName)
         {
@@ -49,9 +51,25 @@ namespace IocServiceStack
             _actionInfo = serviceAction;
         }
 
-        public override Func<T1> GetActionInfo<T1>() 
+        public ServiceInfo(Expression<Func<TS>> expression, DecoratorAttribute[] decorators, string serviceName) : base(null, decorators, serviceName)
+        {
+            _expressionCallback = expression;
+        }
+
+        public ServiceInfo(Expression<Func<TS>> expression, DecoratorAttribute[] decorators, bool isReusable, string serviceName) : base(null, decorators, isReusable, serviceName)
+        {
+            _expressionCallback = expression;
+        }
+
+        public override Func<T1> GetServiceInstanceCallback<T1>() 
         {
             return _actionInfo as Func<T1>;
         }
+
+        public override Expression<Func<object>> GetServiceInstanceExpression()
+        {
+            return _expressionCallback as Expression<Func<object>>;
+        }
+
     }
 }

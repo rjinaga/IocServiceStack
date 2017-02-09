@@ -33,9 +33,9 @@ namespace IocServiceStack.Tests
         public void GetDependecyFactory_RepositoryData_NotEqual()
         {
             //Arrange & Act
-            var repoFactory = Helper.TestsHelper.FactoryServicePointer.GetDependecyFactory("Repository");
+            var repoFactory = Helper.TestsHelper.FactoryServicePointer.GetDependencyContainer("Repository");
 
-            var dataFactory = Helper.TestsHelper.FactoryServicePointer.GetDependecyFactory("Data");
+            var dataFactory = Helper.TestsHelper.FactoryServicePointer.GetDependencyContainer("Data");
             
 
             //Assert
