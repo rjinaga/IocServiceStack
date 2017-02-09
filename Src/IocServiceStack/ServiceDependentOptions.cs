@@ -27,12 +27,12 @@ namespace IocServiceStack
 {
     using System;
 
-    public class ServiceDependencyOptions
+    public class ContainerDependencyOptions
     {
         private bool _readOnly;
         private string[] _namespaces, _assemblies;
         private SubcontractFactory _serviceFactory;
-        private ServiceDependencyOptions _dependencies;
+        private ContainerDependencyOptions _dependencies;
         private string _name;
 
         public string Name
@@ -95,7 +95,7 @@ namespace IocServiceStack
             }
         }
 
-        public ServiceDependencyOptions Dependencies
+        public ContainerDependencyOptions Dependencies
         {
             get
             {
@@ -103,9 +103,9 @@ namespace IocServiceStack
             }
         }
 
-        public void AddDependencies(Action<ServiceDependencyOptions> options)
+        public void AddDependencies(Action<ContainerDependencyOptions> options)
         {
-            _dependencies = new ServiceDependencyOptions();
+            _dependencies = new ContainerDependencyOptions();
             options(_dependencies);
         }
 

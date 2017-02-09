@@ -25,20 +25,13 @@
 
 namespace IocServiceStack
 {
-    //public class ContainerServiceConfiguration
-    //{
-    //    private IocContainer _container;
-        
-    //    public ContainerServiceConfiguration(IocContainer container)
-    //    {
-    //        if (container == null)
-    //            ExceptionHelper.ThrowArgumentNullException(nameof(container));
-
-    //        _container = container;
-    //    }
-
-    //    internal IocContainer GetIocContainer() => _container;
-
-      
-    //}
+   
+    public interface IDependencyAttribute
+    {
+        /// <summary>
+        /// Gets or sets dependency factory
+        /// </summary>
+        IDependencyFactory DependencyFactory { get; set; }
+    }
+    
 }

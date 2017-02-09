@@ -1,6 +1,11 @@
 ﻿namespace IocServiceStack.Tests
 {
+    using BusinessContractLibrary;
+    using BusinessService;
+    using DataContractLibrary;
+    using DataService;
     using NUnit.Framework;
+    using RepositoryService;
 
     [TestFixture]
     public class ContainerAddServicesTests
@@ -9,7 +14,7 @@
         public void Add_GetWhatYouSet_InstanceOf()
         {
             //Arrange
-            var container = IocServicelet.CreateContainer(config => { /*No auto setup*/ });
+            var container = IocServicelet.CreateContainer();
 
             //Act
             //different ways of adding services
@@ -18,7 +23,12 @@
                                          .Add<IEmployee>(() => new Employee2(), "Employee2")
                                          .Add<IEmployee>(typeof(Employee3), "Employee3")
                                          .Add<IEmployee, SeniorEmployee>("Senior")
-                                         .Add<IExecutive>(typeof(Executive));
+                                         .Add<IExecutive>(typeof(Executive))
+                                         .Add<ICustomer, CustomerService>() /*this depends on the ICustomerRepository*/
+                                         .Add<ICustomerRepository, CustomerRepository>() /*this depends on the IDbContext*/
+                                         .Add<IDbContext, AdventureDbContext>()
+                                          
+                                         ;
 
             var provider = container.ServiceProvider;
             var employee = provider.GetService<IEmployee>();
@@ -29,6 +39,8 @@
             var executive = provider.GetService<IExecutive>();
             var executive1 = provider.GetService<IExecutive>("NoExecutive");
 
+            var specialCustomer = provider.GetService<ICustomer>();
+
             //Assert
             Assert.IsInstanceOf<Employee>(employee);
             Assert.IsInstanceOf<Employee1>(employee1);
@@ -36,6 +48,10 @@
             Assert.IsInstanceOf<Employee3>(employee3);
             Assert.IsInstanceOf<SeniorEmployee>(seniorEmployee);
             Assert.IsInstanceOf<Executive>(executive);
+
+            Assert.IsInstanceOf<CustomerService>(specialCustomer);
+            //write assert to validate repository and dbcontext
+
 
             Assert.IsNull(executive1);
         }

@@ -27,13 +27,13 @@ namespace IocServiceStack
 {
     using System;
 
-    public class ServiceOptions
+    public class ContainerOptions
     {
         private bool _readOnly;
         private bool _strictMode;
         private string[] _namespaces, _assemblies;
         private IRootServiceFactory _serviceFactory;
-        private ServiceDependencyOptions _dependencies;
+        private ContainerDependencyOptions _dependencies;
 
         /// <summary>
         /// StrictMode applies the one contract with one service policy. This means if more than one service is implemented single contract interface
@@ -99,7 +99,7 @@ namespace IocServiceStack
             }
         }
 
-        public ServiceDependencyOptions Dependencies
+        public ContainerDependencyOptions Dependencies
         {
             get
             {
@@ -107,9 +107,9 @@ namespace IocServiceStack
             }
         }
 
-        public void AddDependencies(Action<ServiceDependencyOptions> options)
+        public void AddDependencies(Action<ContainerDependencyOptions> options)
         {
-            _dependencies = new ServiceDependencyOptions();
+            _dependencies = new ContainerDependencyOptions();
             options(_dependencies);
         }
 

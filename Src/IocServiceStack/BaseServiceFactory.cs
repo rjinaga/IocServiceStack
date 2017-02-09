@@ -36,7 +36,7 @@ namespace IocServiceStack
     public abstract class BaseServiceFactory : IDependencyAttribute
     {
         private IContractObserver _observer;
-
+        private readonly ContainerModel _containerModel;
         /// <summary>
         /// Get read-only ServiceMapTable object
         /// </summary>
@@ -48,8 +48,10 @@ namespace IocServiceStack
         /// <param name="namespaces">The namespaces of services</param>
         /// <param name="assemblies">The assemblies of services</param>
         /// <param name="strictMode">The value indicating whether strict mode is on or off</param>
-        public BaseServiceFactory(string[] namespaces, Assembly[] assemblies, bool strictMode)
+        /// <param name="containerModel"></param>
+        public BaseServiceFactory(string[] namespaces, Assembly[] assemblies, bool strictMode, ContainerModel containerModel)
         {
+            _containerModel = containerModel;
             ServicesMapTable = new ContractServiceAutoMapper(namespaces, assemblies, strictMode);
             ServicesMapTable.Map();
         }
@@ -249,8 +251,10 @@ namespace IocServiceStack
             }
             else
             {
-                /*if parameter is decorated with FromSelfAttribute, then find object within the current factory */
-                if (IsSelfDependent(constrParameter))
+                /*
+                 * if container model is "Single" then it will search within the same container not in dependencies.
+                 * if parameter is decorated with FromSelfAttribute, then find object within the current factory */
+                if (_containerModel == ContainerModel.Single || IsSelfDependent(constrParameter))
                 {
                     //Find it in same 
                     return GetObjectFromSelf(constrParameter.ParameterType, registrar);
@@ -271,15 +275,15 @@ namespace IocServiceStack
         private bool IsSelfDependent(ParameterInfo constrParameter)
         {
             //FromSelf
-            var fromSelfAttr = constrParameter.GetCustomAttribute<FromSelfAttribute>();
+            var fromSelfAttr = constrParameter.GetCustomAttribute<InternalAttribute>();
             return fromSelfAttr != null;
         }
 
         private bool HasDependencyAttribute(ParameterInfo constrParameter, out string factoryName)
         {
             //FromSelf
-            var fromDepAttr = constrParameter.GetCustomAttribute<FromDependencyAttribute>();
-            factoryName = fromDepAttr?.FactoryName;
+            var fromDepAttr = constrParameter.GetCustomAttribute<ExternalAttribute>();
+            factoryName = fromDepAttr?.ContainerName;
             return fromDepAttr != null;
         }
 

@@ -26,15 +26,19 @@
 namespace IocServiceStack
 {
     using System;
-    
-    [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
-    public sealed class FromSelfAttribute : Attribute
-    {
-        public FromSelfAttribute()
-        {
 
+    [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
+    public sealed class ExternalAttribute : Attribute
+    {
+        public readonly string ContainerName;
+        public ExternalAttribute(string dependencyContainerName)
+        {
+            if (string.IsNullOrWhiteSpace(dependencyContainerName))
+            {
+                throw new ArgumentNullException(dependencyContainerName);
+            }
+            ContainerName = dependencyContainerName;
         }
     }
 
-   
 }

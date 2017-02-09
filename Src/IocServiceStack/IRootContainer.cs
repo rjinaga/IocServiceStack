@@ -28,53 +28,7 @@ namespace IocServiceStack
     using System;
     using System.Linq.Expressions;
 
-    public interface IDependencyAttribute
-    {
-        /// <summary>
-        /// Gets or sets dependency factory
-        /// </summary>
-        IDependencyFactory DependencyFactory { get; set; }
-    }
-
-    public interface IDependencyFactory : ISubContainer
-    {
-        string Name { get; set; }
-        Expression Create(Type interfaceType, ServiceRegistrar register);
-        IContractObserver ContractObserver { get; set; }
-
-    }
     
-    public interface ISubContainer : IDependencyAttribute
-    {
-        
-
-        IDependencyFactory Add<TC, TS>() where TC : class where TS : TC;
-        IDependencyFactory Add<TC, TS>(string serviceName) where TC : class where TS : TC;
-
-        /// <summary>
-        /// Adds the specified service to the factory
-        /// </summary>
-        /// <typeparam name="T">The class of the service</typeparam>
-        /// <param name="service">The type of the service</param>
-        /// <returns>Instance <see cref="IContainerService"/> of current object</returns>
-        IDependencyFactory Add<T>(Type service) where T : class;
-        IDependencyFactory Add<T>(Type service, string serviceName) where T : class;
-
-
-        IDependencyFactory Replace<TC, TS>() where TC : class where TS : TC;
-        IDependencyFactory Replace<TC, TS>(string serviceName) where TC : class where TS : TC;
-
-        /// <summary>
-        /// Replaces the specified service in the factory.
-        /// </summary>
-        /// <typeparam name="T">The class of the service</typeparam>
-        /// <param name="service">The type of the service</param>
-        /// <returns>Instance <see cref="IContainerService"/> of current object</returns>
-        IDependencyFactory Replace<T>(Type service) where T : class;
-        IDependencyFactory Replace<T>(Type service, string serviceName) where T : class;
-        
-    }
-
     public interface IRootContainer : IDependencyAttribute
     {
         

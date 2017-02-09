@@ -28,10 +28,10 @@ namespace IocServiceStack
 {
     using System;
 
-    public interface IServiceConfig
+    public interface IContainerConfig
     {
-        IServiceConfig AddServices(Action<ServiceOptions> config);
+        IContainerConfig AddServices(Action<ContainerOptions> config);
 
-        IServiceConfig RegisterServiceProvider(IServiceProvider serviceProvider);
+        IContainerConfig RegisterServiceProvider(IServiceProvider serviceProvider);
     }
 }

@@ -32,7 +32,7 @@ namespace IocServiceStack
     {
         private InternalServiceManager _internalsm;
 
-        public DefaultServiceProvider(ServiceConfig config)
+        public DefaultServiceProvider(ContainerConfig config)
         {
             _internalsm = new InternalServiceManager(config);
         }

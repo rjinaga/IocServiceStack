@@ -9,7 +9,7 @@
         public void Replace_GetWhatYouSet_InstanceOf()
         {
             //Arrange
-            var container = IocServicelet.CreateIocContainer();
+            var container = IocServicelet.CreateContainer();
 
             //Act
             container.GetRootContainer().Replace<IEmployee, Employee>()
@@ -43,7 +43,7 @@
         public void Replace_InvalidServiceType_ThrowsException()
         {
             //Arrange
-            var container = IocServicelet.CreateIocContainer();
+            var container = IocServicelet.CreateContainer();
 
             //Act
             TestDelegate test = () => container.GetRootContainer().Replace<IEmployee>(typeof(Executive));

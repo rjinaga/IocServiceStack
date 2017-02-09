@@ -28,17 +28,21 @@ namespace IocServiceStack
     using System;
     using System.Collections.Generic;
 
-    public sealed class ServiceConfig : IServiceConfig
+    public sealed class ContainerConfig : IContainerConfig
     {
-        private ServiceOptions _serviceOptions;
+        private ContainerOptions _containerOptions;
         private IServiceProvider _serviceProvider;
         private List<DecoratorAttribute> _decorators;
+        private readonly ContainerModel _containerModel;
 
-        public ServiceConfig()
+        public ContainerConfig(ContainerModel containerModel)
         {
-            _serviceOptions = new ServiceOptions();
+            _containerOptions = new ContainerOptions();
             _decorators = new List<DecoratorAttribute>();
+            _containerModel = containerModel;
         }
+
+        public ContainerModel ContainerModel => _containerModel;
 
         /// <summary>
         /// Gets collection of decorators of specified type
@@ -46,9 +50,9 @@ namespace IocServiceStack
         public List<DecoratorAttribute> Decorators => _decorators;
 
         /// <summary>
-        /// Gets <see cref="ServiceOptions"/> 
+        /// Gets <see cref="ContainerOptions"/> 
         /// </summary>
-        internal ServiceOptions ServiceOptions => _serviceOptions;
+        internal ContainerOptions ContainerOptions => _containerOptions;
 
         /// <summary>
         /// Gets <see cref="IServiceProvider"/>
@@ -57,19 +61,19 @@ namespace IocServiceStack
 
 
         [Obsolete("Use AddServices method instead of this method",true)]
-        public IServiceConfig Services(Action<ServiceOptions> config)
+        public IContainerConfig Services(Action<ContainerOptions> config)
         {
-            config(_serviceOptions);
+            config(_containerOptions);
             return this;
         }
 
-        public IServiceConfig AddServices(Action<ServiceOptions> config)
+        public IContainerConfig AddServices(Action<ContainerOptions> config)
         {
-            config(_serviceOptions);
+            config(_containerOptions);
             return this;
         }
        
-        public IServiceConfig RegisterServiceProvider(IServiceProvider serviceProvider)
+        public IContainerConfig RegisterServiceProvider(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
             return this;

@@ -33,8 +33,8 @@ namespace IocServiceStack
     {
         private ServiceNotifier _notifier;
 
-        public DefaultServiceFactory(string[] namespaces, Assembly[] assemblies, bool strictMode)
-            : base(namespaces, assemblies, strictMode)
+        public DefaultServiceFactory(string[] namespaces, Assembly[] assemblies, bool strictMode, ContainerModel containerModel)
+            : base(namespaces, assemblies, strictMode, containerModel)
         {
 
         }

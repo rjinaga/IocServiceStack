@@ -26,19 +26,15 @@
 namespace IocServiceStack
 {
     using System;
-
+    
     [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
-    public sealed class FromDependencyAttribute : Attribute
+    public sealed class InternalAttribute : Attribute
     {
-        public readonly string FactoryName;
-        public FromDependencyAttribute(string factoryName)
+        public InternalAttribute()
         {
-            if (string.IsNullOrWhiteSpace(factoryName))
-            {
-                throw new ArgumentNullException(factoryName);
-            }
-            FactoryName = factoryName;
+
         }
     }
 
+   
 }

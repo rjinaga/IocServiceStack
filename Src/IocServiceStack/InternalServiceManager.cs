@@ -31,9 +31,9 @@ namespace IocServiceStack
     {
         private IRootServiceFactory _serviceFactory;
         private readonly object _factorySyncObject = new object();
-        private ServiceConfig _config;
+        private ContainerConfig _config;
 
-        public InternalServiceManager(ServiceConfig config)
+        public InternalServiceManager(ContainerConfig config)
         {
             if (config == null)
                 ExceptionHelper.ThrowArgumentNullException(nameof(config));
@@ -56,16 +56,16 @@ namespace IocServiceStack
             {
                 if (_serviceFactory == null)
                 {
-                    Assembly[] assmblies = GetAssemblies(_config.ServiceOptions.Assemblies);
+                    Assembly[] assmblies = GetAssemblies(_config.ContainerOptions.Assemblies);
 
                     //if user defined ServiceFactory is configured then set that factory, otherise set the default one
-                    if (_config.ServiceOptions.ServiceFactory != null)
+                    if (_config.ContainerOptions.ServiceFactory != null)
                     {
-                        _serviceFactory = _config.ServiceOptions.ServiceFactory;
+                        _serviceFactory = _config.ContainerOptions.ServiceFactory;
                     }
                     else
                     {
-                        _serviceFactory = new DefaultServiceFactory(_config.ServiceOptions.Namespaces, assmblies, _config.ServiceOptions.StrictMode);
+                        _serviceFactory = new DefaultServiceFactory(_config.ContainerOptions.Namespaces, assmblies, _config.ContainerOptions.StrictMode, _config.ContainerModel);
                     }
 
                     InitChainOfSubctractFactories();
@@ -78,7 +78,7 @@ namespace IocServiceStack
 
         private void InitChainOfSubctractFactories()
         {
-            ServiceDependencyOptions dependencies = _config.ServiceOptions.Dependencies;
+            ContainerDependencyOptions dependencies = _config.ContainerOptions.Dependencies;
             IDependencyAttribute serviceNode = _serviceFactory;
 
             while (dependencies  != null)
@@ -93,7 +93,7 @@ namespace IocServiceStack
                 else if (serviceNode.DependencyFactory == null)
                 {
                     Assembly[] subcontractAssmblies = GetAssemblies(dependencies.Assemblies);
-                    serviceNode.DependencyFactory = new DefaultSubcontractFactory(dependencies.Namespaces, subcontractAssmblies, _config.ServiceOptions.StrictMode);
+                    serviceNode.DependencyFactory = new DefaultSubcontractFactory(dependencies.Namespaces, subcontractAssmblies, _config.ContainerOptions.StrictMode);
                     serviceNode.DependencyFactory.Name = dependencies.Name;
                 }
 

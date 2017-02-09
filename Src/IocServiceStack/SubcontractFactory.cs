@@ -31,7 +31,7 @@ namespace IocServiceStack
 
     public abstract class SubcontractFactory : BaseServiceFactory, IDependencyFactory
     {
-        public SubcontractFactory(string[] namespaces, Assembly[] assemblies, bool strictMode) : base(namespaces, assemblies, strictMode)
+        public SubcontractFactory(string[] namespaces, Assembly[] assemblies, bool strictMode) : base(namespaces, assemblies, strictMode, ContainerModel.MultiLevel)
         {
             
         }

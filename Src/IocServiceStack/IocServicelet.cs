@@ -37,9 +37,14 @@ namespace IocServiceStack
         /// </summary>
         /// <param name="configuration"></param>
         /// <returns></returns>
-        public static IocContainer Configure(Action<ServiceConfig> configuration)
+        public static IocContainer Configure(Action<ContainerConfig> configuration)
         {
-            var container = CreateContainer(configuration);
+            return Configure(configuration, ContainerModel.MultiLevel);
+        }
+
+        public static IocContainer Configure(Action<ContainerConfig> configuration, ContainerModel containerModel)
+        {
+            var container = CreateContainer(configuration, containerModel);
 
             IocContainer.GlobalIocContainer = container;
 
@@ -47,55 +52,39 @@ namespace IocServiceStack
         }
 
         /// <summary>
-        /// Creates new IoC Container
+        /// Create container with specified container model. <see cref= "ContainerModel" />.
         /// </summary>
         /// <param name="configuration"></param>
         /// <returns></returns>
-        public static IocContainer CreateContainer(Action<ServiceConfig> configuration)
+        public static IocContainer CreateContainer(Action<ContainerConfig> configuration, ContainerModel containerModel)
         {
-            ServiceConfig config = new ServiceConfig();
+            ContainerConfig config = new ContainerConfig(containerModel);
             configuration(config);
 
             //Make the ServiceOptions object read-only, don't allow the further changes to the object.
-            config.ServiceOptions.MakeReadOnly();
+            config.ContainerOptions.MakeReadOnly();
 
             return new IocContainer(config);
         }
 
         /// <summary>
-        /// Create new IoC container with defaults.
+        /// Create container with MultiLevel container model. <see cref= "ContainerModel" />.
+        /// </summary>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
+        public static IocContainer CreateContainer(Action<ContainerConfig> configuration)
+        {
+            return CreateContainer(configuration, ContainerModel.MultiLevel);
+        }
+
+        /// <summary>
+        /// Create container with Single container model. <see cref="ContainerModel"/>.
         /// </summary>
         /// <returns></returns>
-        public static IocContainer CreateIocContainer()
+        public static IocContainer CreateContainer()
         {
-            return CreateContainer(config => { /*no default setup*/ });
+            return CreateContainer(config => { /*no default setup*/ }, ContainerModel.Single);
         }
     }
-
-    //[Obsolete("Use IocServicelet instead of IocServiceProvider", true)]
-    //public class IocServiceProvider
-    //{
-    //    public static ContainerServiceConfiguration Configure(Action<ServiceConfig> configuration)
-    //    {
-    //        return null;
-    //    }
-
-    //    public static ContainerServiceConfiguration CreateIocContainer(Action<ServiceConfig> configuration)
-    //    {
-    //        ServiceConfig config = new ServiceConfig();
-    //        configuration(config);
-
-    //        //Make the ServiceOptions object read-only, don't allow the further changes to the object.
-    //        config.ServiceOptions.MakeReadOnly();
-            
-
-    //        return new ContainerServiceConfiguration(new IocContainer(config));
-    //    }
-
-    //    public static ContainerServiceConfiguration CreateIocContainer()
-    //    {
-    //        return CreateIocContainer(config => { /*no default setup*/ });
-    //    }
-    //}
 
 }

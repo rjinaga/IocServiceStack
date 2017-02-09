@@ -25,8 +25,14 @@
 
 namespace IocServiceStack
 {
-    public interface IServiceWorker 
+    using System;
+    using System.Linq.Expressions;
+   
+    public interface IDependencyFactory : ISubContainer
     {
-        
+        string Name { get; set; }
+        Expression Create(Type interfaceType, ServiceRegistrar register);
+        IContractObserver ContractObserver { get; set; }
+
     }
 }

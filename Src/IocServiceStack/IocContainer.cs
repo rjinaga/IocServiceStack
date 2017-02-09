@@ -28,18 +28,18 @@ namespace IocServiceStack
     public class IocContainer
     {
         private IServiceProvider _serviceProvider;
-        private readonly ServiceConfig _config;
+        private readonly ContainerConfig _config;
         
-        internal IocContainer(ServiceConfig config)
+        internal IocContainer(ContainerConfig config)
         {
             _config = config;
             Prepare();
         }
 
         /// <summary>
-        /// Gets <see cref="ServiceConfig"/> 
+        /// Gets <see cref="ContainerConfig"/> 
         /// </summary>
-        internal ServiceConfig Config => _config;
+        internal ContainerConfig Config => _config;
 
         /// <summary>
         /// Gets <see cref="IServiceProvider"/> 
