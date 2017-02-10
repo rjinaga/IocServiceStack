@@ -56,7 +56,13 @@ namespace IocServiceStack
         /// <returns>Instance <see cref="IContainerService"/> of current object</returns>
         IDependencyFactory Replace<T>(Type service) where T : class;
         IDependencyFactory Replace<T>(Type service, string serviceName) where T : class;
-        
+
+        IDependencyFactory Add<TC>(Expression<Func<TC>> expression) where TC : class;
+        IDependencyFactory Add<TC>(Expression<Func<TC>> expression, string serviceName) where TC : class;
+
+        IDependencyFactory Replace<TC>(Expression<Func<TC>> expression) where TC : class;
+        IDependencyFactory Replace<TC>(Expression<Func<TC>> expression, string serviceName) where TC : class;
+
     }
 
 }

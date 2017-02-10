@@ -28,7 +28,7 @@ namespace BusinessService
     using IocServiceStack;
     using BusinessContractLibrary;
 
-    [Service(IsReusable = true)]
+    [Service, Reusable]
     public class ReferenceDataService : IReferenceData
     {
         private int _count = 0;

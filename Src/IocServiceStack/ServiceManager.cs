@@ -60,7 +60,7 @@ namespace IocServiceStack
         {
             if (IocContainer.GlobalIocContainer == null)
             {
-                throw new Exception("Global IoC container is not configured. Use IocServiceStack.Configure method to configure the IocServiceStack.");
+                throw new UnconfiguredException("Global IoC container is not configured. Use IocServiceStack.Configure method to configure the container that can be accessed through this method.");
             }
         }
 

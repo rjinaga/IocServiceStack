@@ -60,7 +60,12 @@ namespace IocServiceStack
 
         public ISubContainer GetDependencyContainer(string name)
         {
-            return ServiceProvider.GetDependencyFactory(name);
+            var container = ServiceProvider.GetDependencyFactory(name);
+            if (container == null)
+            {
+                throw new System.Exception($"No container is found with the name '{name}'.");
+            }
+            return container;
         }
 
         #region Static Members

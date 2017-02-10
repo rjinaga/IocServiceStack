@@ -76,21 +76,8 @@ namespace IocServiceStack
             {
                 if (_isReusable == null && ServiceType != null)
                 {
-
-#if NET46
-                    var serviceAttribtue = ServiceType.GetCustomAttribute<ServiceAttribute>();
-#else
-                    var serviceAttribtue = ServiceType.GetTypeInfo().GetCustomAttribute<ServiceAttribute>();
-#endif
-
-                    if (serviceAttribtue != null)
-                    {
-                        _isReusable = serviceAttribtue.IsReusable;
-                    }
-                    else
-                    {
-                        _isReusable = false;
-                    }
+                    var reusableAttribtue = ServiceType.GetTypeInfo().GetCustomAttribute<ReusableAttribute>();
+                    _isReusable = reusableAttribtue != null;
                 }
                 return _isReusable ?? false;
             }
@@ -107,7 +94,7 @@ namespace IocServiceStack
             return null;
         }
 
-        public virtual Expression<Func<object>> GetServiceInstanceExpression() 
+        public virtual Expression GetServiceInstanceExpression() 
         {
             return null;
         }

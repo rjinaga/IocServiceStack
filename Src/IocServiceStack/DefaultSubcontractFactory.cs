@@ -35,7 +35,7 @@ namespace IocServiceStack
         {
         }
 
-        public override Expression Create(Type interfaceType, ServiceRegistrar registrar)
+        public override Expression Create(Type interfaceType, ServiceRegistrar registrar, ServiceState state)
         {
             if (interfaceType == null)
                 throw new ArgumentNullException(nameof(interfaceType));
@@ -50,10 +50,10 @@ namespace IocServiceStack
             var userdefinedExpression = serviceMeta.GetServiceInstanceExpression();
             if (userdefinedExpression != null)
             {
-                return userdefinedExpression;
+                return Expression.TypeAs(userdefinedExpression, interfaceType);
             }
 
-            return CreateConstructorExpression(interfaceType, serviceMeta.ServiceType, registrar)?? Expression.Default(interfaceType);
+            return CreateConstructorExpression(interfaceType, serviceMeta.ServiceType, registrar, state)?? Expression.Default(interfaceType);
         }
     }
 }

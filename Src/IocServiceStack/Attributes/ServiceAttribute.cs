@@ -46,6 +46,6 @@ namespace IocServiceStack
         /// <summary>
         /// if IsReusable property set to true then multiple requests are served with the same instance.
         /// </summary>
-        public bool IsReusable { get; set; }
+        //public bool IsReusable { get; set; }
     }
 }

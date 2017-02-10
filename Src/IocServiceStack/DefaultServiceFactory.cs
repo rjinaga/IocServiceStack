@@ -26,6 +26,7 @@
 namespace IocServiceStack
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq.Expressions;
     using System.Reflection;
 
@@ -259,9 +260,13 @@ namespace IocServiceStack
                         Func<T> serviceCreator  = serviceMeta.GetServiceInstanceCallback<T>();
                         if (serviceCreator == null)
                         {
-                            Expression newExpression = CreateConstructorExpression(interfaceType, serviceMeta.ServiceType, registrar);
+                            var state = new ServiceState(); /*Root place for service state instance*/
+                            Expression newExpression = CreateConstructorExpression(interfaceType, serviceMeta.ServiceType, registrar, state);
+
+                            var blockExpression = BuildExpression(state, newExpression);
+
                             //Set Activator
-                            serviceCreator = Expression.Lambda<Func<T>>(newExpression).Compile();
+                            serviceCreator = Expression.Lambda<Func<T>>(blockExpression).Compile();
                         }
                         serviceMeta.Activator = new ServiceActivator<T>(serviceCreator, serviceMeta.IsReusable);
                     }
@@ -269,6 +274,25 @@ namespace IocServiceStack
             }
         }
 
-       
+        private Expression BuildExpression(ServiceState state, Expression returnValue)
+        {
+            /*we do not need to build block if there are no parameters.
+             * it means that there are no re-usable instances with in constructor parameters.
+             */
+            if (!state.HasParameters())
+            {
+                return returnValue;
+            }
+
+            List<Expression> expressions = new List<Expression>(state.GetBinaryExpressions());
+            expressions.Add(returnValue);
+
+            BlockExpression blockExpr = Expression.Block(
+              state.GetParameters(),
+              expressions
+            );
+
+            return blockExpr;
+        }
     }
 }

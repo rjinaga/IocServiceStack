@@ -31,7 +31,7 @@ namespace IocServiceStack
     public interface IDependencyFactory : ISubContainer
     {
         string Name { get; set; }
-        Expression Create(Type interfaceType, ServiceRegistrar register);
+        Expression Create(Type interfaceType, ServiceRegistrar register, ServiceState state);
         IContractObserver ContractObserver { get; set; }
 
     }

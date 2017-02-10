@@ -51,7 +51,7 @@ namespace IocServiceStack
             }
         }
 
-        public abstract Expression Create(Type interfaceType, ServiceRegistrar register);
+        public abstract Expression Create(Type interfaceType, ServiceRegistrar register, ServiceState state);
 
         public IDependencyFactory Add<T>(Type service) where T : class
         {
@@ -107,6 +107,30 @@ namespace IocServiceStack
             where TS : TC
         {
             ReplaceService<TC, TS>(serviceName);
+            return this;
+        }
+
+        public IDependencyFactory Add<TC>(Expression<Func<TC>> expression) where TC : class
+        {
+            AddService<TC>(expression);
+            return this;
+        }
+
+        public IDependencyFactory Add<TC>(Expression<Func<TC>> expression, string serviceName) where TC : class
+        {
+            AddService<TC>(expression, serviceName);
+            return this;
+        }
+
+        public IDependencyFactory Replace<TC>(Expression<Func<TC>> expression) where TC : class
+        {
+            ReplaceService<TC>(expression);
+            return this;
+        }
+
+        public IDependencyFactory Replace<TC>(Expression<Func<TC>> expression, string serviceName) where TC : class
+        {
+            ReplaceService<TC>(expression, serviceName);
             return this;
         }
     }

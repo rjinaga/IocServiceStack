@@ -66,9 +66,9 @@ namespace IocServiceStack
             return _actionInfo as Func<T1>;
         }
 
-        public override Expression<Func<object>> GetServiceInstanceExpression()
+        public override Expression GetServiceInstanceExpression()
         {
-            return _expressionCallback as Expression<Func<object>>;
+            return _expressionCallback ;
         }
 
     }
