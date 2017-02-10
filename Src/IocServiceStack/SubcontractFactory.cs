@@ -51,7 +51,7 @@ namespace IocServiceStack
             }
         }
 
-        public abstract Expression Create(Type interfaceType, ServiceRegistrar register, ServiceState state);
+        public abstract Expression Create(Type interfaceType, ServiceRegister register, ServiceState state);
 
         public IDependencyFactory Add<T>(Type service) where T : class
         {

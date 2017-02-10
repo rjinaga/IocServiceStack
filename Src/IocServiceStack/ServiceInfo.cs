@@ -33,7 +33,7 @@ namespace IocServiceStack
     public class ServiceInfo
     {
         private bool? _isReusable;
-        private ServiceRegistrar _registrar;
+        private ServiceRegister _registrar;
 
         public readonly object SyncObject = new object();
         public readonly Type ServiceType;
@@ -99,9 +99,9 @@ namespace IocServiceStack
             return null;
         }
 
-        public ServiceRegistrar InitNewRegistrar(Type interfaceType, IServiceNotifier notifier)
+        public ServiceRegister InitNewRegistrar(Type interfaceType, IServiceNotifier notifier)
         {
-            _registrar = new ServiceRegistrar();
+            _registrar = new ServiceRegister();
             //Register self
             _registrar.Register(interfaceType);
 

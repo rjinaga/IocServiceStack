@@ -210,7 +210,7 @@ namespace IocServiceStack
         }
         
 
-        protected Expression CreateConstructorExpression(Type interfaceType, Type serviceType, ServiceRegistrar registrar, ServiceState state)
+        protected Expression CreateConstructorExpression(Type interfaceType, Type serviceType, ServiceRegister registrar, ServiceState state)
         {
             VerifyNull(interfaceType, nameof(interfaceType));
             VerifyNull(serviceType, nameof(serviceType));
@@ -310,7 +310,7 @@ namespace IocServiceStack
             return null;
         }
 
-        private Expression GetDependencyObject(ParameterInfo constrParameter, ServiceRegistrar registrar, IgnoreAttribute ignoreAttribute, ServiceState state)
+        private Expression GetDependencyObject(ParameterInfo constrParameter, ServiceRegister registrar, IgnoreAttribute ignoreAttribute, ServiceState state)
         {
             bool ignore = ignoreAttribute?.ParameterNames.Contains(constrParameter.Name) ?? false;
 
@@ -356,13 +356,13 @@ namespace IocServiceStack
             return fromDepAttr != null;
         }
 
-        private Expression GetObjectFromDependencyFactory(Type interfaceType, string factoryName, ServiceRegistrar registrar, ServiceState state)
+        private Expression GetObjectFromDependencyFactory(Type interfaceType, string factoryName, ServiceRegister registrar, ServiceState state)
         {
             var subcontractFactory = ServiceProviderHelper.GetDependencyFactory(DependencyFactory, factoryName);
             return subcontractFactory?.Create(interfaceType, registrar, state) ?? Expression.Default(interfaceType);
         }
 
-        private Expression GetObjectFromSelf(Type interfaceType, ServiceRegistrar registrar, ServiceState state)
+        private Expression GetObjectFromSelf(Type interfaceType, ServiceRegister registrar, ServiceState state)
         {
             var serviceInfo = ServicesMapTable[interfaceType];
             return CreateConstructorExpression(interfaceType, serviceInfo.ServiceType, registrar, state);

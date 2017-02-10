@@ -26,13 +26,12 @@
 namespace IocServiceStack
 {
     using System;
-    using System.Linq.Expressions;
-   
-    public interface IDependencyFactory : ISubContainer
+    public class InvalidServiceTypeException : Exception
     {
-        string Name { get; set; }
-        Expression Create(Type interfaceType, ServiceRegister register, ServiceState state);
-        IContractObserver ContractObserver { get; set; }
+        public InvalidServiceTypeException(string message) : base(message)
+        {
 
+        }
     }
+
 }

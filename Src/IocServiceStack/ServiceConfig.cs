@@ -59,14 +59,7 @@ namespace IocServiceStack
         /// </summary>
         internal IServiceProvider ServiceProvider => _serviceProvider;
 
-
-        [Obsolete("Use AddServices method instead of this method",true)]
-        public IContainerConfig Services(Action<ContainerOptions> config)
-        {
-            config(_containerOptions);
-            return this;
-        }
-
+        
         public IContainerConfig AddServices(Action<ContainerOptions> config)
         {
             config(_containerOptions);

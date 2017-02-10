@@ -27,7 +27,7 @@ namespace IocServiceStack
 {
     using System;
 
-    /*don't support the decorator for classes because there's a possibility to 
+    /*we don't want to support the decorator for classes because there's a possibility to 
      set default values in default constructor and allow the derived classes to
      override. But the global decorator has a flexibility to override the constructed object.
      

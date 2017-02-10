@@ -28,11 +28,11 @@ namespace IocServiceStack
     using System;
     using System.Collections.Generic;
 
-    public sealed class ServiceRegistrar
+    public sealed class ServiceRegister
     {
         private List<Type> _register;
 
-        public ServiceRegistrar()
+        public ServiceRegister()
         {
             _register = new List<Type>();
         }

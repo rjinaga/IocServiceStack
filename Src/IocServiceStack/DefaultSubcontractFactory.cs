@@ -35,7 +35,7 @@ namespace IocServiceStack
         {
         }
 
-        public override Expression Create(Type interfaceType, ServiceRegistrar registrar, ServiceState state)
+        public override Expression Create(Type interfaceType, ServiceRegister registrar, ServiceState state)
         {
             if (interfaceType == null)
                 throw new ArgumentNullException(nameof(interfaceType));
