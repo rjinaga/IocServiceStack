@@ -35,17 +35,21 @@ namespace IocServiceStack
         {
         }
 
-        public override Expression Create(Type interfaceType, ServiceRegister registrar, ServiceState state)
+        public override Expression Create(Type interfaceType, ServiceRegister register, ServiceState state)
         {
             if (interfaceType == null)
                 throw new ArgumentNullException(nameof(interfaceType));
 
             //Register current subcontract service with ServiceRegistrar
             //Root service will refresh with the updated service when there's replacement with new service
-            registrar.Register(interfaceType);
+            register.Register(interfaceType);
 
-            ServiceInfo serviceMeta = ServicesMapTable?[interfaceType];
+            BaseServiceInfo serviceMeta = ServicesMapTable?[interfaceType];
 
+            if (serviceMeta == null)
+            {
+                return SharedFactory.Create(interfaceType, register, state);
+            }
 
             var userdefinedExpression = serviceMeta.GetServiceInstanceExpression();
             if (userdefinedExpression != null)
@@ -53,7 +57,8 @@ namespace IocServiceStack
                 return Expression.TypeAs(userdefinedExpression, interfaceType);
             }
 
-            return CreateConstructorExpression(interfaceType, serviceMeta.ServiceType, registrar, state)?? Expression.Default(interfaceType);
+            return CreateConstructorExpression(interfaceType, serviceMeta.ServiceType, register, state)?? Expression.Default(interfaceType);
         }
     }
+   
 }

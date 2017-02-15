@@ -26,15 +26,17 @@
 namespace IocServiceStack
 {
     using System;
-    
+
+    /// <summary>
+    /// The purpose the internal attribute is, the nature of this framework with multilevel model, 
+    /// system injects the direct dependencies of the current container but it does not inject the 
+    /// within the container services. InternalAttribute solves this problem, by setting this attribute to the parameter in the constructor, which can be 
+    /// injected by the system from the same container.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
     public sealed class InternalAttribute : Attribute
     {
-        public InternalAttribute()
-        {
-
-        }
+     
     }
-
    
 }

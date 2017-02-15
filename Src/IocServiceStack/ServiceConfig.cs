@@ -33,16 +33,12 @@ namespace IocServiceStack
         private ContainerOptions _containerOptions;
         private IServiceProvider _serviceProvider;
         private List<DecoratorAttribute> _decorators;
-        private readonly ContainerModel _containerModel;
 
-        public ContainerConfig(ContainerModel containerModel)
+        public ContainerConfig()
         {
             _containerOptions = new ContainerOptions();
             _decorators = new List<DecoratorAttribute>();
-            _containerModel = containerModel;
         }
-
-        public ContainerModel ContainerModel => _containerModel;
 
         /// <summary>
         /// Gets collection of decorators of specified type

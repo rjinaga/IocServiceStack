@@ -28,10 +28,28 @@ namespace IocServiceStack
     using System;
     using System.Linq.Expressions;
    
+    /// <summary>
+    /// Represents dependency factory
+    /// </summary>
     public interface IDependencyFactory : ISubContainer
     {
+        /// <summary>
+        /// Gets or sets name of the factory.
+        /// </summary>
         string Name { get; set; }
+
+        /// <summary>
+        /// Create <see cref="Expression"/> for service which is associated with contract.
+        /// </summary>
+        /// <param name="interfaceType">Type of contract</param>
+        /// <param name="register">The ServiceRegister</param>
+        /// <param name="state">The ServiceState</param>
+        /// <returns>Returns <see cref="Expression"/> of service constructor.</returns>
         Expression Create(Type interfaceType, ServiceRegister register, ServiceState state);
+
+        /// <summary>
+        /// Gets or sets the <see cref="IContractObserver"/>
+        /// </summary>
         IContractObserver ContractObserver { get; set; }
 
     }

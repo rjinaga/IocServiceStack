@@ -28,10 +28,20 @@ namespace IocServiceStack
 {
     using System;
 
+    /// <summary>
+    /// This class sends the notifications of any service update in order to recompile the instance.
+    /// </summary>
     public class ServiceNotifier : IServiceNotifier
     {
+        /// <summary>
+        ///  This event is raised when service is updated.
+        /// </summary>
         public event ServiceUpdateHandler ServiceUpdateNofication;
 
+        /// <summary>
+        /// Sends update for specified <paramref name="type"/>
+        /// </summary>
+        /// <param name="type"></param>
         public void SendUpdate(Type type)
         {
             ServiceUpdateNofication?.Invoke(new ServiceEventArgs(type));

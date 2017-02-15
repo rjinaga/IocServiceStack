@@ -27,6 +27,9 @@ namespace IocServiceStack
 {
     using System;
 
+    /// <summary>
+    /// The class contains the properties of the container.
+    /// </summary>
     public class ContainerOptions
     {
         private bool _readOnly;
@@ -54,6 +57,9 @@ namespace IocServiceStack
             }
         }
 
+        /// <summary>
+        /// Gets or sets the array of namespaces.
+        /// </summary>
         public string[] Namespaces
         {
             get
@@ -69,6 +75,9 @@ namespace IocServiceStack
             }
         }
 
+        /// <summary>
+        /// Gets or sets array of assemblies
+        /// </summary>
         public string[] Assemblies
         {
             get
@@ -84,6 +93,9 @@ namespace IocServiceStack
             }
         }
 
+        /// <summary>
+        /// Gets or sets root service factory of the container.
+        /// </summary>
         public IRootServiceFactory ServiceFactory
         {
             get
@@ -99,6 +111,9 @@ namespace IocServiceStack
             }
         }
 
+        /// <summary>
+        /// Gets or sets container dependency options.
+        /// </summary>
         public ContainerDependencyOptions Dependencies
         {
             get
@@ -107,6 +122,10 @@ namespace IocServiceStack
             }
         }
 
+        /// <summary>
+        /// Adds dependencies options that are set through the options callback.
+        /// </summary>
+        /// <param name="options">The callback action.</param>
         public void AddDependencies(Action<ContainerDependencyOptions> options)
         {
             _dependencies = new ContainerDependencyOptions();

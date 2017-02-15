@@ -27,7 +27,10 @@ namespace IocServiceStack.Tests
 {
     using BusinessContractLibrary;
     using BusinessService;
+    using DataContractLibrary;
+    using DataService;
     using NUnit.Framework;
+    using RepositoryService;
 
     public class IsolatedContainerTests
     {
@@ -40,6 +43,9 @@ namespace IocServiceStack.Tests
 
             ioc1.GetRootContainer().Add<ICustomer, CustomerServiceWithNoRepo>();
             ioc2.GetRootContainer().Add<ICustomer, Helper.CustomerService2>();
+
+            ioc2.GetSharedContainer().Add<ICustomerRepository, CustomerRepository>()
+                                     .Add<IDbContext, AdventureDbContext>();
 
             //Act
             var ioc1Customer = ioc1.ServiceProvider.GetService<ICustomer>();

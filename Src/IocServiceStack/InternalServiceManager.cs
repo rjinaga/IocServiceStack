@@ -65,7 +65,13 @@ namespace IocServiceStack
                     }
                     else
                     {
-                        _serviceFactory = new DefaultServiceFactory(_config.ContainerOptions.Namespaces, assmblies, _config.ContainerOptions.StrictMode, _config.ContainerModel);
+                        _serviceFactory = new DefaultServiceFactory(_config.ContainerOptions.Namespaces, assmblies, _config.ContainerOptions.StrictMode);
+                    }
+
+                    //set default shared factory
+                    if (_serviceFactory.SharedFactory == null)
+                    {
+                        _serviceFactory.SharedFactory = new DefaultSharedFactory();
                     }
 
                     InitChainOfSubctractFactories();
@@ -96,6 +102,9 @@ namespace IocServiceStack
                     serviceNode.DependencyFactory = new DefaultSubcontractFactory(dependencies.Namespaces, subcontractAssmblies, _config.ContainerOptions.StrictMode);
                     serviceNode.DependencyFactory.Name = dependencies.Name;
                 }
+
+                //set same instance of root service factory to all the dependencies.
+                serviceNode.SharedFactory = _serviceFactory.SharedFactory;
 
                 //set child node of current dependencies
                 dependencies = dependencies.Dependencies;

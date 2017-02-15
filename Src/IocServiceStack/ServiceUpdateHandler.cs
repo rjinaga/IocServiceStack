@@ -25,5 +25,9 @@
 
 namespace IocServiceStack
 {
+    /// <summary>
+    /// This delegate is used when service is replaced in a container.
+    /// </summary>
+    /// <param name="eventArgs">The event arguments</param>
     public delegate void ServiceUpdateHandler(ServiceEventArgs eventArgs);
 }

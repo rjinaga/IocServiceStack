@@ -31,27 +31,29 @@ namespace IocServiceStack
     using System.Reflection;
 
     /// <summary>
-    /// Represents abstract factory of container service
+    /// Represents abstract factory of container service.
     /// </summary>
     public abstract class BaseServiceFactory : IDependencyAttribute
     {
         private IContractObserver _observer;
-        private readonly ContainerModel _containerModel;
+
         /// <summary>
         /// Get read-only ServiceMapTable object
         /// </summary>
         protected readonly ContractServiceAutoMapper ServicesMapTable;
 
         /// <summary>
-        /// Initializes a new instance of AbstractFactory class with the specified namespaces, assemblies and strictmode
+        /// Initializes a new instance of <see cref="BaseServiceFactory"/> class with specified parameters <paramref name="namespaces"/>, 
+        /// <paramref name="assemblies"/>, <paramref name="strictMode"/>, and <paramref name="containerModel"/>.
         /// </summary>
-        /// <param name="namespaces">The namespaces of services</param>
-        /// <param name="assemblies">The assemblies of services</param>
-        /// <param name="strictMode">The value indicating whether strict mode is on or off</param>
-        /// <param name="containerModel"></param>
-        public BaseServiceFactory(string[] namespaces, Assembly[] assemblies, bool strictMode, ContainerModel containerModel)
+        /// <param name="namespaces">The array of namespaces to be searched for services.</param>
+        /// <param name="assemblies">The array of assemblies to be searched for services.</param>
+        /// <param name="strictMode">The value indicating whether strict mode is on or off, if strict mode is true then 
+        /// system throws an exception if a contract is implemented by more than one service. this prevents the duplicate 
+        /// implementation.
+        /// </param>
+        public BaseServiceFactory(string[] namespaces, Assembly[] assemblies, bool strictMode)
         {
-            _containerModel = containerModel;
             ServicesMapTable = new ContractServiceAutoMapper(namespaces, assemblies, strictMode);
             ServicesMapTable.Map();
         }
@@ -65,7 +67,15 @@ namespace IocServiceStack
         }
 
         /// <summary>
-        /// 
+        /// Gets or sets factory of Subcontract of the current service
+        /// </summary>
+        public IDependencyFactory SharedFactory
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// Gets or sets the ContractObserver
         /// </summary>
         protected IContractObserver ContractObserver
         {
@@ -89,22 +99,33 @@ namespace IocServiceStack
             }
         }
 
+        /// <summary>
+        /// Adds service to the factory.
+        /// </summary>
+        /// <typeparam name="TC">The contract (interface/class)</typeparam>
+        /// <typeparam name="TS">The service (class)</typeparam>
         protected void AddService<TC, TS>() where TC : class where TS : TC
         {
-            AddInternal<TC>(typeof(TS), null);
+            AddServiceInternal<TC>(typeof(TS), null);
         }
 
         /// <summary>
-        /// Adds the specified service to the factory
+        /// Adds the specified service to the factory.
         /// </summary>
-        /// <typeparam name="T">The class of the service</typeparam>
-        /// <param name="service">The type of the service</param>
-        /// <returns>Instance <see cref="IBaseServiceFactory"/> of current object</returns>
+        /// <typeparam name="T">The contact (interface/class)</typeparam>
+        /// <param name="service">The type (class) of the service</param>
         protected virtual void AddService<T>(Type service) where T : class
         {
-            AddInternal<T>(service, null);
+            AddServiceInternal<T>(service, null);
         }
 
+        /// <summary>
+        /// Adds service to the factory with the specified name. This allows you to 
+        /// add multiple implementation of the same interface by providing unique service name to the each one of them.
+        /// </summary>
+        /// <typeparam name="TC"></typeparam>
+        /// <typeparam name="TS"></typeparam>
+        /// <param name="serviceName"></param>
         protected void AddService<TC, TS>(string serviceName) where TC : class where TS : TC
         {
             if (string.IsNullOrEmpty(serviceName))
@@ -112,21 +133,47 @@ namespace IocServiceStack
                 ExceptionHelper.ThrowArgumentNullException(nameof(serviceName));
             }
 
-            AddInternal<TC>(typeof(TS), serviceName);
+            AddServiceInternal<TC>(typeof(TS), serviceName);
         }
 
+        /// <summary>
+        /// Adds specified service with name.
+        /// </summary>
+        /// <typeparam name="T">The contract (interface/class)</typeparam>
+        /// <param name="service">The service (implementation of contract)</param>
+        /// <param name="serviceName">The name of the service in order to support multiple types of services of the same contract.</param>
         protected void AddService<T>(Type service, string serviceName) where T : class
         {
             if (string.IsNullOrEmpty(serviceName))
             {
                 ExceptionHelper.ThrowArgumentNullException(nameof(serviceName));
             }
-            AddInternal<T>(service, serviceName);
+            AddServiceInternal<T>(service, serviceName);
         }
 
+        protected void AddService<TC>(Expression<Func<TC>> expression) where TC : class
+        {
+            AddServiceInternal<TC>(expression, null);
+        }
+
+        protected void AddService<TC>(Expression<Func<TC>> expression, string serviceName) where TC : class
+        {
+            if (serviceName == null)
+            {
+                throw new ArgumentNullException(nameof(serviceName));
+            }
+
+            AddServiceInternal<TC>(expression, serviceName);
+        }
+
+        /// <summary>
+        /// Adds service as singleton in a factory.
+        /// </summary>
+        /// <typeparam name="TC">The contract type</typeparam>
+        /// <typeparam name="TS">The service type</typeparam>
         protected void AddSingletonService<TC, TS>() where TC : class where TS : TC
         {
-            AddSingletonInternal<TC, TS>(null);
+            AddSingletonServiceInternal<TC, TS>(null);
         }
 
         protected void AddSingletonService<TC, TS>(string serviceName) where TC : class where TS : TC
@@ -135,12 +182,12 @@ namespace IocServiceStack
             {
                 ExceptionHelper.ThrowArgumentNullException(nameof(serviceName));
             }
-            AddSingletonInternal<TC, TS>(serviceName);
+            AddSingletonServiceInternal<TC, TS>(serviceName);
         }
 
         protected void ReplaceService<TC, TS>() where TC : class where TS : TC
         {
-            ReplaceInternal<TC>(typeof(TS), null);
+            ReplaceServiceInternal<TC>(typeof(TS), null);
         }
 
         /// <summary>
@@ -151,17 +198,17 @@ namespace IocServiceStack
         /// <returns></returns>
         protected void ReplaceService<T>(Type service) where T : class
         {
-            ReplaceInternal<T>(service, null);
+            ReplaceServiceInternal<T>(service, null);
         }
 
         protected void ReplaceService<TC, TS>(string serviceName) where TC : class where TS : TC
         {
-            ReplaceInternal<TC>(typeof(TS), serviceName);
+            ReplaceServiceInternal<TC>(typeof(TS), serviceName);
         }
 
         protected void ReplaceService<T>(Type service, string serviceName) where T : class
         {
-            ReplaceInternal<T>(service, serviceName);
+            ReplaceServiceInternal<T>(service, serviceName);
         }
 
         protected void ReplaceSingletonService<TC, TS>(string serviceName) where TC : class where TS : TC
@@ -170,33 +217,17 @@ namespace IocServiceStack
             {
                 ExceptionHelper.ThrowArgumentNullException(nameof(serviceName));
             }
-            ReplaceSingletonInternal<TC, TS>(serviceName);
+            ReplaceSingletonServiceInternal<TC, TS>(serviceName);
         }
 
         protected void ReplaceSingletonService<TC, TS>() where TC : class where TS : TC
         {
-            ReplaceSingletonInternal<TC, TS>(null);
-        }
-
-
-        protected void AddService<TC>(Expression<Func<TC>> expression) where TC : class
-        {
-            ReplaceInternal<TC>(expression, null);
-        }
-
-        protected void AddService<TC>(Expression<Func<TC>> expression, string serviceName) where TC : class
-        {
-            if (serviceName == null)
-            {
-                throw new ArgumentNullException(nameof(serviceName));
-            }
-
-            ReplaceInternal<TC>(expression, serviceName);
+            ReplaceSingletonServiceInternal<TC, TS>(null);
         }
 
         protected void ReplaceService<TC>(Expression<Func<TC>> expression) where TC : class
         {
-            ReplaceInternal<TC>(expression, null);
+            ReplaceServiceInternal<TC>(expression, null);
         }
 
         protected void ReplaceService<TC>(Expression<Func<TC>> expression, string serviceName) where TC : class
@@ -206,11 +237,18 @@ namespace IocServiceStack
                 throw new ArgumentNullException(nameof(serviceName));
             }
 
-            ReplaceInternal<TC>(expression, serviceName);
+            ReplaceServiceInternal<TC>(expression, serviceName);
         }
         
-
-        protected Expression CreateConstructorExpression(Type interfaceType, Type serviceType, ServiceRegister registrar, ServiceState state)
+        /// <summary>
+        /// Creates expression object for specified service type constructor.
+        /// </summary>
+        /// <param name="interfaceType"></param>
+        /// <param name="serviceType"></param>
+        /// <param name="registrar"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        protected virtual Expression CreateConstructorExpression(Type interfaceType, Type serviceType, ServiceRegister registrar, ServiceState state)
         {
             VerifyNull(interfaceType, nameof(interfaceType));
             VerifyNull(serviceType, nameof(serviceType));
@@ -323,7 +361,7 @@ namespace IocServiceStack
                 /*
                  * if container model is "Single" then it will search within the same container not in dependencies.
                  * if parameter is decorated with FromSelfAttribute, then find object within the current factory */
-                if (_containerModel == ContainerModel.Single || IsSelfDependent(constrParameter))
+                if (IsSelfDependent(constrParameter))
                 {
                     //Find it in same 
                     return GetObjectFromSelf(constrParameter.ParameterType, registrar, state);
@@ -337,6 +375,10 @@ namespace IocServiceStack
                 }
 
                 //let's subcontract take responsibility to create dependency objects 
+                if (DependencyFactory == null && SharedFactory != null)
+                {
+                    return SharedFactory.Create(constrParameter.ParameterType, registrar, state) ?? Expression.Default(constrParameter.ParameterType);
+                }
                 return DependencyFactory?.Create(constrParameter.ParameterType, registrar, state) ?? Expression.Default(constrParameter.ParameterType);
             }
         }
@@ -365,23 +407,42 @@ namespace IocServiceStack
         private Expression GetObjectFromSelf(Type interfaceType, ServiceRegister registrar, ServiceState state)
         {
             var serviceInfo = ServicesMapTable[interfaceType];
-            return CreateConstructorExpression(interfaceType, serviceInfo.ServiceType, registrar, state);
+
+            if (serviceInfo == null)
+            {
+                ExceptionHelper.ThrowContractNotRegisteredException(interfaceType.FullName);
+            }
+
+            var instanceCallback = serviceInfo.GetServiceInstanceCallback<object>();
+            if (instanceCallback != null)
+            {
+                throw new Exception("Internal service injection does not support for Func<> delegate.");
+            }
+
+            var expression = serviceInfo.GetServiceInstanceExpression();
+
+            if (expression == null)
+            {
+                expression = CreateConstructorExpression(interfaceType, serviceInfo.ServiceType, registrar, state);
+            }
+
+            return expression;
         }
 
-        private void AddInternal<T>(Type service, string serviceName) where T : class
+        private void AddServiceInternal<T>(Type service, string serviceName) where T : class
         {
             Type interfaceType = typeof(T);
-            var serviceMeta = new ServiceInfo(service, ServiceInfo.GetDecorators(interfaceType), serviceName);
+            var serviceMeta = new ServiceInfo(service, BaseServiceInfo.GetDecorators(interfaceType), serviceName);
             ServicesMapTable.Add(interfaceType, serviceMeta);
 
             //send update to observer
             ContractObserver.Update(interfaceType);
         }
 
-        private void AddInternal<TC>(Expression<Func<TC>> expression, string serviceName) where TC : class
+        private void AddServiceInternal<TC>(Expression<Func<TC>> expression, string serviceName) where TC : class
         {
             Type interfaceType = typeof(TC);
-            var serviceMeta = new ServiceInfo<TC, TC>(expression, ServiceInfo.GetDecorators(interfaceType), serviceName);
+            var serviceMeta = new ServiceInfo<TC, TC>(expression, BaseServiceInfo.GetDecorators(interfaceType), serviceName);
 
             ServicesMapTable.Add(interfaceType, serviceMeta);
 
@@ -389,19 +450,19 @@ namespace IocServiceStack
             ContractObserver.Update(interfaceType);
         }
 
-        private void ReplaceInternal<T>(Type service, string serviceName) where T : class
+        private void ReplaceServiceInternal<T>(Type service, string serviceName) where T : class
         {
             Type interfaceType = typeof(T);
-            ServicesMapTable.AddOrReplace(interfaceType, new ServiceInfo(service, ServiceInfo.GetDecorators(interfaceType), serviceName));
+            ServicesMapTable.AddOrReplace(interfaceType, new ServiceInfo(service, BaseServiceInfo.GetDecorators(interfaceType), serviceName));
 
             //send update to observer
             ContractObserver.Update(interfaceType);
         }
 
-        private void ReplaceInternal<TC>(Expression<Func<TC>> expression, string serviceName) where TC : class
+        private void ReplaceServiceInternal<TC>(Expression<Func<TC>> expression, string serviceName) where TC : class
         {
             Type interfaceType = typeof(TC);
-            var serviceMeta = new ServiceInfo<TC, TC>(expression, ServiceInfo.GetDecorators(interfaceType), serviceName);
+            var serviceMeta = new ServiceInfo<TC, TC>(expression, BaseServiceInfo.GetDecorators(interfaceType), serviceName);
 
             ServicesMapTable.AddOrReplace(interfaceType, serviceMeta);
 
@@ -409,10 +470,10 @@ namespace IocServiceStack
             ContractObserver.Update(interfaceType);
         }
 
-        private void AddSingletonInternal<TC, TS>(string serviceName) where TC : class where TS : TC
+        private void AddSingletonServiceInternal<TC, TS>(string serviceName) where TC : class where TS : TC
         {
             Type interfaceType = typeof(TC);
-            var serviceMeta = new ServiceInfo<TC, TS>(isReusable: true, decorators: ServiceInfo.GetDecorators(interfaceType), serviceName: serviceName);
+            var serviceMeta = new ServiceInfo<TC, TS>(isReusable: true, decorators: BaseServiceInfo.GetDecorators(interfaceType), serviceName: serviceName);
 
             ServicesMapTable.Add(interfaceType, serviceMeta);
 
@@ -421,19 +482,16 @@ namespace IocServiceStack
 
         }
 
-        private void ReplaceSingletonInternal<TC, TS>(string serviceName) where TC : class where TS : TC
+        private void ReplaceSingletonServiceInternal<TC, TS>(string serviceName) where TC : class where TS : TC
         {
             Type interfaceType = typeof(TC);
-            var serviceMeta = new ServiceInfo<TC, TS>(isReusable: true, decorators: ServiceInfo.GetDecorators(interfaceType), serviceName: serviceName);
+            var serviceMeta = new ServiceInfo<TC, TS>(isReusable: true, decorators: BaseServiceInfo.GetDecorators(interfaceType), serviceName: serviceName);
 
             ServicesMapTable.AddOrReplace(interfaceType, serviceMeta);
 
             //send update to observer
             ContractObserver.Update(interfaceType);
         }
-
-
-
 
     }
 }

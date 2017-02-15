@@ -26,8 +26,17 @@
 namespace IocServiceStack
 {
     using System;
+
+    /// <summary>
+    /// The exception that is thrown when service type is not an implementation of requested contract.
+    /// </summary>
     public class InvalidServiceTypeException : Exception
     {
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InvalidServiceTypeException"/>  class with a
+        /// specified error message.
+        /// </summary>
         public InvalidServiceTypeException(string message) : base(message)
         {
 

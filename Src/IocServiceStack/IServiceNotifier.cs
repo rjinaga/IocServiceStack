@@ -25,6 +25,9 @@
 
 namespace IocServiceStack
 {
+    /// <summary>
+    /// This interface contains the service update notification.
+    /// </summary>
     public interface IServiceNotifier
     {
         event ServiceUpdateHandler ServiceUpdateNofication;

@@ -147,10 +147,15 @@ namespace IocServiceStack
             return ServiceProviderHelper.GetDependencyFactory(GetServiceFactory()?.DependencyFactory, name);
         }
 
+        public ISubContainer GetSharedContainer()
+        {
+            return GetServiceFactory().SharedFactory;
+        }
+
         protected InvocationInfo BeforeInvoke(Type contractType, string serviceName)
         {
             var factory = _internalsm.GetServiceFactory();
-            ServiceInfo serviceInfo = factory.GetServiceInfo(contractType, serviceName);
+            BaseServiceInfo serviceInfo = factory.GetServiceInfo(contractType, serviceName);
 
             if (serviceInfo == null)
             {
@@ -176,7 +181,7 @@ namespace IocServiceStack
 
         protected struct InvocationInfo
         {
-            public ServiceInfo ServiceInfo;
+            public BaseServiceInfo ServiceInfo;
             public ServiceCallContext ServiceCallContext;
         }
     }

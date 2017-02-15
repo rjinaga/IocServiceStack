@@ -28,6 +28,9 @@ namespace IocServiceStack
     using System;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// Represents collection of contracts and service info. 
+    /// </summary>
     public sealed class ServiceMapTable : Dictionary<Type, ServiceMapInfo>
     {
         

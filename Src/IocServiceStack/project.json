@@ -17,9 +17,9 @@
   },
 
   "buildOptions": {
-    "warningsAsErrors": true,
-    "keyFile": "../../tools/servicerouter.snk"
-    //"xmlDoc": true
+    //"warningsAsErrors": true,
+    "keyFile": "../../tools/servicerouter.snk",
+    "xmlDoc": true
   },
 
   "scripts": {

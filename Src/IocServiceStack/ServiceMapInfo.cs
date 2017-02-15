@@ -25,9 +25,19 @@
 
 namespace IocServiceStack
 {
+    /// <summary>
+    /// Represents service mapping information.
+    /// </summary>
     public sealed class ServiceMapInfo
     {
-        public ServiceInfo DefaultService;
+        /// <summary>
+        /// Gets or sets default service info.
+        /// </summary>
+        public BaseServiceInfo DefaultService;
+
+        /// <summary>
+        /// Gets or sets Services
+        /// </summary>
         public ServicesPoint Services;
 
         internal void CreateServicesIfNotInitialized()

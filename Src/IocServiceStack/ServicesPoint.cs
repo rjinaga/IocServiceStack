@@ -29,8 +29,15 @@ namespace IocServiceStack
     using System;
     using System.Collections.Generic;
 
-    public class ServicesPoint : Dictionary<string, ServiceInfo>
+    /// <summary>
+    /// Represents collection of services and <see cref="BaseServiceInfo"/> objects.
+    /// </summary>
+    public class ServicesPoint : Dictionary<string, BaseServiceInfo>
     {
+        /// <summary>
+        /// Initializes new instance of <see cref="ServicesPoint"/> class with case-insensitive ordinal
+        /// string comparison.
+        /// </summary>
         public ServicesPoint() : base(StringComparer.OrdinalIgnoreCase) { }
     }
 }

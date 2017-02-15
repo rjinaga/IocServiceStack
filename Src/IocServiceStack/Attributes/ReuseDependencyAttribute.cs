@@ -27,10 +27,23 @@ namespace IocServiceStack
 {
     using System;
 
+    /// <summary>
+    /// ReuseDependencyAttribute injects same instance of specified types to the dependencies.
+    /// For example, if an instance need to maintain a single reference of dependency instance, and the same instance must be used to the 
+    /// another dependency parameter which contains the same type in their constructor.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Constructor, AllowMultiple = false)]
     public class ReuseDependencyAttribute : Attribute
     {
+        /// <summary>
+        /// Gets array of reusable types.
+        /// </summary>
         public readonly Type[] ReuseTypes;
+
+        /// <summary>
+        /// Initializes new instance of <see cref="ReuseDependencyAttribute"/> with specified <paramref name="reuseTypes"/>.
+        /// </summary>
+        /// <param name="reuseTypes"></param>
         public ReuseDependencyAttribute(params Type[] reuseTypes)
         {
             ReuseTypes = reuseTypes;

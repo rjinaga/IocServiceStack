@@ -28,20 +28,34 @@ namespace IocServiceStack
     using System;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// Represents register of the services.
+    /// </summary>
     public sealed class ServiceRegister
     {
         private List<Type> _register;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="ServiceRegister"/> class.
+        /// </summary>
         public ServiceRegister()
         {
             _register = new List<Type>();
         }
 
+        /// <summary>
+        /// Determines whether <paramref name="type"/> is in the register.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public bool Contains(Type type)
         {
             return _register.Contains(type);
         }
-
+        /// <summary>
+        /// Registers the specified <paramref name="type"/>.
+        /// </summary>
+        /// <param name="type">The type of the service to be registered.</param>
         public void Register(Type type)
         {
             if (!_register.Contains(type))

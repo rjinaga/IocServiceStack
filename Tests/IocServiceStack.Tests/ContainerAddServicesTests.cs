@@ -15,20 +15,23 @@
         {
             //Arrange
             var container = IocServicelet.CreateContainer();
+            int employeeId = 5;
 
             //Act
             //different ways of adding services
-            container.GetRootContainer().Add<IEmployee, Employee>()
-                                         .Add<IEmployee>(() => new Employee1(), "Employee1") 
-                                         .Add<IEmployee>(() => new Employee2(), "Employee2")
-                                         .Add<IEmployee>(typeof(Employee3), "Employee3")
-                                         .Add<IEmployee, SeniorEmployee>("Senior")
-                                         .Add<IExecutive>(typeof(Executive))
-                                         .Add<ICustomer, CustomerService>() /*this depends on the ICustomerRepository*/
-                                         .Add<ICustomerRepository, CustomerRepository>() /*this depends on the IDbContext*/
-                                         .Add<IDbContext, AdventureDbContext>()
-                                          
-                                         ;
+            container.GetRootContainer()
+                                        .Add<IEmployee>(() => new Employee1(), "Employee1")
+                                        .Add<IEmployee>(() => new Employee2(), "Employee2")
+                                        .Add<IEmployee>(typeof(Employee3), "Employee3")
+                                        .Add<IEmployee, SeniorEmployee>("Senior")
+                                        .Add<IExecutive>(typeof(Executive))
+                                        .Add<IEmployee>(() => new Employee(employeeId))
+                                        .Add<ICustomer, CustomerService>(); /*this depends on the ICustomerRepository*/
+
+            container.GetSharedContainer()
+                                        .Add<ICustomerRepository, CustomerRepository>() /*this depends on the IDbContext*/
+                                        .Add<IDbContext, AdventureDbContext>();
+                                        
 
             var provider = container.ServiceProvider;
             var employee = provider.GetService<IEmployee>();
@@ -82,6 +85,7 @@
         }
         class Employee : IEmployee
         {
+            public Employee(int x) { }
         }
         class Employee1 : IEmployee
         {

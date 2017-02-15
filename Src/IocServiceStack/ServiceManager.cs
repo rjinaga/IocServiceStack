@@ -26,6 +26,10 @@
 namespace IocServiceStack
 {
     using System;
+
+    /// <summary>
+    /// Represents service accessor associated with the container.
+    /// </summary>
     public sealed class ServiceManager : IServiceManager
     {
         T IServiceManager.GetService<T>() 
@@ -73,6 +77,9 @@ namespace IocServiceStack
             _serviceManager = new ServiceManager();
         }
 
+        /// <summary>
+        /// Gets single instance of <see cref="IServiceManager"/>
+        /// </summary>
         public static IServiceManager Instance
         {
             get
@@ -81,21 +88,43 @@ namespace IocServiceStack
             }
         }
 
+        /// <summary>
+        /// Get service of the specified contract.
+        /// </summary>
+        /// <typeparam name="T">The type of the contract.</typeparam>
+        /// <returns>Returns service that's associated with the contract.</returns>
         public static T GetService<T>() where T : class
         {
             return _serviceManager.GetService<T>();
         }
 
+        /// <summary>
+        /// Get service of the specified contract with service name.
+        /// </summary>
+        /// <typeparam name="T">The type of the contract.</typeparam>
+        /// <param name="serviceName">The name of the service in specified contract family.</param>
+        /// <returns>Returns service that's associated with the contract.</returns>
         public static T GetService<T>(string serviceName) where T : class
         {
             return _serviceManager.GetService<T>(serviceName);
         }
 
+        /// <summary>
+        /// Get service of the specified contract with service name.
+        /// </summary>
+        /// <param name="contractType">The type of the contract.</param>
+        /// <returns>Returns service that's associated with the contract.</returns>
         public static object GetService(Type contractType)
         {
             return _serviceManager.GetService(contractType);
         }
 
+        /// <summary>
+        /// Get service of the specified contract with service name.
+        /// </summary>
+        /// <param name="T">The type of the contract.</param>
+        /// <param name="serviceName">The name of the service in specified contract family.</param>
+        /// <returns>Returns service that's associated with the contract.</returns>
         public static object GetService(Type contractType, string serviceName)
         {
             return _serviceManager.GetService(contractType, serviceName);

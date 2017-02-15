@@ -30,11 +30,11 @@ namespace IocServiceStack
     {
         void Initialize();
 
-        ServiceInfo GetServiceInfo(Type contractType, string serviceName);
+        BaseServiceInfo GetServiceInfo(Type contractType, string serviceName);
 
-        T Create<T>(ServiceInfo serviceMeta) where T : class;
+        T Create<T>(BaseServiceInfo serviceMeta) where T : class;
 
-        object Create(Type contractType, ServiceInfo serviceMeta);
+        object Create(Type contractType, BaseServiceInfo serviceMeta);
         
     }
 }

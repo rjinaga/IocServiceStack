@@ -58,6 +58,11 @@ namespace IocServiceStack
             return ServiceProvider.GetServiceFactory();
         }
 
+        public ISubContainer GetSharedContainer()
+        {
+            return ServiceProvider.GetSharedContainer();
+        }
+
         public ISubContainer GetDependencyContainer(string name)
         {
             var container = ServiceProvider.GetDependencyFactory(name);

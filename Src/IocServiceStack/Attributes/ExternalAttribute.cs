@@ -27,10 +27,25 @@ namespace IocServiceStack
 {
     using System;
 
+    /// <summary>
+    /// The purpose the external attribute is, the nature of this framework with multilevel model, 
+    /// system injects the immediate dependencies of the current container but it does not inject the 
+    /// next level dependencies. it works with only immediate dependencies.
+    /// ExternalAttribute solves this problem, by setting this attribute to the parameter in the constructor, which can be 
+    /// injected by the system from the specified dependency container.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
     public sealed class ExternalAttribute : Attribute
     {
+        /// <summary>
+        /// Gets name of the container.
+        /// </summary>
         public readonly string ContainerName;
+
+        /// <summary>
+        /// Initializes new instance of <see cref="ExternalAttribute"/> with  <paramref name="dependencyContainerName"/> parameter.
+        /// </summary>
+        /// <param name="dependencyContainerName">The name of the dependency container, that has been set in the <see cref="IocContainer"/> configuration.</param>
         public ExternalAttribute(string dependencyContainerName)
         {
             if (string.IsNullOrWhiteSpace(dependencyContainerName))

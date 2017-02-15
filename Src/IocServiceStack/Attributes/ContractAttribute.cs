@@ -27,6 +27,11 @@ namespace IocServiceStack
 {
     using System;
 
+    /// <summary>
+    /// Contract attribute allows to map the interface or class to the service class (derived class). 
+    /// if the base type of the service class is not decorated with contract, then auto mapper does not 
+    /// register.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple =false)]
     public class ContractAttribute : Attribute
     {

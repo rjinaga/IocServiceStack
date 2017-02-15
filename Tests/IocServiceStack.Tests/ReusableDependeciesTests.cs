@@ -17,7 +17,7 @@
                                 opt.Name = "C1";
                             });
                     });
-                }, ContainerModel.MultiLevel);
+                });
 
             container.GetRootContainer().Add<ILevel0, Level0>();
 

@@ -26,21 +26,20 @@
 namespace IocServiceStack
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq.Expressions;
     using System.Reflection;
 
     public class DefaultServiceFactory : BaseServiceFactory, IRootServiceFactory
     {
         private ServiceNotifier _notifier;
+        private ServiceCompiler _compiler;
 
-        public DefaultServiceFactory(string[] namespaces, Assembly[] assemblies, bool strictMode, ContainerModel containerModel)
-            : base(namespaces, assemblies, strictMode, containerModel)
+        public DefaultServiceFactory(string[] namespaces, Assembly[] assemblies, bool strictMode)
+            : base(namespaces, assemblies, strictMode)
         {
 
         }
 
-        public virtual ServiceInfo GetServiceInfo(Type contractType, string serviceName)
+        public virtual BaseServiceInfo GetServiceInfo(Type contractType, string serviceName)
         {
             if (!ServicesMapTable.Contains(contractType))
                 throw ExceptionHelper.ThrowServiceNotRegisteredException(contractType.Name);
@@ -54,12 +53,12 @@ namespace IocServiceStack
             }
         }
 
-        public virtual ServiceInfo GetServiceInfo(Type contractType)
+        public virtual BaseServiceInfo GetServiceInfo(Type contractType)
         {
             return GetServiceInfo(contractType, null);
         }
 
-        public virtual T Create<T>(ServiceInfo serviceMeta) where T : class
+        public virtual T Create<T>(BaseServiceInfo serviceMeta) where T : class
         {
             if (serviceMeta != null)
             {
@@ -67,21 +66,21 @@ namespace IocServiceStack
                 {
                     Type interfaceType = typeof(T);
                     //Compile
-                    Compile<T>(interfaceType, serviceMeta);
+                    _compiler.Compile<T>(interfaceType, serviceMeta, CreateConstructorExpression);
                 }
                 return serviceMeta.Activator.CreateInstance<T>();
             }
             return default(T);
         }
 
-        public object Create(Type contractType, ServiceInfo serviceMeta)
+        public object Create(Type contractType, BaseServiceInfo serviceMeta)
         {
             if (serviceMeta != null)
             {
                 if (serviceMeta.Activator == null)
                 {
                     //Compile
-                    Compile<object>(contractType, serviceMeta);
+                    _compiler.Compile<object>(contractType, serviceMeta, CreateConstructorExpression);
                 }
                 return serviceMeta.Activator.CreateInstance<object>();
             }
@@ -95,6 +94,10 @@ namespace IocServiceStack
         {
             ContractObserver = new DefaultContractWorkObserver();
             _notifier = new ServiceNotifier();
+            _compiler = new ServiceCompiler(_notifier);
+
+            //set contract observer to SharedFactory
+            SharedFactory.ContractObserver = ContractObserver;
 
             ContractObserver.OnUpdate((type) =>
             {
@@ -224,7 +227,7 @@ namespace IocServiceStack
         private IRootContainer AddInternal<TC>(Func<TC> serviceAction, string serviceName) where TC : class
         {
             Type interfaceType = typeof(TC);
-            var serviceMeta = new ServiceInfo<TC,TC>(serviceAction, ServiceInfo.GetDecorators(interfaceType), serviceName);
+            var serviceMeta = new ServiceInfo<TC,TC>(serviceAction, BaseServiceInfo.GetDecorators(interfaceType), serviceName);
 
             ServicesMapTable.Add(interfaceType, serviceMeta);
 
@@ -237,7 +240,7 @@ namespace IocServiceStack
         private IRootContainer ReplaceInternal<TC>(Func<TC> expression, string serviceName) where TC : class
         {
             Type interfaceType = typeof(TC);
-            var serviceMeta = new ServiceInfo<TC,TC>(expression, ServiceInfo.GetDecorators(interfaceType), serviceName);
+            var serviceMeta = new ServiceInfo<TC,TC>(expression, BaseServiceInfo.GetDecorators(interfaceType), serviceName);
 
             ServicesMapTable.AddOrReplace(interfaceType,serviceMeta);
 
@@ -247,52 +250,52 @@ namespace IocServiceStack
             return this;
         }
 
-        private void Compile<T>(Type interfaceType, ServiceInfo serviceMeta) where T : class
-        {
-            if (serviceMeta.Activator == null)
-            {
-                lock (serviceMeta.SyncObject)
-                {
-                    if (serviceMeta.Activator == null)
-                    {
-                        var registrar = serviceMeta.InitNewRegistrar(interfaceType, _notifier);
+        //private void Compile<T>(Type interfaceType, BaseServiceInfo serviceMeta) where T : class
+        //{
+        //    if (serviceMeta.Activator == null)
+        //    {
+        //        lock (serviceMeta.SyncObject)
+        //        {
+        //            if (serviceMeta.Activator == null)
+        //            {
+        //                var registrar = serviceMeta.InitNewRegister(interfaceType, _notifier);
 
-                        Func<T> serviceCreator  = serviceMeta.GetServiceInstanceCallback<T>();
-                        if (serviceCreator == null)
-                        {
-                            var state = new ServiceState(); /*Root place for service state instance*/
-                            Expression newExpression = CreateConstructorExpression(interfaceType, serviceMeta.ServiceType, registrar, state);
+        //                Func<T> serviceCreator  = serviceMeta.GetServiceInstanceCallback<T>();
+        //                if (serviceCreator == null)
+        //                {
+        //                    var state = new ServiceState(); /*Root place for service state instance*/
+        //                    Expression newExpression = CreateConstructorExpression(interfaceType, serviceMeta.ServiceType, registrar, state);
 
-                            var blockExpression = BuildExpression(state, newExpression);
+        //                    var blockExpression = BuildExpression(state, newExpression);
 
-                            //Set Activator
-                            serviceCreator = Expression.Lambda<Func<T>>(blockExpression).Compile();
-                        }
-                        serviceMeta.Activator = new ServiceActivator<T>(serviceCreator, serviceMeta.IsReusable);
-                    }
-                }
-            }
-        }
+        //                    //Set Activator
+        //                    serviceCreator = Expression.Lambda<Func<T>>(blockExpression).Compile();
+        //                }
+        //                serviceMeta.Activator = new ServiceActivator<T>(serviceCreator, serviceMeta.IsReusable);
+        //            }
+        //        }
+        //    }
+        //}
 
-        private Expression BuildExpression(ServiceState state, Expression returnValue)
-        {
-            /*we do not need to build block if there are no parameters.
-             * it means that there are no re-usable instances with in constructor parameters.
-             */
-            if (!state.HasParameters())
-            {
-                return returnValue;
-            }
+        //private Expression BuildExpression(ServiceState state, Expression returnValue)
+        //{
+        //    /*we do not need to build block if there are no parameters.
+        //     * it means that there are no re-usable instances within constructor parameters.
+        //     */
+        //    if (!state.HasParameters())
+        //    {
+        //        return returnValue;
+        //    }
 
-            List<Expression> expressions = new List<Expression>(state.GetBinaryExpressions());
-            expressions.Add(returnValue);
+        //    List<Expression> expressions = new List<Expression>(state.GetBinaryExpressions());
+        //    expressions.Add(returnValue);
 
-            BlockExpression blockExpr = Expression.Block(
-              state.GetParameters(),
-              expressions
-            );
+        //    BlockExpression blockExpr = Expression.Block(
+        //      state.GetParameters(),
+        //      expressions
+        //    );
 
-            return blockExpr;
-        }
+        //    return blockExpr;
+        //}
     }
 }

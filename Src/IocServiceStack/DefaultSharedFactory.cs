@@ -26,41 +26,38 @@
 namespace IocServiceStack
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq.Expressions;
-    using System.Reflection;
     
-    public class ServiceInfo : BaseServiceInfo
+    internal class DefaultSharedFactory : SubcontractFactory
     {
-        public ServiceInfo(Type serviceType, DecoratorAttribute[] decorators) : base(serviceType, decorators)
+        public DefaultSharedFactory() : base(null, null, true)
         {
-
         }
 
-        public ServiceInfo(Type serviceType, DecoratorAttribute[] decorators, string serviceName)
-            : base(serviceType, decorators, serviceName)
+        public override Expression Create(Type interfaceType, ServiceRegister register, ServiceState state)
         {
-            
-        }
+            if (interfaceType == null)
+                throw new ArgumentNullException(nameof(interfaceType));
 
-        public ServiceInfo(Type serviceType, DecoratorAttribute[] decorators, bool isReusable, string serviceName) : base(serviceType, decorators, serviceName)
-        {
-            
-        }
+            //Register current subcontract service with ServiceRegistrar
+            //Root service will refresh with the updated service when there's replacement with new service
+            register.Register(interfaceType);
 
-        public ServiceInfo(Type serviceType, DecoratorAttribute[] decorators, bool isReusable) : base(serviceType, decorators, isReusable)
-        {
-            
-        }
+            BaseServiceInfo serviceMeta = ServicesMapTable?[interfaceType];
 
-        public override Func<T> GetServiceInstanceCallback<T>()
-        {
-            return null;
-        }
+            //Throw exception if service meta not found in the service map table
+            if (serviceMeta == null)
+            {
+                ExceptionHelper.ThrowContractNotRegisteredException(interfaceType.FullName);
+            }
 
-        public override Expression GetServiceInstanceExpression()
-        {
-            return null;
+            var userdefinedExpression = serviceMeta.GetServiceInstanceExpression();
+            if (userdefinedExpression != null)
+            {
+                return Expression.TypeAs(userdefinedExpression, interfaceType);
+            }
+
+            return CreateConstructorExpression(interfaceType, serviceMeta.ServiceType, register, state) ?? Expression.Default(interfaceType);
         }
     }
 }

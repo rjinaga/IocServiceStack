@@ -57,6 +57,6 @@ namespace IocServiceStack
 
         object GetService(Type contractType);
         object GetService(Type contractType, string serviceName);
-
+        ISubContainer GetSharedContainer();
     }
 }

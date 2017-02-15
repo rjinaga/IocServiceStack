@@ -28,19 +28,42 @@ namespace IocServiceStack
     using System;
     using System.Linq.Expressions;
 
-    public class ServiceInfo<TC, TS> : ServiceInfo where TC: class where TS: TC
+    /// <summary>
+    /// This class contains the service of the contract, decorators and activator.
+    /// </summary>
+    /// <typeparam name="TC">The type of the contract.</typeparam>
+    /// <typeparam name="TS">The type of the service.</typeparam>
+    public class ServiceInfo<TC, TS> : BaseServiceInfo where TC: class where TS: TC
     {
-        private Func<TS> _actionInfo;
-        private Expression<Func<TS>> _expressionCallback;
+        private readonly Func<TS> _actionInfo;
+        private readonly Expression<Func<TS>> _expressionCallback;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="ServiceInfo"/> class with specified <paramref name="decorators"/> and 
+        /// <paramref name="serviceName"/>.
+        /// </summary>
+        /// <param name="decorators">The array of decorators</param>
+        /// <param name="serviceName">The name of the service.</param>
         public ServiceInfo(DecoratorAttribute[] decorators, string serviceName) : base(typeof(TS), decorators, serviceName)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="ServiceInfo"/> class. 
+        /// </summary>
+        /// <param name="isReusable"></param>
+        /// <param name="decorators"></param>
+        /// <param name="serviceName"></param>
         public ServiceInfo(bool isReusable, DecoratorAttribute[] decorators, string serviceName) : base(typeof(TS), decorators, isReusable, serviceName)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="ServiceInfo"/> class.
+        /// </summary>
+        /// <param name="serviceAction"></param>
+        /// <param name="decorators"></param>
+        /// <param name="serviceName"></param>
         public ServiceInfo(Func<TS> serviceAction, DecoratorAttribute[] decorators, string serviceName) : base(null, decorators, serviceName)
         {
             _actionInfo = serviceAction;
@@ -63,7 +86,18 @@ namespace IocServiceStack
 
         public override Func<T1> GetServiceInstanceCallback<T1>() 
         {
-            return _actionInfo as Func<T1>;
+            if (_actionInfo == null)
+            {
+                return null;
+            }
+
+            var typeCastedAction = _actionInfo as Func<T1>;
+            if (typeCastedAction == null)
+            {
+                throw new InvalidCastException($"{_actionInfo.ToString()} to Func<{typeof(T1).ToString()}> ");
+            }
+
+            return typeCastedAction;
         }
 
         public override Expression GetServiceInstanceExpression()

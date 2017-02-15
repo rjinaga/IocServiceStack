@@ -27,25 +27,32 @@ namespace IocServiceStack
 {
     using System;
 
+    /// <summary>
+    /// When a class is attributed with ServiceAttribute then auto mapper registers with their base types.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class ServiceAttribute : Attribute
     {
+        /// <summary>
+        /// Initializes new instance of <see cref="ServiceAttribute"/>
+        /// </summary>
         public ServiceAttribute()
         {
         }
+
+        /// <summary>
+        /// Initializes new instance of <see cref="ServiceAttribute"/> with specified <paramref name="serviceName"/>
+        /// </summary>
+        /// <param name="serviceName"></param>
         public ServiceAttribute(string serviceName)
         {
             Name = serviceName;
         }
 
         /// <summary>
-        /// Sets or Gets name of the service, name of the service must be unique for that particular contract
+        /// Sets or Gets the name of the service. and it must be unique for that particular contract type.
         /// </summary>
         public string Name { get; set; }
 
-        /// <summary>
-        /// if IsReusable property set to true then multiple requests are served with the same instance.
-        /// </summary>
-        //public bool IsReusable { get; set; }
     }
 }

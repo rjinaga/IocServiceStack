@@ -25,13 +25,20 @@
 
 namespace IocServiceStack
 {
-   
+   /// <summary>
+   /// Represents dependency linked objects.
+   /// </summary>
     public interface IDependencyAttribute
     {
         /// <summary>
         /// Gets or sets dependency factory
         /// </summary>
         IDependencyFactory DependencyFactory { get; set; }
+
+        /// <summary>
+        /// Gets or sets shared factory
+        /// </summary>
+        IDependencyFactory SharedFactory { get; set; }
     }
     
 }

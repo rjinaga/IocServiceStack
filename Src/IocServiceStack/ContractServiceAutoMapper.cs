@@ -63,34 +63,36 @@ namespace IocServiceStack
         }
 
         /// <summary>
-        /// Gets the <see cref="ServiceInfo"/> object associated with the specified contractType.
+        /// Gets the <see cref="BaseServiceInfo"/> object associated with the specified contractType.
         /// </summary>
         /// <param name="contractType"></param>
-        /// <returns><see cref="ServiceInfo"/></returns>
-        public ServiceInfo this[Type contractType]
-        {
-            get
-            {
-                if (!_mapTable.ContainsKey(contractType))
-                    ExceptionHelper.ThrowContractNotRegisteredException(contractType.FullName);
-
-                return _mapTable[contractType].DefaultService;
-            }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ServiceInfo"/> object associated with the specified <paramref name="contractType"/> and <paramref name="serviceName"/>
-        /// </summary>
-        /// <param name="contractType">The type of the contract to be found.</param>
-        /// <param name="serviceName">The name of the service to be found.</param>
-        /// <returns><see cref="ServiceInfo"/></returns>
-        public ServiceInfo this[Type contractType, string serviceName]
+        /// <returns><see cref="BaseServiceInfo"/></returns>
+        public BaseServiceInfo this[Type contractType]
         {
             get
             {
                 if (!_mapTable.ContainsKey(contractType))
                 {
-                    ExceptionHelper.ThrowContractNotRegisteredException(contractType.FullName);
+                    return null;
+                }
+
+                return _mapTable[contractType].DefaultService;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the <see cref="BaseServiceInfo"/> object associated with the specified <paramref name="contractType"/> and <paramref name="serviceName"/>
+        /// </summary>
+        /// <param name="contractType">The type of the contract to be found.</param>
+        /// <param name="serviceName">The name of the service to be found.</param>
+        /// <returns><see cref="BaseServiceInfo"/></returns>
+        public BaseServiceInfo this[Type contractType, string serviceName]
+        {
+            get
+            {
+                if (!_mapTable.ContainsKey(contractType))
+                {
+                    return null;
                 }
 
                 if (string.IsNullOrEmpty(serviceName))
@@ -132,7 +134,7 @@ namespace IocServiceStack
         /// </summary>
         /// <param name="contractType"></param>
         /// <param name="serviceMeta"></param>
-        public void Add(Type contractType, ServiceInfo serviceMeta)
+        public void Add(Type contractType, BaseServiceInfo serviceMeta)
         {
             if (serviceMeta.ServiceType != null && !CanTypeCast(contractType, serviceMeta.ServiceType))
             {
@@ -179,7 +181,7 @@ namespace IocServiceStack
         /// </summary>
         /// <param name="contractType"></param>
         /// <param name="serviceMeta"></param>
-        public void AddOrReplace(Type contractType, ServiceInfo serviceMeta)
+        public void AddOrReplace(Type contractType, BaseServiceInfo serviceMeta)
         {
             if (serviceMeta.ServiceType != null && !CanTypeCast(contractType, serviceMeta.ServiceType))
             {
@@ -288,7 +290,7 @@ namespace IocServiceStack
                 {
                     services.Add(interfaceType, new ServiceMapInfo()
                     {
-                        DefaultService = new ServiceInfo(serviceType, ServiceInfo.GetDecorators(interfaceType))
+                        DefaultService = new ServiceInfo(serviceType, BaseServiceInfo.GetDecorators(interfaceType))
                     });
                 }
                 else
@@ -297,7 +299,7 @@ namespace IocServiceStack
                     {
                         Services = new ServicesPoint()
                         {
-                            [serviceAttribute.Name] = new ServiceInfo(serviceType, ServiceInfo.GetDecorators(interfaceType))
+                            [serviceAttribute.Name] = new ServiceInfo(serviceType, BaseServiceInfo.GetDecorators(interfaceType))
                         }
                     });
                 }
@@ -316,7 +318,7 @@ namespace IocServiceStack
             //Set default service if service name is not set
             if (string.IsNullOrEmpty(serviceAttribute.Name))
             {
-                mapInfo.DefaultService = new ServiceInfo(serviceType, ServiceInfo.GetDecorators(interfaceType));
+                mapInfo.DefaultService = new ServiceInfo(serviceType, BaseServiceInfo.GetDecorators(interfaceType));
             }
             else //named service
             {
@@ -332,7 +334,7 @@ namespace IocServiceStack
                         ExceptionHelper.ThrowDuplicateServiceException($"{serviceType.FullName} implements {interfaceType.FullName}");
                     }
                 }
-                mapInfo.Services[serviceAttribute.Name] = new ServiceInfo(serviceType, ServiceInfo.GetDecorators(interfaceType));
+                mapInfo.Services[serviceAttribute.Name] = new ServiceInfo(serviceType, BaseServiceInfo.GetDecorators(interfaceType));
             }
         }
     }
