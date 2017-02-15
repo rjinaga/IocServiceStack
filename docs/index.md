@@ -8,6 +8,7 @@ IocServiceStack is a open source .NET dependency injection framework. It support
 ### Features:
 - Global IoC Container
 - Isolated IoC Containers
+- Shared container among dependencies.
 - Automatically maps the services to their contracts
 - Add or Replace dependencies
 - Inject dependencies through decorators
@@ -18,11 +19,11 @@ IocServiceStack is a open source .NET dependency injection framework. It support
 - .NET Core 1.0 (.NET Standard 1.6)
 - .NET Framework 4.6
 
-## [NuGet](https://www.nuget.org/packages/IocServiceStack/)
+## [NuGet](https://www.nuget.org/packages/IocServiceStack/2.0.0-rc-1)
 ```
-PM> Install-Package IocServiceStack
+PM> Install-Package IocServiceStack -Pre
 ```
-[![NuGet Release](https://img.shields.io/badge/nuget-v1.1.0-blue.svg)](https://www.nuget.org/packages/IocServiceStack/)
+[![NuGet Release](https://img.shields.io/badge/nuget-v2.0.0--rc--1-yellow.svg)](https://www.nuget.org/packages/IocServiceStack/2.0.0-rc-1)
 
 ## Usage Examples
 
@@ -31,7 +32,7 @@ PM> Install-Package IocServiceStack
 #### Automatically wires up the services - Setup
 
 ```c#
-var configRef = IocServicelet.Configure(config =>
+var container = IocServicelet.Configure(config =>
 {
     config.AddServices((service) =>
     {
@@ -62,7 +63,7 @@ var configRef = IocServicelet.Configure(config =>
 #### Manually wires up the services - Setup
 ```c#
 //Initialization
-var configRef = IocServicelet.Configure(config =>
+var container = IocServicelet.Configure(config =>
 {
     config.AddServices((service) =>
     {
@@ -73,7 +74,7 @@ var configRef = IocServicelet.Configure(config =>
 });
 
 //Add dependencies at level - 1 
-configRef.GetServiceFactory()
+container.GetRootContainer()
          .Add<ICustomer, CustomerService>()
          .Add<IOrder, OrderService>()
 	 .Add<AbstractSale, OnlineSale>("Online")   /*Access: var onlineSale = ServiceManager.GetService<AbstractSale>("Online");  //Get OnlineSale object */
@@ -82,7 +83,7 @@ configRef.GetServiceFactory()
 //Check multiple implementations of interface -> https://github.com/rjinaga/IocServiceStack/wiki/Accessing%20service%20by%20Name
 
 // Add dependencies at level - 2 
-configRef.GetDependencyFactory("DataContext") /* get dependency factory by name */
+container.GetDependencyContainer("DataContext") /* get dependency factory by name */
          .Add<IDbContext>(()=>new AdventureDbContext());
 ```
 
@@ -117,7 +118,6 @@ namespace BusinessService
     {
         private ICustomerRepository _repository;
 
-        [ServiceInit]
         public CustomerService(ICustomerRepository repository)
         {
             _repository = repository;
@@ -164,7 +164,7 @@ namespace RepositoryService
     [Service]
     public class CustomerRepository : ICustomerRepository
     {
-        [ServiceInit]
+
         public CustomerRepository(IDbContext dbcontext)
         {
         }
@@ -234,16 +234,16 @@ var customerService = ServiceManager.GetService<ICustomer>();
 You can replace with another service which is already discovered by the IocServiceStack, or add a new service.
 
 ```c#
-var serviceFactory = configRef.GetServiceFactory();
+var rootContainer = container.GetRootContainer();
 
 /*Dependency Injection*/
-serviceFactory.Replace<ICustomer, CustomerService2>()
-              .DependencyFactory
-              .Replace<ICustomerRepository, CustomerRepository2>();
+rootContainer.Replace<ICustomer, CustomerService2>()
+             .DependencyFactory
+             .Replace<ICustomerRepository, CustomerRepository2>();
 /*
 Above dependencies can be configured in other way also:
-serviceFactory.Replace<ICustomer, CustomerService2>();
-configRef.GetDependencyFactory("Repository").Replace<ICustomerRepository, CustomerRepository2>();
+rootContainer.Replace<ICustomer, CustomerService2>();
+container.GetDependencyContainer("Repository").Replace<ICustomerRepository, CustomerRepository2>();
 */
 
 /*Add new service*/
@@ -257,7 +257,7 @@ serviceFactory.Add<IPayment, PaypalPayment>();
 
 /*setup container*/
 
-var container = IocServicelet.CreateIocContainer(config=> { /* */  });
+var container = IocServicelet.CreateContainer(config=> { /* */  });
 
 /* You can add services by calling container.Add<Interface>(()=> new Service()) */
 /*set a new container to a static field */
@@ -346,16 +346,8 @@ namespace BusinessContractLibrary
 ```
 
 
-### Relationship with the [IocServiceStack.Gateway](https://rjinaga.github.io/IocServiceStack.Gateway) and [IocServiceStack.Client](https://rjinaga.github.io/IocServiceStack.Client) Repositories
-
-IocServiceStack.Gateway and IocServiceStack.Client libraries make the logical layered application into physical layered application that builts using IocServiceStack.
-
-
 ### ASP.NET Web Application Architecture using IocServiceStack
 [https://github.com/rjinaga/Web-App-Architecture-Using-IocServiceStack](https://github.com/rjinaga/Web-App-Architecture-Using-IocServiceStack)
-
-### ASP.NET Web Application N-Tier Architecture
-[https://github.com/rjinaga/Web-N-Tier-Architecture](https://github.com/rjinaga/Web-N-Tier-Architecture)
 
 ### Wiki
 [https://github.com/rjinaga/IocServiceStack/wiki](https://github.com/rjinaga/IocServiceStack/wiki)
