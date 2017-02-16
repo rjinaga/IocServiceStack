@@ -33,8 +33,8 @@ namespace IocServiceStack
         private ServiceNotifier _notifier;
         private ServiceCompiler _compiler;
 
-        public DefaultServiceFactory(string[] namespaces, Assembly[] assemblies, bool strictMode)
-            : base(namespaces, assemblies, strictMode)
+        public DefaultServiceFactory(string[] namespaces, Assembly[] assemblies, bool strictMode, IDependencyFactory dependencyFactory, ISharedFactory sharedFactory)
+            : base(namespaces, assemblies, strictMode, dependencyFactory, sharedFactory)
         {
 
         }
@@ -104,6 +104,15 @@ namespace IocServiceStack
                 _notifier.SendUpdate(type);
             });
 
+        }
+        public IDependencyFactory GetDependencyFactory(string factoryName)
+        {
+            return ServiceProviderHelper.GetDependencyFactory(DependencyFactory, factoryName);
+        }
+
+        public ISharedFactory GetSharedFactory()
+        {
+            return SharedFactory;
         }
 
         public IRootContainer Add<TC>(Func<TC> expression) where TC: class
@@ -249,6 +258,8 @@ namespace IocServiceStack
 
             return this;
         }
+
+      
 
         //private void Compile<T>(Type interfaceType, BaseServiceInfo serviceMeta) where T : class
         //{

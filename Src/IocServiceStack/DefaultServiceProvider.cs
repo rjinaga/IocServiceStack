@@ -144,12 +144,12 @@ namespace IocServiceStack
         /// <returns>Returns <see cref="IContainerService"/> if found, otherwise returns null</returns>
         public IDependencyFactory GetDependencyFactory(string name)
         {
-            return ServiceProviderHelper.GetDependencyFactory(GetServiceFactory()?.DependencyFactory, name);
+            return GetServiceFactory()?.GetDependencyFactory(name);
         }
 
         public ISubContainer GetSharedContainer()
         {
-            return GetServiceFactory().SharedFactory;
+            return GetServiceFactory().GetSharedFactory();
         }
 
         protected InvocationInfo BeforeInvoke(Type contractType, string serviceName)

@@ -30,7 +30,7 @@ namespace IocServiceStack
     /// <summary>
     /// Represents behavior associated with the main container.
     /// </summary>
-    public interface IRootContainer : IDependencyAttribute
+    public interface IRootContainer 
     {
         /// <summary>
         /// Adds specified <see cref="Expression"/> for the specified contract <typeparamref name="TC"/>

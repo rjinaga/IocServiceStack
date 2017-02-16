@@ -65,16 +65,10 @@ namespace IocServiceStack
                     }
                     else
                     {
-                        _serviceFactory = new DefaultServiceFactory(_config.ContainerOptions.Namespaces, assmblies, _config.ContainerOptions.StrictMode);
+                        var sharedFactory = new DefaultSharedFactory();
+                        IDependencyFactory dependencyFactory = InitChainOfSubctractFactories(sharedFactory);
+                        _serviceFactory = new DefaultServiceFactory(_config.ContainerOptions.Namespaces, assmblies, _config.ContainerOptions.StrictMode, dependencyFactory, sharedFactory);
                     }
-
-                    //set default shared factory
-                    if (_serviceFactory.SharedFactory == null)
-                    {
-                        _serviceFactory.SharedFactory = new DefaultSharedFactory();
-                    }
-
-                    InitChainOfSubctractFactories();
 
                     //Start work of service factory and chain of dependent factories
                     _serviceFactory.Initialize();
@@ -82,34 +76,25 @@ namespace IocServiceStack
             }
         }
 
-        private void InitChainOfSubctractFactories()
+        private IDependencyFactory InitChainOfSubctractFactories(ISharedFactory sharedFactory)
         {
             ContainerDependencyOptions dependencies = _config.ContainerOptions.Dependencies;
-            IDependencyAttribute serviceNode = _serviceFactory;
+            System.Collections.Generic.Stack<ContainerDependencyOptions> stack = new System.Collections.Generic.Stack<ContainerDependencyOptions>();
 
             while (dependencies  != null)
             {
-                //if user defined ServiceFactory is configured then set that factory, otherwise set the default one
-                if (dependencies.ServiceFactory != null)
-                {
-                    serviceNode.DependencyFactory = dependencies.ServiceFactory;
-                    serviceNode.DependencyFactory.Name = dependencies.Name;
-                }
-                //if Subcontract is defined along with ServiceFactory configuration, then don't set the default contract factory.
-                else if (serviceNode.DependencyFactory == null)
-                {
-                    Assembly[] subcontractAssmblies = GetAssemblies(dependencies.Assemblies);
-                    serviceNode.DependencyFactory = new DefaultSubcontractFactory(dependencies.Namespaces, subcontractAssmblies, _config.ContainerOptions.StrictMode);
-                    serviceNode.DependencyFactory.Name = dependencies.Name;
-                }
-
-                //set same instance of root service factory to all the dependencies.
-                serviceNode.SharedFactory = _serviceFactory.SharedFactory;
-
-                //set child node of current dependencies
+                stack.Push(dependencies);
                 dependencies = dependencies.Dependencies;
-                serviceNode = serviceNode.DependencyFactory;
             }
+
+            IDependencyFactory lastDependencyFactory = null;
+            foreach (var item in stack)
+            {
+                Assembly[] subcontractAssmblies = GetAssemblies(item.Assemblies);
+                lastDependencyFactory = new DefaultSubcontractFactory(item.Name, item.Namespaces, subcontractAssmblies, _config.ContainerOptions.StrictMode, lastDependencyFactory, sharedFactory);
+            }
+            return lastDependencyFactory;
+
         }
 
         private Assembly[] GetAssemblies(string[] assmblynames)

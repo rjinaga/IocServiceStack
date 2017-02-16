@@ -33,7 +33,7 @@ namespace IocServiceStack
     /// <summary>
     /// Represents abstract factory of container service.
     /// </summary>
-    public abstract class BaseServiceFactory : IDependencyAttribute
+    public abstract class BaseServiceFactory 
     {
         private IContractObserver _observer;
 
@@ -43,35 +43,36 @@ namespace IocServiceStack
         protected readonly ContractServiceAutoMapper ServicesMapTable;
 
         /// <summary>
+        /// Gets factory of Subcontract of the current service
+        /// </summary>
+        protected readonly IDependencyFactory DependencyFactory;
+
+        /// <summary>
+        /// Gets or sets factory of Subcontract of the current service
+        /// </summary>
+        protected readonly ISharedFactory SharedFactory;
+        
+
+        /// <summary>
         /// Initializes a new instance of <see cref="BaseServiceFactory"/> class with specified parameters <paramref name="namespaces"/>, 
         /// <paramref name="assemblies"/>, <paramref name="strictMode"/>, and <paramref name="containerModel"/>.
         /// </summary>
         /// <param name="namespaces">The array of namespaces to be searched for services.</param>
         /// <param name="assemblies">The array of assemblies to be searched for services.</param>
         /// <param name="strictMode">The value indicating whether strict mode is on or off, if strict mode is true then 
+        /// <param name="dependencyFactory"></param>
+        /// <param name="sharedFactory"></param>
         /// system throws an exception if a contract is implemented by more than one service. this prevents the duplicate 
         /// implementation.
         /// </param>
-        public BaseServiceFactory(string[] namespaces, Assembly[] assemblies, bool strictMode)
+        public BaseServiceFactory(string[] namespaces, Assembly[] assemblies, bool strictMode, IDependencyFactory dependencyFactory, ISharedFactory sharedFactory)
         {
             ServicesMapTable = new ContractServiceAutoMapper(namespaces, assemblies, strictMode);
             ServicesMapTable.Map();
-        }
 
-        /// <summary>
-        /// Gets or sets factory of Subcontract of the current service
-        /// </summary>
-        public IDependencyFactory DependencyFactory
-        {
-            get; set;
-        }
+            DependencyFactory = dependencyFactory;
+            SharedFactory = sharedFactory;
 
-        /// <summary>
-        /// Gets or sets factory of Subcontract of the current service
-        /// </summary>
-        public IDependencyFactory SharedFactory
-        {
-            get; set;
         }
 
         /// <summary>
@@ -296,6 +297,16 @@ namespace IocServiceStack
             return Expression.New(serviceType);
         }
 
+        protected virtual Expression CreateDependency(Type interfaceType, ServiceRegister register, ServiceState state)
+        {
+            //let's subcontract take responsibility to create dependency objects 
+            if (DependencyFactory == null && SharedFactory != null)
+            {
+                return SharedFactory.Create(interfaceType, register, state) ?? Expression.Default(interfaceType);
+            }
+            return DependencyFactory?.Create(interfaceType, register, state) ?? Expression.Default(interfaceType);
+        }
+
         private void VerifyNull(object o, string name)
         {
             if (o == null)
@@ -375,11 +386,7 @@ namespace IocServiceStack
                 }
 
                 //let's subcontract take responsibility to create dependency objects 
-                if (DependencyFactory == null && SharedFactory != null)
-                {
-                    return SharedFactory.Create(constrParameter.ParameterType, registrar, state) ?? Expression.Default(constrParameter.ParameterType);
-                }
-                return DependencyFactory?.Create(constrParameter.ParameterType, registrar, state) ?? Expression.Default(constrParameter.ParameterType);
+                return CreateDependency(constrParameter.ParameterType, registrar, state);
             }
         }
 

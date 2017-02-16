@@ -30,7 +30,8 @@
 
             container.GetSharedContainer()
                                         .Add<ICustomerRepository, CustomerRepository>() /*this depends on the IDbContext*/
-                                        .Add<IDbContext, AdventureDbContext>();
+                                        .Add<IDbContext>(()=> new AdventureDbContext())
+                                        ;
                                         
 
             var provider = container.ServiceProvider;

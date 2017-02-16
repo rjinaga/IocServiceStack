@@ -31,7 +31,7 @@ namespace IocServiceStack
     /// <summary>
     /// Represents sub container of the root container.
     /// </summary>
-    public interface ISubContainer : IDependencyAttribute
+    public interface ISubContainer 
     {
         /// <summary>
         /// Adds specified service (TS) for the specified contract (TC) to the collection.
@@ -39,7 +39,7 @@ namespace IocServiceStack
         /// <typeparam name="TC">Type of the contract</typeparam>
         /// <typeparam name="TS">Type of the service</typeparam>
         /// <returns>Returns <see cref="IDependencyFactory"/> </returns>
-        IDependencyFactory Add<TC, TS>() where TC : class where TS : TC;
+        ISubContainer Add<TC, TS>() where TC : class where TS : TC;
 
         /// <summary>
         /// Adds specified service (TS) with service name for the specified contract (TC) to the collection.
@@ -48,7 +48,7 @@ namespace IocServiceStack
         /// <typeparam name="TS">Type of the service</typeparam>
         /// <param name="serviceName">Type of service that's a implementation of specified contract.</param>
         /// <returns>Returns <see cref="IDependencyFactory"/> </returns>
-        IDependencyFactory Add<TC, TS>(string serviceName) where TC : class where TS : TC;
+        ISubContainer Add<TC, TS>(string serviceName) where TC : class where TS : TC;
 
         /// <summary>
         /// Adds specified service for the specified contract T to the collection.
@@ -56,7 +56,7 @@ namespace IocServiceStack
         /// <typeparam name="T">Contract type(interface or class)</typeparam>
         /// <param name="service">Type of service that's a implementation of specified contract.</param>
         /// <returns>Returns <see cref="IDependencyFactory"/> </returns>
-        IDependencyFactory Add<T>(Type service) where T : class;
+        ISubContainer Add<T>(Type service) where T : class;
 
         /// <summary>
         /// Adds specified service with a name for the specified contract T to the collection.
@@ -66,7 +66,7 @@ namespace IocServiceStack
         /// <param name="service">Type of service that's a implementation of specified contract.</param>
         /// <param name="serviceName">Name of the service</param>
         /// <returns>Returns <see cref="IDependencyFactory"/> </returns>
-        IDependencyFactory Add<T>(Type service, string serviceName) where T : class;
+        ISubContainer Add<T>(Type service, string serviceName) where T : class;
 
         /// <summary>
         /// Replaces specified service (TS) for the specified contract (TC).
@@ -74,7 +74,7 @@ namespace IocServiceStack
         /// <typeparam name="TC">Type of the contract</typeparam>
         /// <typeparam name="TS">Type of the service</typeparam>
         /// <returns>Returns <see cref="IDependencyFactory"/> </returns>
-        IDependencyFactory Replace<TC, TS>() where TC : class where TS : TC;
+        ISubContainer Replace<TC, TS>() where TC : class where TS : TC;
 
         /// <summary>
         /// Replaces specified service (<typeparamref name="TS"/>) with service name for the specified contract (<typeparamref name="TC"/>).
@@ -83,7 +83,7 @@ namespace IocServiceStack
         /// <typeparam name="TS">Type of the service</typeparam>
         /// <param name="serviceName">Type of service that's a implementation of specified contract.</param>
         /// <returns>Returns <see cref="IDependencyFactory"/> </returns>
-        IDependencyFactory Replace<TC, TS>(string serviceName) where TC : class where TS : TC;
+        ISubContainer Replace<TC, TS>(string serviceName) where TC : class where TS : TC;
 
         /// <summary>
         /// Replaces specified service for the specified contract T.
@@ -91,7 +91,7 @@ namespace IocServiceStack
         /// <typeparam name="T">Contract type(interface or class)</typeparam>
         /// <param name="service">Type of service that's a implementation of specified contract.</param>
         /// <returns>Returns <see cref="IDependencyFactory"/> </returns>
-        IDependencyFactory Replace<T>(Type service) where T : class;
+        ISubContainer Replace<T>(Type service) where T : class;
 
         /// <summary>
         /// Replaces specified service (TS) with service name for the specified contract (TC).
@@ -100,7 +100,7 @@ namespace IocServiceStack
         /// <param name="service">Type of the service</param>
         /// <param name="serviceName">Type of service that's a implementation of specified contract.</param>
         /// <returns>Returns <see cref="IDependencyFactory"/> </returns>
-        IDependencyFactory Replace<T>(Type service, string serviceName) where T : class;
+        ISubContainer Replace<T>(Type service, string serviceName) where T : class;
 
         /// <summary>
         /// Adds specified <see cref="Expression"/> for the specified contract <typeparamref name="TC"/>
@@ -108,7 +108,7 @@ namespace IocServiceStack
         /// <typeparam name="TC">Type of the contract.</typeparam>
         /// <param name="expression"><see cref="Func{TC}"/>, in which it must pass the instance of service.</param>
         /// <returns>Returns <see cref="IDependencyFactory"/> </returns>
-        IDependencyFactory Add<TC>(Expression<Func<TC>> expression) where TC : class;
+        ISubContainer Add<TC>(Expression<Func<TC>> expression) where TC : class;
 
         /// <summary>
         /// Adds specified <see cref="Expression"/> for the specified contract <typeparamref name="TC"/>
@@ -117,7 +117,7 @@ namespace IocServiceStack
         /// <param name="expression"><see cref="Func{TC}"/>, in which it must pass the instance of service.</param>
         /// <param name="serviceName">Specifies name of the service</param>
         /// <returns>Returns <see cref="IDependencyFactory"/> </returns>
-        IDependencyFactory Add<TC>(Expression<Func<TC>> expression, string serviceName) where TC : class;
+        ISubContainer Add<TC>(Expression<Func<TC>> expression, string serviceName) where TC : class;
 
         /// <summary>
         /// Replaces specified <see cref="Expression"/> for the specified contract <typeparamref name="TC"/>
@@ -125,7 +125,7 @@ namespace IocServiceStack
         /// <typeparam name="TC">Type of the contract.</typeparam>
         /// <param name="expression"><see cref="Func{TC}"/>, in which it must pass the instance of service.</param>
         /// <returns>Returns <see cref="IDependencyFactory"/> </returns>
-        IDependencyFactory Replace<TC>(Expression<Func<TC>> expression) where TC : class;
+        ISubContainer Replace<TC>(Expression<Func<TC>> expression) where TC : class;
 
         /// <summary>
         /// Replaces specified <see cref="Expression"/> for the specified contract <typeparamref name="TC"/>
@@ -134,7 +134,7 @@ namespace IocServiceStack
         /// <param name="expression"><see cref="Func{TC}"/>, in which it must pass the instance of service.</param>
         /// <param name="serviceName">Specifies name of the service</param>
         /// <returns>Returns <see cref="IDependencyFactory"/> </returns>
-        IDependencyFactory Replace<TC>(Expression<Func<TC>> expression, string serviceName) where TC : class;
+        ISubContainer Replace<TC>(Expression<Func<TC>> expression, string serviceName) where TC : class;
 
     }
 

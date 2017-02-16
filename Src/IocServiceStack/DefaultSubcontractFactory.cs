@@ -29,10 +29,30 @@ namespace IocServiceStack
     using System.Linq.Expressions;
     using System.Reflection;
 
-    internal class DefaultSubcontractFactory : SubcontractFactory
+    public class DefaultSubcontractFactory : SubcontractFactory, IDependencyFactory
     {
-        public DefaultSubcontractFactory(string[] namespaces, Assembly[] aseemblies, bool strictMode) : base(namespaces,aseemblies, strictMode)
+        public DefaultSubcontractFactory(string name, string[] namespaces, Assembly[] aseemblies, bool strictMode, IDependencyFactory dependencyFactory, ISharedFactory sharedFactory) : base(namespaces,aseemblies, strictMode, dependencyFactory, sharedFactory)
         {
+            Name = name;
+        }
+
+        IContractObserver IDependencyFactory.ContractObserver
+        {
+            get
+            {
+                return base.ContractObserver;
+            }
+            set
+            {
+                base.ContractObserver = value;
+            }
+        }
+
+        IDependencyFactory IDependencyFactory.DependencyFactory => base.DependencyFactory;
+
+        public string Name
+        {
+            get; private set;
         }
 
         public override Expression Create(Type interfaceType, ServiceRegister register, ServiceState state)
@@ -59,6 +79,8 @@ namespace IocServiceStack
 
             return CreateConstructorExpression(interfaceType, serviceMeta.ServiceType, register, state)?? Expression.Default(interfaceType);
         }
+
+
     }
    
 }

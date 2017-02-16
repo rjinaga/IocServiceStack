@@ -27,11 +27,24 @@ namespace IocServiceStack
 {
     using System;
     using System.Linq.Expressions;
-    
-    internal class DefaultSharedFactory : SubcontractFactory
+
+    public class DefaultSharedFactory : SubcontractFactory, ISharedFactory
     {
-        public DefaultSharedFactory() : base(null, null, true)
+        public DefaultSharedFactory() : base(null, null, true, null, null)
         {
+
+        }
+
+        IContractObserver ISharedFactory.ContractObserver
+        {
+            get
+            {
+                return base.ContractObserver;
+            }
+            set
+            {
+                base.ContractObserver = value;
+            }
         }
 
         public override Expression Create(Type interfaceType, ServiceRegister register, ServiceState state)
@@ -48,7 +61,7 @@ namespace IocServiceStack
             //Throw exception if service meta not found in the service map table
             if (serviceMeta == null)
             {
-                ExceptionHelper.ThrowContractNotRegisteredException(interfaceType.FullName);
+                ExceptionHelper.ThrowContractNotRegisteredException($"Type '{interfaceType.FullName}' was not registered with shared factory.");
             }
 
             var userdefinedExpression = serviceMeta.GetServiceInstanceExpression();
@@ -58,6 +71,11 @@ namespace IocServiceStack
             }
 
             return CreateConstructorExpression(interfaceType, serviceMeta.ServiceType, register, state) ?? Expression.Default(interfaceType);
+        }
+
+        protected override Expression CreateDependency(Type interfaceType, ServiceRegister register, ServiceState state)
+        {
+            return Create(interfaceType, register, state) ?? Expression.Default(interfaceType);
         }
     }
 }

@@ -36,7 +36,9 @@ namespace IocServiceStack
         /// <summary>
         /// Gets or sets name of the factory.
         /// </summary>
-        string Name { get; set; }
+        string Name { get;  }
+
+        IDependencyFactory DependencyFactory { get; }
 
         /// <summary>
         /// Create <see cref="Expression"/> for service which is associated with contract.
@@ -47,10 +49,9 @@ namespace IocServiceStack
         /// <returns>Returns <see cref="Expression"/> of service constructor.</returns>
         Expression Create(Type interfaceType, ServiceRegister register, ServiceState state);
 
-        /// <summary>
-        /// Gets or sets the <see cref="IContractObserver"/>
-        /// </summary>
         IContractObserver ContractObserver { get; set; }
 
+        
     }
+
 }

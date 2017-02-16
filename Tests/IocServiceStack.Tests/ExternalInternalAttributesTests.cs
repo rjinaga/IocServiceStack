@@ -90,6 +90,7 @@
 
         class Level3 : ILevel3
         {
+            [IocServiceStack.Ignore("name")]
             public Level3(string name)
             {
 

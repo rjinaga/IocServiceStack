@@ -29,12 +29,11 @@ namespace IocServiceStack
     public interface IRootServiceFactory : IRootContainer
     {
         void Initialize();
-
         BaseServiceInfo GetServiceInfo(Type contractType, string serviceName);
-
         T Create<T>(BaseServiceInfo serviceMeta) where T : class;
-
         object Create(Type contractType, BaseServiceInfo serviceMeta);
-        
+        IDependencyFactory GetDependencyFactory(string name);
+        ISharedFactory GetSharedFactory();
+
     }
 }

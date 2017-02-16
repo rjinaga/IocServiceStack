@@ -25,20 +25,25 @@
 
 namespace IocServiceStack
 {
-   /// <summary>
-   /// Represents dependency linked objects.
-   /// </summary>
-    public interface IDependencyAttribute
+    using System;
+    using System.Linq.Expressions;
+   
+    ///// <summary>
+    ///// Represents shared factory
+    ///// </summary>
+    public interface ISharedFactory : ISubContainer
     {
         /// <summary>
-        /// Gets or sets dependency factory
+        /// Create <see cref="Expression"/> for service which is associated with contract.
         /// </summary>
-        IDependencyFactory DependencyFactory { get; set; }
+        /// <param name="interfaceType">Type of contract</param>
+        /// <param name="register">The ServiceRegister</param>
+        /// <param name="state">The ServiceState</param>
+        /// <returns>Returns <see cref="Expression"/> of service constructor.</returns>
+        Expression Create(Type interfaceType, ServiceRegister register, ServiceState state);
 
-        /// <summary>
-        /// Gets or sets shared factory
-        /// </summary>
-        IDependencyFactory SharedFactory { get; set; }
+        IContractObserver ContractObserver { get; set; }
     }
-    
+
+
 }

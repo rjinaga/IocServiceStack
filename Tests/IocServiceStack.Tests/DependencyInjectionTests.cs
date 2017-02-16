@@ -40,14 +40,17 @@ namespace IocServiceStack.Tests
             //Arrange
             var factoryService = Helper.TestsHelper.FactoryServicePointer.GetRootContainer();
 
+            
+
             /*Dependency Injection*/
 
             //factoryService.Add<ICustomer, CustomerService2>()
             //    .Add<ICustomer>(()=> null)
-            
-            factoryService.Replace<ICustomer, CustomerService2>()
-                          .DependencyFactory
-                          .Replace<ICustomerRepository, CustomerRepository2>();
+
+            factoryService.Replace<ICustomer, CustomerService2>();
+
+            Helper.TestsHelper.FactoryServicePointer.GetDependencyContainer("Repository")
+             .Replace<ICustomerRepository, CustomerRepository2>();
 
             //Act
             var service = ServiceManager.GetService<ICustomer>();
@@ -67,8 +70,8 @@ namespace IocServiceStack.Tests
             var serviceFactory = Helper.TestsHelper.FactoryServicePointer.GetRootContainer();
 
             /*Dependency Injection*/
-            serviceFactory.Replace<ICustomer, CustomerService2>()
-                          .DependencyFactory
+            serviceFactory.Replace<ICustomer, CustomerService2>();
+            Helper.TestsHelper.FactoryServicePointer.GetDependencyContainer("Repository")
                           .Replace<ICustomerRepository, CustomerRepository2>();
             //Act
             var service = ServiceManager.GetService(typeof(ICustomer));
@@ -107,8 +110,9 @@ namespace IocServiceStack.Tests
         {
             var serviceFactory = Helper.TestsHelper.FactoryServicePointer.GetRootContainer();
 
-            serviceFactory.Replace<ICustomer, CustomerService>()
-                          .DependencyFactory
+            serviceFactory.Replace<ICustomer, CustomerService>();
+
+            Helper.TestsHelper.FactoryServicePointer.GetDependencyContainer("Repository")
                           .Replace<ICustomerRepository, CustomerRepository>();
 
         }
