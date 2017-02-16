@@ -31,9 +31,24 @@ namespace DataService
     [Service]
     public class AdventureDbContext : IDbContext
     {
+        [ServiceInit]
         public AdventureDbContext()
         {
 
+        }
+
+        public AdventureDbContext(int maxConnections)
+        {
+            if (maxConnections == 0)
+            {
+                throw new System.Exception();
+            }
+            MaxConnections = maxConnections;
+        }
+
+        public int MaxConnections
+        {
+            get;set;
         }
     }
 }

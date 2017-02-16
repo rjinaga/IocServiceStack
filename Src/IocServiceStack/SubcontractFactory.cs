@@ -49,27 +49,6 @@ namespace IocServiceStack
             
         }
 
-        ///// <summary>
-        ///// Gets or sets name of the dependency factory,
-        ///// </summary>
-        //public string Name { get; set; }
-
-        ///// <summary>
-        ///// Gets or sets the <see cref="IContractObserver"/>
-        ///// </summary>
-        //IContractObserver IDependencyFactory.ContractObserver
-        //{
-        //    get
-        //    {
-        //        return base.ContractObserver;
-        //    }
-
-        //    set
-        //    {
-        //        base.ContractObserver = value;
-        //    }
-        //}
-
         /// <summary>
         /// Create <see cref="Expression"/> for service which is associated with contract.
         /// </summary>

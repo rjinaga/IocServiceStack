@@ -74,7 +74,7 @@ namespace IocServiceStack
             var userdefinedExpression = serviceMeta.GetServiceInstanceExpression();
             if (userdefinedExpression != null)
             {
-                return Expression.TypeAs(userdefinedExpression, interfaceType);
+                return Expression.Invoke(userdefinedExpression);
             }
 
             return CreateConstructorExpression(interfaceType, serviceMeta.ServiceType, register, state)?? Expression.Default(interfaceType);
