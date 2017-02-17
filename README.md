@@ -16,5 +16,5 @@ PM> Install-Package IocServiceStack -Pre
 
 ## Documentation 
 
--[http://www.iocservicestack.net](http://www.iocservicestack.net)
--[https://github.com/rjinaga/IocServiceStack/wiki](https://github.com/rjinaga/IocServiceStack/wiki)
+- [http://www.iocservicestack.net](http://www.iocservicestack.net)
+- [https://github.com/rjinaga/IocServiceStack/wiki](https://github.com/rjinaga/IocServiceStack/wiki)
