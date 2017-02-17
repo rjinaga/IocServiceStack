@@ -37,6 +37,7 @@ namespace IocServiceStack
         private string[] _namespaces, _assemblies;
         private IRootServiceFactory _serviceFactory;
         private ContainerDependencyOptions _dependencies;
+        private SharedDependencyOptions _sharedDependencies;
 
         /// <summary>
         /// StrictMode applies the one contract with one service policy. This means if more than one service is implemented single contract interface
@@ -122,6 +123,14 @@ namespace IocServiceStack
             }
         }
 
+        public SharedDependencyOptions SharedDependencies
+        {
+            get
+            {
+                return _sharedDependencies;
+            }
+        }
+
         /// <summary>
         /// Adds dependencies options that are set through the options callback.
         /// </summary>
@@ -130,6 +139,12 @@ namespace IocServiceStack
         {
             _dependencies = new ContainerDependencyOptions();
             options(_dependencies);
+        }
+
+        public void AddSharedServices(Action<SharedDependencyOptions> options)
+        {
+            _sharedDependencies = new SharedDependencyOptions();
+            options(_sharedDependencies);
         }
 
         internal void MakeReadOnly()

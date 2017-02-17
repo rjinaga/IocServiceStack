@@ -57,6 +57,8 @@ namespace IocServiceStack.Tests
                             data.Assemblies = new[] { "DataServiceLibrary" };
                         });
                     });
+
+
                     opt.StrictMode = true;
                 });
                 //.RegisterServiceProvider(new ProxyServiceProvider());

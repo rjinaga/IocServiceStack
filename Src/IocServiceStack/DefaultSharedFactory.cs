@@ -27,10 +27,11 @@ namespace IocServiceStack
 {
     using System;
     using System.Linq.Expressions;
+    using System.Reflection;
 
     public class DefaultSharedFactory : SubcontractFactory, ISharedFactory
     {
-        public DefaultSharedFactory() : base(null, null, true, null, null)
+        public DefaultSharedFactory(string[] namespaces, Assembly[] assemblies, bool strictMode) : base(namespaces, assemblies, strictMode, null, null)
         {
 
         }

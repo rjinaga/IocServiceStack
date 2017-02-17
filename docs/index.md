@@ -8,12 +8,12 @@ IocServiceStack is a open source .NET dependency injection framework. It support
 ### Features:
 - Global IoC Container
 - Isolated IoC Containers
-- Shared container among dependencies.
+- Shared dependencies.
 - Automatically maps the services to their contracts
 - Add or Replace dependencies
 - Inject dependencies through decorators
 - Multi level dependencies
-- Highly extensible
+- Multiple services capabilities
 
 ### Supports
 - .NET Core 1.0 (.NET Standard 1.6)
@@ -53,7 +53,7 @@ var container = IocServicelet.Configure(config =>
                 data.Assemblies = new[] { "DataServiceLibrary" };
             });
         });
-
+        //service.AddSharedServices(shared=> { shared.Assemblies =  new {""} });
         service.StrictMode = true;
     });
   //.RegisterServiceProvider(new ProxyServiceProvider());
@@ -237,17 +237,11 @@ You can replace with another service which is already discovered by the IocServi
 var rootContainer = container.GetRootContainer();
 
 /*Dependency Injection*/
-rootContainer.Replace<ICustomer, CustomerService2>()
-             .DependencyFactory
-             .Replace<ICustomerRepository, CustomerRepository2>();
-/*
-Above dependencies can be configured in other way also:
 rootContainer.Replace<ICustomer, CustomerService2>();
 container.GetDependencyContainer("Repository").Replace<ICustomerRepository, CustomerRepository2>();
-*/
 
 /*Add new service*/
-serviceFactory.Add<IPayment, PaypalPayment>();
+rootContainer.Add<IPayment, PaypalPayment>();
 
 ```
 
@@ -344,11 +338,19 @@ namespace BusinessContractLibrary
 }
 
 ```
+#### Shared Dependencies
+IocServiceStack finds the dependencies of root service from the immediate dependency sub container, if it could not be found then system searches in the shared sub container. Shared container provides flexibility to add common dependencies across the system.
 
+```c#
+
+container.GetSharedContainer()
+	 .Add<ICustomerRepository, CustomerRepository>() /*this depends on the IDbContext*/
+         .Add<IDbContext>(()=> new AdventureDbContext());
+
+```
 
 ### ASP.NET Web Application Architecture using IocServiceStack
 [https://github.com/rjinaga/Web-App-Architecture-Using-IocServiceStack](https://github.com/rjinaga/Web-App-Architecture-Using-IocServiceStack)
-
 ### Wiki
 [https://github.com/rjinaga/IocServiceStack/wiki](https://github.com/rjinaga/IocServiceStack/wiki)
 

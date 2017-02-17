@@ -31,7 +31,6 @@ namespace IocServiceStack
     {
         private bool _readOnly;
         private string[] _namespaces, _assemblies;
-        private SubcontractFactory _serviceFactory;
         private ContainerDependencyOptions _dependencies;
         private string _name;
 
@@ -80,21 +79,7 @@ namespace IocServiceStack
             }
         }
 
-        public SubcontractFactory ServiceFactory
-        {
-            get
-            {
-                return _serviceFactory;
-            }
-            set
-            {
-                if (!_readOnly)
-                {
-                    _serviceFactory = value;
-                }
-            }
-        }
-
+       
         public ContainerDependencyOptions Dependencies
         {
             get
@@ -115,4 +100,5 @@ namespace IocServiceStack
             _dependencies?.MakeReadOnly();
         }
     }
+
 }

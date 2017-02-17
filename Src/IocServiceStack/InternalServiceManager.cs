@@ -65,8 +65,15 @@ namespace IocServiceStack
                     }
                     else
                     {
-                        var sharedFactory = new DefaultSharedFactory();
+                        //Prepare for shared factory
+                        var sharedDeps = _config.ContainerOptions.SharedDependencies;
+                        Assembly[] sharedAssmblies = GetAssemblies(sharedDeps?.Assemblies);
+                        var sharedFactory = new DefaultSharedFactory(sharedDeps?.Namespaces, sharedAssmblies, _config.ContainerOptions.StrictMode);
+
+                        //dependency factory
                         IDependencyFactory dependencyFactory = InitChainOfSubctractFactories(sharedFactory);
+
+                        //Root factory
                         _serviceFactory = new DefaultServiceFactory(_config.ContainerOptions.Namespaces, assmblies, _config.ContainerOptions.StrictMode, dependencyFactory, sharedFactory);
                     }
 
