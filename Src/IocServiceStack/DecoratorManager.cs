@@ -33,8 +33,17 @@ namespace IocServiceStack
     /// </summary>
     public class DecoratorManager : IDecoratorManager
     {
+        /// <summary>
+        /// Gets or sets list of global decorators.
+        /// </summary>
         public List<DecoratorAttribute> GlobalDecorators { set; get; }
 
+        /// <summary>
+        /// Executes decorator
+        /// </summary>
+        /// <param name="context">Specify the service call context object.</param>
+        /// <param name="case"></param>
+        /// <param name="localDecorators">Specify decorators of the contract.</param>
         public void Execute(ServiceCallContext context, InvocationCase @case, IEnumerable<DecoratorAttribute> localDecorators)
         {
             switch (@case)

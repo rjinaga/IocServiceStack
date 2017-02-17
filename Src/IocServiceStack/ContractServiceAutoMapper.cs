@@ -117,10 +117,25 @@ namespace IocServiceStack
             return _mapTable.ContainsKey(contractType);
         }
 
+        /// <summary>
+        /// Determines whether the <see cref="ContractServiceAutoMapper"/> contains the specified
+        /// <paramref name="contractType"/> and <paramref name="serviceName"/> and 
+        /// </summary>
+        /// <param name="contractType">The contractType to locate in the <see cref="ContractServiceAutoMapper"/>. </param>
+        /// <param name="serviceName">The serviceName to locate in the <see cref="ContractServiceAutoMapper"/>. </param>
+        /// <returns>true if found;otherwise false.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public bool Contains(Type contractType, string serviceName)
         {
             if (contractType == null)
+            {
                 throw new ArgumentNullException(nameof(contractType));
+            }
+
+            if (serviceName == null)
+            {
+                throw new ArgumentNullException(nameof(serviceName));
+            }
 
             if (_mapTable.ContainsKey(contractType))
             {

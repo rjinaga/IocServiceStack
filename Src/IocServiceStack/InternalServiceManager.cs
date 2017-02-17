@@ -91,7 +91,7 @@ namespace IocServiceStack
             while (dependencies  != null)
             {
                 stack.Push(dependencies);
-                dependencies = dependencies.Dependencies;
+                dependencies = dependencies.DependencyOptions;
             }
 
             IDependencyFactory lastDependencyFactory = null;

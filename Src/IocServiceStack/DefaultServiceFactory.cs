@@ -28,17 +28,37 @@ namespace IocServiceStack
     using System;
     using System.Reflection;
 
+    /// <summary>
+    /// Represents system default root service factory.
+    /// </summary>
     public class DefaultServiceFactory : BaseServiceFactory, IRootServiceFactory
     {
         private ServiceNotifier _notifier;
         private ServiceCompiler _compiler;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="DefaultServiceFactory"/> class with specified parameters.
+        /// </summary>
+        /// <param name="namespaces">Specify array of namespaces where services to be searched within specified assemblies.</param>
+        /// <param name="assemblies">Specify array of assemblies where services  to be searched.</param>
+        /// <param name="strictMode">The value indicating whether strict mode is on or off, if strict mode is true then 
+        /// system throws an exception if a contract is implemented by more than one service. this prevents the duplicate 
+        /// implementation.
+        /// </param>
+        /// <param name="dependencyFactory">The dependency factory of the current service factory.</param>
+        /// <param name="sharedFactory">The shared factory of the current service factory.</param>
         public DefaultServiceFactory(string[] namespaces, Assembly[] assemblies, bool strictMode, IDependencyFactory dependencyFactory, ISharedFactory sharedFactory)
             : base(namespaces, assemblies, strictMode, dependencyFactory, sharedFactory)
         {
 
         }
 
+        /// <summary>
+        /// Returns <see cref="BaseServiceInfo"/> of specified <paramref name="contractType"/> and <paramref name="serviceName"/>.
+        /// </summary>
+        /// <param name="contractType"></param>
+        /// <param name="serviceName"></param>
+        /// <returns></returns>
         public virtual BaseServiceInfo GetServiceInfo(Type contractType, string serviceName)
         {
             if (!ServicesMapTable.Contains(contractType))
@@ -53,11 +73,22 @@ namespace IocServiceStack
             }
         }
 
+        /// <summary>
+        /// Returns <see cref="BaseServiceInfo"/> of specified <paramref name="contractType"/>.
+        /// </summary>
+        /// <param name="contractType"></param>
+        /// <returns></returns>
         public virtual BaseServiceInfo GetServiceInfo(Type contractType)
         {
             return GetServiceInfo(contractType, null);
         }
 
+        /// <summary>
+        /// Creates associated service instance of specified contract <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">Specify contact type.</typeparam>
+        /// <param name="serviceMeta"></param>
+        /// <returns></returns>
         public virtual T Create<T>(BaseServiceInfo serviceMeta) where T : class
         {
             if (serviceMeta != null)
@@ -73,6 +104,12 @@ namespace IocServiceStack
             return default(T);
         }
 
+        /// <summary>
+        /// Creates associated service instance of specified contract.
+        /// </summary>
+        /// <param name="contractType"></param>
+        /// <param name="serviceMeta"></param>
+        /// <returns></returns>
         public object Create(Type contractType, BaseServiceInfo serviceMeta)
         {
             if (serviceMeta != null)
@@ -88,7 +125,7 @@ namespace IocServiceStack
         }
 
         /// <summary>
-        /// 
+        /// Initializes the service factory and its dependencies.
         /// </summary>
         public void Initialize()
         {
@@ -105,21 +142,44 @@ namespace IocServiceStack
             });
 
         }
+
+        /// <summary>
+        /// Returns dependency factory of specified <paramref name="factoryName"/>.
+        /// </summary>
+        /// <param name="factoryName"></param>
+        /// <returns></returns>
         public IDependencyFactory GetDependencyFactory(string factoryName)
         {
             return ServiceProviderHelper.GetDependencyFactory(DependencyFactory, factoryName);
         }
 
+        /// <summary>
+        /// Returns shared factory.
+        /// </summary>
+        /// <returns></returns>
         public ISharedFactory GetSharedFactory()
         {
             return SharedFactory;
         }
 
+        /// <summary>
+        /// Adds specified <see cref="Func{TC}"/> to the factory which must return the instance of the service.
+        /// </summary>
+        /// <typeparam name="TC"></typeparam>
+        /// <param name="expression"></param>
+        /// <returns></returns>
         public IRootContainer Add<TC>(Func<TC> expression) where TC: class
         {
             return AddInternal<TC>(expression, null);
         }
 
+        /// <summary>
+        /// Adds specified <see cref="Func{TC}"/> to the factory with the <paramref name="serviceName"/>, which must return the instance of the service.
+        /// </summary>
+        /// <typeparam name="TC"></typeparam>
+        /// <param name="expression"></param>
+        /// <param name="serviceName"></param>
+        /// <returns></returns>
         public IRootContainer Add<TC>(Func<TC> expression, string serviceName) where TC : class
         {
             if (string.IsNullOrEmpty(serviceName))
@@ -130,11 +190,24 @@ namespace IocServiceStack
             return AddInternal<TC>(expression, serviceName);
         }
 
+        /// <summary>
+        /// Replaces specified <see cref="Func{TC}"/> to the factory which must return the instance of the service.
+        /// </summary>
+        /// <typeparam name="TC"></typeparam>
+        /// <param name="expression"></param>
+        /// <returns></returns>
         public IRootContainer Replace<TC>(Func<TC> expression) where TC : class
         {
             return ReplaceInternal<TC>(expression, null);
         }
 
+        /// <summary>
+        /// Replaces specified <see cref="Func{TC}"/> to the factory with the <paramref name="serviceName"/>, which must return the instance of the service.
+        /// </summary>
+        /// <typeparam name="TC"></typeparam>
+        /// <param name="expression"></param>
+        /// <param name="serviceName"></param>
+        /// <returns></returns>
         public IRootContainer Replace<TC>(Func<TC> expression, string serviceName) where TC : class
         {
             if (string.IsNullOrEmpty(serviceName))
@@ -145,6 +218,12 @@ namespace IocServiceStack
             return ReplaceInternal<TC>(expression, serviceName);
         }
 
+        /// <summary>
+        /// Adds specified service (TS) for the specified contract (TC) to the collection.
+        /// </summary>
+        /// <typeparam name="TC">Type of the contract</typeparam>
+        /// <typeparam name="TS">Type of the service</typeparam>
+        /// <returns>Returns <see cref="IRootContainer"/> </returns>
         public IRootContainer Add<TC, TS>()
            where TC : class
            where TS : TC
@@ -153,6 +232,13 @@ namespace IocServiceStack
             return this;
         }
 
+        /// <summary>
+        /// Adds specified service (TS) with service name for the specified contract (TC) to the collection.
+        /// </summary>
+        /// <typeparam name="TC">Type of the contract</typeparam>
+        /// <typeparam name="TS">Type of the service</typeparam>
+        /// <param name="serviceName">Type of service that's a implementation of specified contract.</param>
+        /// <returns>Returns <see cref="IRootContainer"/> </returns>
         public IRootContainer Add<TC, TS>(string serviceName)
             where TC : class
             where TS : TC
@@ -161,12 +247,26 @@ namespace IocServiceStack
             return this;
         }
 
+        /// <summary>
+        /// Adds specified service for the specified contract T to the collection.
+        /// </summary>
+        /// <typeparam name="T">Contract type(interface or class)</typeparam>
+        /// <param name="service">Type of service that's a implementation of specified contract.</param>
+        /// <returns>Returns <see cref="IRootContainer"/> </returns>
         public IRootContainer Add<T>(Type service) where T : class
         {
             AddService<T>(service);
             return this;
         }
 
+        /// <summary>
+        /// Adds specified service with a name for the specified contract T to the collection.
+        /// This allows to register multiple implementations of same contract those are accessed by a name.
+        /// </summary>
+        /// <typeparam name="T">Contract type(interface or class)</typeparam>
+        /// <param name="service">Type of service that's a implementation of specified contract.</param>
+        /// <param name="serviceName">Name of the service</param>
+        /// <returns>Returns <see cref="IRootContainer"/> </returns>
         public IRootContainer Add<T>(Type service, string serviceName) where T : class
         {
             AddService<T>(service, serviceName);
@@ -258,55 +358,6 @@ namespace IocServiceStack
 
             return this;
         }
-
       
-
-        //private void Compile<T>(Type interfaceType, BaseServiceInfo serviceMeta) where T : class
-        //{
-        //    if (serviceMeta.Activator == null)
-        //    {
-        //        lock (serviceMeta.SyncObject)
-        //        {
-        //            if (serviceMeta.Activator == null)
-        //            {
-        //                var registrar = serviceMeta.InitNewRegister(interfaceType, _notifier);
-
-        //                Func<T> serviceCreator  = serviceMeta.GetServiceInstanceCallback<T>();
-        //                if (serviceCreator == null)
-        //                {
-        //                    var state = new ServiceState(); /*Root place for service state instance*/
-        //                    Expression newExpression = CreateConstructorExpression(interfaceType, serviceMeta.ServiceType, registrar, state);
-
-        //                    var blockExpression = BuildExpression(state, newExpression);
-
-        //                    //Set Activator
-        //                    serviceCreator = Expression.Lambda<Func<T>>(blockExpression).Compile();
-        //                }
-        //                serviceMeta.Activator = new ServiceActivator<T>(serviceCreator, serviceMeta.IsReusable);
-        //            }
-        //        }
-        //    }
-        //}
-
-        //private Expression BuildExpression(ServiceState state, Expression returnValue)
-        //{
-        //    /*we do not need to build block if there are no parameters.
-        //     * it means that there are no re-usable instances within constructor parameters.
-        //     */
-        //    if (!state.HasParameters())
-        //    {
-        //        return returnValue;
-        //    }
-
-        //    List<Expression> expressions = new List<Expression>(state.GetBinaryExpressions());
-        //    expressions.Add(returnValue);
-
-        //    BlockExpression blockExpr = Expression.Block(
-        //      state.GetParameters(),
-        //      expressions
-        //    );
-
-        //    return blockExpr;
-        //}
     }
 }

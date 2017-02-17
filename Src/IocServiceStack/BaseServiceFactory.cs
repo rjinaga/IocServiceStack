@@ -51,20 +51,19 @@ namespace IocServiceStack
         /// Gets or sets factory of Subcontract of the current service
         /// </summary>
         protected readonly ISharedFactory SharedFactory;
-        
+
 
         /// <summary>
-        /// Initializes a new instance of <see cref="BaseServiceFactory"/> class with specified parameters <paramref name="namespaces"/>, 
-        /// <paramref name="assemblies"/>, <paramref name="strictMode"/>, and <paramref name="containerModel"/>.
+        /// Initializes a new instance of <see cref="BaseServiceFactory"/> class with specified parameters. 
         /// </summary>
         /// <param name="namespaces">The array of namespaces to be searched for services.</param>
         /// <param name="assemblies">The array of assemblies to be searched for services.</param>
         /// <param name="strictMode">The value indicating whether strict mode is on or off, if strict mode is true then 
-        /// <param name="dependencyFactory"></param>
-        /// <param name="sharedFactory"></param>
         /// system throws an exception if a contract is implemented by more than one service. this prevents the duplicate 
         /// implementation.
         /// </param>
+        /// <param name="dependencyFactory">The dependency factory of the current service factory.</param>
+        /// <param name="sharedFactory">The shared factory of the current service factory.</param>
         public BaseServiceFactory(string[] namespaces, Assembly[] assemblies, bool strictMode, IDependencyFactory dependencyFactory, ISharedFactory sharedFactory)
         {
             ServicesMapTable = new ContractServiceAutoMapper(namespaces, assemblies, strictMode);
@@ -152,11 +151,22 @@ namespace IocServiceStack
             AddServiceInternal<T>(service, serviceName);
         }
 
+        /// <summary>
+        /// Adds specified <see cref="Expression"/> for the specified contract <typeparamref name="TC"/>
+        /// </summary>
+        /// <typeparam name="TC">Type of the contract.</typeparam>
+        /// <param name="expression"><see cref="Func{TC}"/>, in which it must pass the instance of service.</param>
         protected void AddService<TC>(Expression<Func<TC>> expression) where TC : class
         {
             AddServiceInternal<TC>(expression, null);
         }
 
+        /// <summary>
+        /// Adds specified <see cref="Expression"/> for the specified contract <typeparamref name="TC"/>
+        /// </summary>
+        /// <typeparam name="TC">Type of the contract.</typeparam>
+        /// <param name="expression"><see cref="Func{TC}"/>, in which it must pass the instance of service.</param>
+        /// <param name="serviceName">Specifies name of the service</param>
         protected void AddService<TC>(Expression<Func<TC>> expression, string serviceName) where TC : class
         {
             if (serviceName == null)
@@ -168,7 +178,7 @@ namespace IocServiceStack
         }
 
         /// <summary>
-        /// Adds service as singleton in a factory.
+        /// Adds service as singleton in the factory.
         /// </summary>
         /// <typeparam name="TC">The contract type</typeparam>
         /// <typeparam name="TS">The service type</typeparam>
@@ -177,6 +187,12 @@ namespace IocServiceStack
             AddSingletonServiceInternal<TC, TS>(null);
         }
 
+        /// <summary>
+        /// Adds service as singleton in the factory. 
+        /// </summary>
+        /// <typeparam name="TC">The contract type.</typeparam>
+        /// <typeparam name="TS">The service type.</typeparam>
+        /// <param name="serviceName">The name of the service.</param>
         protected void AddSingletonService<TC, TS>(string serviceName) where TC : class where TS : TC
         {
             if (string.IsNullOrEmpty(serviceName))
@@ -186,6 +202,11 @@ namespace IocServiceStack
             AddSingletonServiceInternal<TC, TS>(serviceName);
         }
 
+        /// <summary>
+        /// Replaces specified service (TS) for the specified contract (TC).
+        /// </summary>
+        /// <typeparam name="TC">Type of the contract</typeparam>
+        /// <typeparam name="TS">Type of the service</typeparam>
         protected void ReplaceService<TC, TS>() where TC : class where TS : TC
         {
             ReplaceServiceInternal<TC>(typeof(TS), null);
@@ -202,16 +223,34 @@ namespace IocServiceStack
             ReplaceServiceInternal<T>(service, null);
         }
 
+        /// <summary>
+        /// Replaces specified service (<typeparamref name="TS"/>) with service name for the specified contract (<typeparamref name="TC"/>).
+        /// </summary>
+        /// <typeparam name="TC">Type of the contract</typeparam>
+        /// <typeparam name="TS">Type of the service</typeparam>
+        /// <param name="serviceName">Type of service that's a implementation of specified contract.</param>
         protected void ReplaceService<TC, TS>(string serviceName) where TC : class where TS : TC
         {
             ReplaceServiceInternal<TC>(typeof(TS), serviceName);
         }
 
+        /// <summary>
+        /// Replaces specified service for the specified contract T.
+        /// </summary>
+        /// <typeparam name="T">Contract type(interface or class)</typeparam>
+        /// <param name="service">Type of service that's a implementation of specified contract.</param>
+        /// <param name="serviceName">The name of the service.</param>
         protected void ReplaceService<T>(Type service, string serviceName) where T : class
         {
             ReplaceServiceInternal<T>(service, serviceName);
         }
 
+        /// <summary>
+        /// Replaces specified singleton service for the specified contract T.
+        /// </summary>
+        /// <typeparam name="TC">The type of contract.</typeparam>
+        /// <typeparam name="TS">The type of service.</typeparam>
+        /// <param name="serviceName">The name of the service</param>
         protected void ReplaceSingletonService<TC, TS>(string serviceName) where TC : class where TS : TC
         {
             if (string.IsNullOrEmpty(serviceName))
@@ -221,16 +260,34 @@ namespace IocServiceStack
             ReplaceSingletonServiceInternal<TC, TS>(serviceName);
         }
 
+        /// <summary>
+        /// Replaces specified singleton service for the specified contract T.
+        /// </summary>
+        /// <typeparam name="TC">The type of contract.</typeparam>
+        /// <typeparam name="TS">The type of service.</typeparam>
         protected void ReplaceSingletonService<TC, TS>() where TC : class where TS : TC
         {
             ReplaceSingletonServiceInternal<TC, TS>(null);
         }
 
+        /// <summary>
+        /// Replaces specified <see cref="Expression"/> for the specified contract <typeparamref name="TC"/>
+        /// </summary>
+        /// <typeparam name="TC">Type of the contract.</typeparam>
+        /// <param name="expression"><see cref="Func{TC}"/>, in which it must pass the instance of service.</param>
+        /// <returns>Returns <see cref="IDependencyFactory"/> </returns>
         protected void ReplaceService<TC>(Expression<Func<TC>> expression) where TC : class
         {
             ReplaceServiceInternal<TC>(expression, null);
         }
 
+        /// <summary>
+        /// Replaces specified <see cref="Expression"/> for the specified contract <typeparamref name="TC"/>
+        /// </summary>
+        /// <typeparam name="TC">The type of the contract.</typeparam>
+        /// <param name="expression"><see cref="Func{TC}"/>, in which it must pass the instance of service.</param>
+        /// <param name="serviceName">Specifies name of the service</param>
+        /// <returns>Returns <see cref="IDependencyFactory"/> </returns>
         protected void ReplaceService<TC>(Expression<Func<TC>> expression, string serviceName) where TC : class
         {
             if (serviceName == null)
@@ -297,6 +354,14 @@ namespace IocServiceStack
             return Expression.New(serviceType);
         }
 
+        /// <summary>
+        /// Creates dependency <see cref="Expression"/> object. if no dependency factory is set and shared factory exists then
+        /// creates dependency from the shared factory; otherwise creates from the dependency factory.
+        /// </summary>
+        /// <param name="interfaceType">The type of the contract.</param>
+        /// <param name="register">The service register object.</param>
+        /// <param name="state">The service state.</param>
+        /// <returns>Dependency expression</returns>
         protected virtual Expression CreateDependency(Type interfaceType, ServiceRegister register, ServiceState state)
         {
             //let's subcontract take responsibility to create dependency objects 

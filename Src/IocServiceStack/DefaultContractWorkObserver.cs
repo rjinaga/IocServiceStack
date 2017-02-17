@@ -28,15 +28,26 @@ namespace IocServiceStack
 {
     using System;
 
+    /// <summary>
+    /// Represents contract work observer.
+    /// </summary>
     public class DefaultContractWorkObserver : IContractObserver
     {
         private Action<Type> _updateAction;
 
+        /// <summary>
+        /// Executes when contract type is replaced.
+        /// </summary>
+        /// <param name="updateAction"></param>
         public void OnUpdate(Action<Type> updateAction)
         {
             _updateAction = updateAction;
         }
 
+        /// <summary>
+        /// Sends update notification
+        /// </summary>
+        /// <param name="serviceContractType"></param>
         public void Update(Type serviceContractType)
         {
             _updateAction(serviceContractType);

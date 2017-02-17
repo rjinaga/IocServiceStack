@@ -17,7 +17,7 @@
   },
 
   "buildOptions": {
-    //"warningsAsErrors": true,
+    "warningsAsErrors": true,
     "keyFile": "../../tools/servicerouter.snk",
     "xmlDoc": true
   },

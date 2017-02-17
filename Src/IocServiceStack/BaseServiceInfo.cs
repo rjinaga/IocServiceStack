@@ -30,13 +30,27 @@ namespace IocServiceStack
     using System.Linq.Expressions;
     using System.Reflection;
 
+    /// <summary>
+    /// Contains service type, decorators and name of the service.
+    /// </summary>
     public abstract class BaseServiceInfo
     {
         private bool? _isReusable;
         private ServiceRegister _register;
 
+        /// <summary>
+        /// Synchronization object for <see cref="BaseServiceInfo"/> instance.
+        /// </summary>
         public readonly object SyncObject = new object();
+
+        /// <summary>
+        /// Gets read-only service type.
+        /// </summary>
         public readonly Type ServiceType;
+
+        /// <summary>
+        /// Gets read-only array of decorators.
+        /// </summary>
         public readonly DecoratorAttribute[] Decorators;
 
         /// <summary>
@@ -44,12 +58,23 @@ namespace IocServiceStack
         /// </summary>
         public readonly string ServiceName;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="BaseServiceInfo"/> class with specified parameters.
+        /// </summary>
+        /// <param name="serviceType">The service type.</param>
+        /// <param name="decorators">Specify array of decorators to be executed.</param>
         public BaseServiceInfo(Type serviceType, DecoratorAttribute[] decorators) : this(serviceType, decorators, null)
         {
             ServiceType = serviceType;
             Decorators = decorators;
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="BaseServiceInfo"/> class with specified parameters.
+        /// </summary>
+        /// <param name="serviceType">The service type.</param>
+        /// <param name="decorators">Specify array of decorators to be executed.</param>
+        /// <param name="serviceName">Specify name of the service.</param>
         public BaseServiceInfo(Type serviceType, DecoratorAttribute[] decorators, string serviceName)
         {
             ServiceType = serviceType;
@@ -57,11 +82,24 @@ namespace IocServiceStack
             ServiceName = serviceName;
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="BaseServiceInfo"/> class with specified parameters.
+        /// </summary>
+        /// <param name="serviceType">The service type.</param>
+        /// <param name="decorators">Specify array of decorators to be executed.</param>
+        /// <param name="serviceName">Specify name of the service.</param>
+        /// <param name="isReusable">Indicates, whether <paramref name="serviceType"/> is reusable.</param>
         public BaseServiceInfo(Type serviceType, DecoratorAttribute[] decorators, bool isReusable, string serviceName) : this(serviceType, decorators, serviceName)
         {
             _isReusable = isReusable;
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="BaseServiceInfo"/> class with specified parameters.
+        /// </summary>
+        /// <param name="serviceType">The service type.</param>
+        /// <param name="decorators">Specify array of decorators to be executed.</param>
+        /// <param name="isReusable">Indicates, whether <paramref name="serviceType"/> is reusable.</param>
         public BaseServiceInfo(Type serviceType, DecoratorAttribute[] decorators, bool isReusable) : this(serviceType, decorators, null)
         {
             _isReusable = isReusable;
@@ -89,10 +127,25 @@ namespace IocServiceStack
         /// </summary>
         public IServiceActivator Activator { get; set; }
 
+        /// <summary>
+        /// This method to gets service instance callback function.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public abstract Func<T> GetServiceInstanceCallback<T>() where T : class;
 
+        /// <summary>
+        /// This method to get service instance expression
+        /// </summary>
+        /// <returns></returns>
         public abstract Expression GetServiceInstanceExpression();
 
+        /// <summary>
+        /// Initializes new register for the specified interface type.
+        /// </summary>
+        /// <param name="interfaceType"></param>
+        /// <param name="notifier"></param>
+        /// <returns></returns>
         public ServiceRegister InitNewRegister(Type interfaceType, IServiceNotifier notifier)
         {
             _register = new ServiceRegister();
@@ -113,6 +166,11 @@ namespace IocServiceStack
         }
 
         #region Static Members
+        /// <summary>
+        /// Returns array of decorators.
+        /// </summary>
+        /// <param name="contractType"></param>
+        /// <returns></returns>
         public static DecoratorAttribute[] GetDecorators(Type contractType)
         {
             IEnumerable<Attribute> attributes;

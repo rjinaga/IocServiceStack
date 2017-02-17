@@ -27,6 +27,9 @@ namespace IocServiceStack
 {
     using System;
 
+    /// <summary>
+    /// Contains options for container dependencies.
+    /// </summary>
     public class ContainerDependencyOptions
     {
         private bool _readOnly;
@@ -34,6 +37,9 @@ namespace IocServiceStack
         private ContainerDependencyOptions _dependencies;
         private string _name;
 
+        /// <summary>
+        /// Gets or sets name of the dependency container.
+        /// </summary>
         public string Name
         {
             get
@@ -49,6 +55,9 @@ namespace IocServiceStack
             }
         }
 
+        /// <summary>
+        /// Gets or sets array of namespaces.
+        /// </summary>
         public string[] Namespaces
         {
             get
@@ -64,6 +73,9 @@ namespace IocServiceStack
             }
         }
 
+        /// <summary>
+        /// Gets or sets array of assemblies.
+        /// </summary>
         public string[] Assemblies
         {
             get
@@ -79,8 +91,10 @@ namespace IocServiceStack
             }
         }
 
-       
-        public ContainerDependencyOptions Dependencies
+       /// <summary>
+       /// Gets dependency options 
+       /// </summary>
+        public ContainerDependencyOptions DependencyOptions
         {
             get
             {
@@ -88,6 +102,11 @@ namespace IocServiceStack
             }
         }
 
+        /// <summary>
+        /// Adds dependency assemblies. Specify the namespaces for dependencies to be searched,
+        /// if don't want to add all available services.
+        /// </summary>
+        /// <param name="options"></param>
         public void AddDependencies(Action<ContainerDependencyOptions> options)
         {
             _dependencies = new ContainerDependencyOptions();

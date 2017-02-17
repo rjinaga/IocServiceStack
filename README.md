@@ -14,8 +14,7 @@ PM> Install-Package IocServiceStack -Pre
 ```
 [![NuGet Release](https://img.shields.io/badge/nuget-v2.0.0--rc--1-yellow.svg)](https://www.nuget.org/packages/IocServiceStack/2.0.0-rc-1)
 
-## Documentation Url
-[http://www.iocservicestack.net](http://www.iocservicestack.net)
+## Documentation 
 
-### Wiki
-[https://github.com/rjinaga/IocServiceStack/wiki](https://github.com/rjinaga/IocServiceStack/wiki)
+-[http://www.iocservicestack.net](http://www.iocservicestack.net)
+-[https://github.com/rjinaga/IocServiceStack/wiki](https://github.com/rjinaga/IocServiceStack/wiki)
