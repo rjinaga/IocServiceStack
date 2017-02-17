@@ -338,7 +338,7 @@ namespace BusinessContractLibrary
 }
 
 ```
-#### Shared Dependencies
+### Shared Dependencies
 IocServiceStack finds the dependencies of root service from the immediate dependency sub container, if it could not be found then system searches in the shared sub container. Shared container provides flexibility to add common dependencies across the system.
 
 ```c#
