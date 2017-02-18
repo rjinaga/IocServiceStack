@@ -16,7 +16,7 @@
             int maxConnections = 1;
             //Arrange
             var container = IocServicelet.CreateContainer();
-            int employeeId = 5;
+            
 
             //Act
             //different ways of adding services
