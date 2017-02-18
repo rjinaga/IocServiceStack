@@ -25,11 +25,17 @@
 
 namespace IocServiceStack
 {
+    /// <summary>
+    /// Represents shared dependency options.
+    /// </summary>
     public class SharedDependencyOptions
     {
         private bool _readOnly;
         private string[] _namespaces, _assemblies;
 
+        /// <summary>
+        /// Gets or sets array of namespaces.
+        /// </summary>
         public string[] Namespaces
         {
             get
@@ -45,6 +51,9 @@ namespace IocServiceStack
             }
         }
 
+        /// <summary>
+        /// Gets or sets array of assemblies names.
+        /// </summary>
         public string[] Assemblies
         {
             get

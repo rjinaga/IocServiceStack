@@ -30,34 +30,70 @@ namespace IocServiceStack
     using System.Linq.Expressions;
     using System.Reflection;
     
+    /// <summary>
+    /// Represents service info .
+    /// </summary>
     public class ServiceInfo : BaseServiceInfo
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="BaseServiceInfo"/> class with specified parameters.
+        /// </summary>
+        /// <param name="serviceType">The service type.</param>
+        /// <param name="decorators">Specify array of decorators to be executed.</param>
         public ServiceInfo(Type serviceType, DecoratorAttribute[] decorators) : base(serviceType, decorators)
         {
 
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="BaseServiceInfo"/> class with specified parameters.
+        /// </summary>
+        /// <param name="serviceType">The service type.</param>
+        /// <param name="decorators">Specify array of decorators to be executed.</param>
+        /// <param name="serviceName">Specify name of the service.</param>
         public ServiceInfo(Type serviceType, DecoratorAttribute[] decorators, string serviceName)
             : base(serviceType, decorators, serviceName)
         {
             
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="BaseServiceInfo"/> class with specified parameters.
+        /// </summary>
+        /// <param name="serviceType">The service type.</param>
+        /// <param name="decorators">Specify array of decorators to be executed.</param>
+        /// <param name="serviceName">Specify name of the service.</param>
+        /// <param name="isReusable">Indicates, whether <paramref name="serviceType"/> is reusable.</param>
         public ServiceInfo(Type serviceType, DecoratorAttribute[] decorators, bool isReusable, string serviceName) : base(serviceType, decorators, serviceName)
         {
             
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="BaseServiceInfo"/> class with specified parameters.
+        /// </summary>
+        /// <param name="serviceType">The service type.</param>
+        /// <param name="decorators">Specify array of decorators to be executed.</param>
+        /// <param name="isReusable">Indicates, whether <paramref name="serviceType"/> is reusable.</param>
         public ServiceInfo(Type serviceType, DecoratorAttribute[] decorators, bool isReusable) : base(serviceType, decorators, isReusable)
         {
             
         }
 
+        /// <summary>
+        /// This method to get service instance callback function.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public override Func<T> GetServiceInstanceCallback<T>()
         {
             return null;
         }
 
+        /// <summary>
+        /// This method to get service instance expression
+        /// </summary>
+        /// <returns></returns>
         public override Expression GetServiceInstanceExpression()
         {
             return null;

@@ -122,7 +122,7 @@ namespace IocServiceStack
         /// <summary>
         /// Get service of the specified contract with service name.
         /// </summary>
-        /// <param name="T">The type of the contract.</param>
+        /// <param name="contractType"></param>
         /// <param name="serviceName">The name of the service in specified contract family.</param>
         /// <returns>Returns service that's associated with the contract.</returns>
         public static object GetService(Type contractType, string serviceName)

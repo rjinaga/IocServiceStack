@@ -28,12 +28,18 @@ namespace IocServiceStack
     using System;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// Represents configuration of the container.
+    /// </summary>
     public sealed class ContainerConfig : IContainerConfig
     {
         private ContainerOptions _containerOptions;
         private IServiceProvider _serviceProvider;
         private List<DecoratorAttribute> _decorators;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="ContainerConfig"/> class.
+        /// </summary>
         public ContainerConfig()
         {
             _containerOptions = new ContainerOptions();
@@ -55,13 +61,22 @@ namespace IocServiceStack
         /// </summary>
         internal IServiceProvider ServiceProvider => _serviceProvider;
 
-        
+        /// <summary>
+        /// Adds root services to the container.
+        /// </summary>
+        /// <param name="config"></param>
+        /// <returns></returns>
         public IContainerConfig AddServices(Action<ContainerOptions> config)
         {
             config(_containerOptions);
             return this;
         }
-       
+
+        /// <summary>
+        /// Registers service provider for the IoC container.
+        /// </summary>
+        /// <param name="serviceProvider"></param>
+        /// <returns></returns>
         public IContainerConfig RegisterServiceProvider(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;

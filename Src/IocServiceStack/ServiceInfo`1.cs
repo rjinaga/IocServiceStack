@@ -69,21 +69,46 @@ namespace IocServiceStack
             _actionInfo = serviceAction;
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="ServiceInfo"/> class.
+        /// </summary>
+        /// <param name="serviceAction"></param>
+        /// <param name="decorators"></param>
+        /// <param name="isReusable"></param>
+        /// <param name="serviceName"></param>
         public ServiceInfo(Func<TS> serviceAction, DecoratorAttribute[] decorators, bool isReusable, string serviceName) : base(null, decorators, isReusable, serviceName)
         {
             _actionInfo = serviceAction;
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="ServiceInfo"/> class.
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <param name="decorators"></param>
+        /// <param name="serviceName"></param>
         public ServiceInfo(Expression<Func<TS>> expression, DecoratorAttribute[] decorators, string serviceName) : base(null, decorators, serviceName)
         {
             _expressionCallback = expression;
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="ServiceInfo"/> class.
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <param name="decorators"></param>
+        /// <param name="isReusable"></param>
+        /// <param name="serviceName"></param>
         public ServiceInfo(Expression<Func<TS>> expression, DecoratorAttribute[] decorators, bool isReusable, string serviceName) : base(null, decorators, isReusable, serviceName)
         {
             _expressionCallback = expression;
         }
 
+        /// <summary>
+        /// This method to get service instance callback function.
+        /// </summary>
+        /// <typeparam name="T1"></typeparam>
+        /// <returns></returns>
         public override Func<T1> GetServiceInstanceCallback<T1>() 
         {
             if (_actionInfo == null)
@@ -100,6 +125,10 @@ namespace IocServiceStack
             return typeCastedAction;
         }
 
+        /// <summary>
+        /// This method to get service instance expression
+        /// </summary>
+        /// <returns></returns>
         public override Expression GetServiceInstanceExpression()
         {
             return _expressionCallback ;

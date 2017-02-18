@@ -31,7 +31,7 @@ namespace IocServiceStack
     using System.Reflection;
 
     /// <summary>
-    /// Contains service type, decorators and name of the service.
+    /// Represents bases class of the service data. it contains service type, decorators and name of the service.
     /// </summary>
     public abstract class BaseServiceInfo
     {
@@ -128,7 +128,7 @@ namespace IocServiceStack
         public IServiceActivator Activator { get; set; }
 
         /// <summary>
-        /// This method to gets service instance callback function.
+        /// This method to get service instance callback function.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>

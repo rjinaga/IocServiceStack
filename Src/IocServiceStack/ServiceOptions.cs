@@ -113,7 +113,7 @@ namespace IocServiceStack
         }
 
         /// <summary>
-        /// Gets or sets container dependency options.
+        /// Gets container dependency options.
         /// </summary>
         public ContainerDependencyOptions Dependencies
         {
@@ -123,6 +123,9 @@ namespace IocServiceStack
             }
         }
 
+        /// <summary>
+        /// Gets shared dependencies
+        /// </summary>
         public SharedDependencyOptions SharedDependencies
         {
             get
@@ -141,6 +144,10 @@ namespace IocServiceStack
             options(_dependencies);
         }
 
+        /// <summary>
+        /// Adds shared services
+        /// </summary>
+        /// <param name="options"></param>
         public void AddSharedServices(Action<SharedDependencyOptions> options)
         {
             _sharedDependencies = new SharedDependencyOptions();

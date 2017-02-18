@@ -26,10 +26,21 @@
 namespace IocServiceStack
 {
     using System;
+
+    /// <summary>
+    /// Represents the event arguments data. it contains the ServiceType.
+    /// </summary>
     public class ServiceEventArgs : EventArgs
     {
+        /// <summary>
+        /// Gets read-only service type.
+        /// </summary>
         public readonly Type ServiceType;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="ServiceEventArgs"/> class with specified <paramref name="serviceType"/> parameter.
+        /// </summary>
+        /// <param name="serviceType"></param>
         public ServiceEventArgs(Type serviceType)
         {
             ServiceType = serviceType;
