@@ -25,9 +25,19 @@
 
 namespace IocServiceStack
 {
+    /// <summary>
+    /// Indicates type of invocation, either before or after invocation.
+    /// </summary>
     public enum InvocationCase
     {
+        /// <summary>
+        /// For before invocation
+        /// </summary>
         Before,
+
+        /// <summary>
+        /// For after invocation
+        /// </summary>
         After
     }
 }

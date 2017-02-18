@@ -30,6 +30,9 @@ namespace IocServiceStack
     /// </summary>
     public interface IServiceNotifier
     {
+        /// <summary>
+        /// Raised when there is an update in the factory.
+        /// </summary>
         event ServiceUpdateHandler ServiceUpdateNofication;
     }
 }

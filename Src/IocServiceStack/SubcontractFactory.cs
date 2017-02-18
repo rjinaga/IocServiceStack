@@ -38,12 +38,14 @@ namespace IocServiceStack
         /// Initializes a new instance of <see cref="SubcontractFactory"/>  class with specified parameters
         /// <paramref name="namespaces"/>, <paramref name="assemblies"/> and <paramref name="strictMode"/>.
         /// </summary>
-        /// <param name="namespaces">The array of namespaces to be searched for services.</param>
-        /// <param name="assemblies">The array of assemblies to be searched for services.</param>
+        /// <param name="namespaces">The array of namespaces to be searched in for services.</param>
+        /// <param name="assemblies">The array of assemblies to be searched in for services.</param>
         /// <param name="strictMode">The value indicating whether strict mode is on or off, if strict mode is true then 
         /// system throws an exception if a contract is implemented by more than one service. this prevents the duplicate 
         /// implementation.
         /// </param>
+        /// <param name="dependencyFactory"></param>
+        /// <param name="sharedFactory"></param>
         public SubcontractFactory(string[] namespaces, Assembly[] assemblies, bool strictMode, IDependencyFactory dependencyFactory, ISharedFactory sharedFactory) : base(namespaces, assemblies, strictMode, dependencyFactory, sharedFactory)
         {
             

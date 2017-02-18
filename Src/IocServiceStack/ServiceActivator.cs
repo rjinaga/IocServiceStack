@@ -26,7 +26,11 @@
 namespace IocServiceStack
 {
     using System;
-   
+
+    /// <summary>
+    /// ServiceActivator class has functionality to activates the service for the specified contract.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class ServiceActivator<T> : IServiceActivator where T: class
     {
         private T _reusableInstance;
@@ -34,6 +38,11 @@ namespace IocServiceStack
         private readonly Func<T> _creator;
         private readonly bool _isReusable;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="ServiceActivator{T}"/> class with specified <paramref name="creator"/> and <paramref name="isReusable"/> parameters.
+        /// </summary>
+        /// <param name="creator"></param>
+        /// <param name="isReusable"></param>
         public ServiceActivator(Func<T> creator, bool isReusable)
         {
             _creator = creator;

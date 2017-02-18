@@ -28,9 +28,9 @@ namespace IocServiceStack
     using System;
     using System.Linq.Expressions;
    
-    ///// <summary>
-    ///// Represents shared factory
-    ///// </summary>
+    /// <summary>
+    /// Represents shared factory
+    /// </summary>
     public interface ISharedFactory : ISubContainer
     {
         /// <summary>
@@ -42,6 +42,9 @@ namespace IocServiceStack
         /// <returns>Returns <see cref="Expression"/> of service constructor.</returns>
         Expression Create(Type interfaceType, ServiceRegister register, ServiceState state);
 
+        /// <summary>
+        /// Gets or sets contract observer
+        /// </summary>
         IContractObserver ContractObserver { get; set; }
     }
 

@@ -29,9 +29,28 @@ namespace IocServiceStack
     using System.Linq.Expressions;
     using System.Reflection;
 
+    /// <summary>
+    /// Represents default sub contract factory, which holds the services of 
+    /// dependencies.
+    /// </summary>
     public class DefaultSubcontractFactory : SubcontractFactory, IDependencyFactory
     {
-        public DefaultSubcontractFactory(string name, string[] namespaces, Assembly[] aseemblies, bool strictMode, IDependencyFactory dependencyFactory, ISharedFactory sharedFactory) : base(namespaces,aseemblies, strictMode, dependencyFactory, sharedFactory)
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="DefaultSubcontractFactory"/>  class with specified parameters
+        /// <paramref name="namespaces"/>, <paramref name="assemblies"/> and <paramref name="strictMode"/>.
+        /// </summary>
+        /// <param name="name">Specify name of the factory.</param>
+        /// <param name="namespaces">The array of namespaces to be searched in for services.</param>
+        /// <param name="assemblies">The array of assemblies to be searched in for services.</param>
+        /// <param name="strictMode">The value indicating whether strict mode is on or off, if strict mode is true then 
+        /// system throws an exception if a contract is implemented by more than one service. this prevents the duplicate 
+        /// implementation.
+        /// </param>
+        /// <param name="dependencyFactory"></param>
+        /// <param name="sharedFactory"></param>
+        public DefaultSubcontractFactory(string name, string[] namespaces, Assembly[] assemblies, bool strictMode, IDependencyFactory dependencyFactory, ISharedFactory sharedFactory) 
+            : base(namespaces,assemblies, strictMode, dependencyFactory, sharedFactory)
         {
             Name = name;
         }
@@ -50,11 +69,21 @@ namespace IocServiceStack
 
         IDependencyFactory IDependencyFactory.DependencyFactory => base.DependencyFactory;
 
+        /// <summary>
+        /// Gets name of the current factory.
+        /// </summary>
         public string Name
         {
             get; private set;
         }
 
+        /// <summary>
+        /// Create <see cref="Expression"/> for service which is associated with contract.
+        /// </summary>
+        /// <param name="interfaceType">Type of contract</param>
+        /// <param name="register">The ServiceRegister</param>
+        /// <param name="state">The ServiceState</param>
+        /// <returns>Returns <see cref="Expression"/> of service constructor.</returns>
         public override Expression Create(Type interfaceType, ServiceRegister register, ServiceState state)
         {
             if (interfaceType == null)

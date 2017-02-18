@@ -26,6 +26,10 @@
 namespace IocServiceStack
 {
     using System;
+
+    /// <summary>
+    /// Provides service for requested contract. 
+    /// </summary>
     public interface IServiceProvider
     {
         /// <summary>
@@ -51,12 +55,42 @@ namespace IocServiceStack
         /// <returns></returns>
         IDependencyFactory GetDependencyFactory(string name);
 
+        /// <summary>
+        /// Returns shared factory of the container.
+        /// </summary>
+        /// <returns></returns>
+        ISharedFactory GetSharedFactory();
 
+        /// <summary>
+        /// Returns service instance of the specified contract.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         T GetService<T>() where T : class;
+
+        /// <summary>
+        /// Returns service instance of the specified contract.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="serviceName"></param>
+        /// <returns></returns>
         T GetService<T>(string serviceName) where T : class;
 
+        /// <summary>
+        /// Returns service instance of the specified contract.
+        /// </summary>
+        /// <param name="contractType"></param>
+        /// <returns></returns>
         object GetService(Type contractType);
+
+        /// <summary>
+        /// Returns service instance of the specified contract.
+        /// </summary>
+        /// <param name="contractType"></param>
+        /// <param name="serviceName"></param>
+        /// <returns></returns>
         object GetService(Type contractType, string serviceName);
-        ISubContainer GetSharedContainer();
+
+        
     }
 }

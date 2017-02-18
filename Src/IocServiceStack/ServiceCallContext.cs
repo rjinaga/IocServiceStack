@@ -27,10 +27,24 @@ namespace IocServiceStack
 {
     using System;
    
+    /// <summary>
+    /// Represents the context of the service call.
+    /// </summary>
     public sealed class ServiceCallContext
     {
+        /// <summary>
+        /// Gets read-only ContractType
+        /// </summary>
         public readonly Type ContractType;
+
+        /// <summary>
+        /// Gets read-only ServiceType
+        /// </summary>
         public readonly Type ServiceType;
+
+        /// <summary>
+        /// Gets read-only IocContainer
+        /// </summary>
         public readonly IocContainer IocContainer;
 
         private ServiceCallContext(Type contractType, Type serviceType, IocContainer container)
@@ -46,6 +60,14 @@ namespace IocServiceStack
         public object ServiceInstance { get; set; }
 
         #region Static Members  
+
+        /// <summary>
+        /// Creates a new instance of <see cref="ServiceCallContext"/>.
+        /// </summary>
+        /// <param name="contractType"></param>
+        /// <param name="serviceType"></param>
+        /// <param name="container"></param>
+        /// <returns></returns>
         public static ServiceCallContext Create(Type contractType, Type serviceType, IocContainer container)
         {
             return new ServiceCallContext(contractType, serviceType, container);

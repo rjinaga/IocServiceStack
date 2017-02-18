@@ -28,9 +28,22 @@ namespace IocServiceStack
 {
     using System;
 
+    /// <summary>
+    /// This interface is used, in order to notify to root factory
+    /// for recompilation of the instance.
+    /// </summary>
     public interface IContractObserver
     {
+        /// <summary>
+        /// Executes when contract type is replaced.
+        /// </summary>
+        /// <param name="updateAction"></param>
         void OnUpdate(Action<Type> updateAction);
+
+        /// <summary>
+        /// Sends update notification
+        /// </summary>
+        /// <param name="serviceContractType"></param>
         void Update(Type serviceContractType);
     }
 }

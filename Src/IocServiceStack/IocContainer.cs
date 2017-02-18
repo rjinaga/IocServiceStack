@@ -25,6 +25,9 @@
 
 namespace IocServiceStack
 {
+    /// <summary>
+    /// Main container of the inversion of control framework.
+    /// </summary>
     public class IocContainer
     {
         private IServiceProvider _serviceProvider;
@@ -53,16 +56,29 @@ namespace IocServiceStack
             _serviceProvider.DecoratorManager = new DecoratorManager() { GlobalDecorators = _config.Decorators };
         }
 
+        /// <summary>
+        /// Returns root or front container within the main container.
+        /// </summary>
+        /// <returns></returns>
         public IRootContainer GetRootContainer()
         {
             return ServiceProvider.GetServiceFactory();
         }
 
+        /// <summary>
+        /// Returns shared container of the root container and its dependencies.
+        /// </summary>
+        /// <returns></returns>
         public ISubContainer GetSharedContainer()
         {
-            return ServiceProvider.GetSharedContainer();
+            return ServiceProvider.GetSharedFactory();
         }
 
+        /// <summary>
+        /// Returns dependency container  by specified name.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public ISubContainer GetDependencyContainer(string name)
         {
             var container = ServiceProvider.GetDependencyFactory(name);
@@ -74,6 +90,11 @@ namespace IocServiceStack
         }
 
         #region Static Members
+        /// <summary>
+        /// Gets global IoC container. There's no special behavior in global
+        /// container but only thing framework offers built-in access point for the global 
+        /// IoC container.
+        /// </summary>
         public static IocContainer GlobalIocContainer { get; internal set; }
         #endregion
     }

@@ -47,6 +47,11 @@ namespace IocServiceStack
         }
 
         
+        /// <summary>
+        /// Creates IoC container.
+        /// </summary>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
         public static IocContainer CreateContainer(Action<ContainerConfig> configuration)
         {
             ContainerConfig config = new ContainerConfig();
@@ -58,6 +63,10 @@ namespace IocServiceStack
             return new IocContainer(config);
         }
 
+        /// <summary>
+        /// Creates container with empty configuration.
+        /// </summary>
+        /// <returns></returns>
         public static IocContainer CreateContainer()
         {
             return CreateContainer(config => { /*no default setup*/ });

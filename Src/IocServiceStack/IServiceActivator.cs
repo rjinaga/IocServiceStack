@@ -25,8 +25,16 @@
 
 namespace IocServiceStack
 {
+    /// <summary>
+    /// This class activates the service instance
+    /// </summary>
     public interface IServiceActivator
     {
+        /// <summary>
+        /// Creates service instance that's associated with the contract.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         T CreateInstance<T>() where T : class;
     }
 }

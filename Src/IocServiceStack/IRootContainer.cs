@@ -33,7 +33,7 @@ namespace IocServiceStack
     public interface IRootContainer 
     {
         /// <summary>
-        /// Adds specified <see cref="Expression"/> for the specified contract <typeparamref name="TC"/>
+        /// Adds specified expression for the specified contract <typeparamref name="TC"/>
         /// </summary>
         /// <typeparam name="TC">Type of the contract.</typeparam>
         /// <param name="expression"><see cref="Func{TC}"/>, in which it must pass the instance of service.</param>
@@ -41,7 +41,7 @@ namespace IocServiceStack
         IRootContainer Add<TC>(Func<TC> expression) where TC : class;
 
         /// <summary>
-        /// Adds specified <see cref="Expression"/> for the specified contract <typeparamref name="TC"/>
+        /// Adds specified expression for the specified contract <typeparamref name="TC"/>
         /// </summary>
         /// <typeparam name="TC">Type of the contract.</typeparam>
         /// <param name="expression"><see cref="Func{TC}"/>, in which it must pass the instance of service.</param>
@@ -50,7 +50,7 @@ namespace IocServiceStack
         IRootContainer Add<TC>(Func<TC> expression, string serviceName) where TC : class;
 
         /// <summary>
-        /// Replaces specified <see cref="Expression"/> for the specified contract <typeparamref name="TC"/>
+        /// Replaces specified expression for the specified contract <typeparamref name="TC"/>
         /// </summary>
         /// <typeparam name="TC">Type of the contract.</typeparam>
         /// <param name="expression"><see cref="Func{TC}"/>, in which it must pass the instance of service.</param>
@@ -58,7 +58,7 @@ namespace IocServiceStack
         IRootContainer Replace<TC>(Func<TC> expression) where TC : class;
 
         /// <summary>
-        /// Replaces specified <see cref="Expression"/> for the specified contract <typeparamref name="TC"/>
+        /// Replaces specified expression for the specified contract <typeparamref name="TC"/>
         /// </summary>
         /// <typeparam name="TC">Type of the contract.</typeparam>
         /// <param name="expression"><see cref="Func{TC}"/>, in which it must pass the instance of service.</param>
@@ -101,7 +101,23 @@ namespace IocServiceStack
         /// <returns>Returns <see cref="IRootContainer"/> </returns>
         IRootContainer Add<T>(Type service, string serviceName) where T : class;
 
+        /// <summary>
+        /// Adds specified service (TS) as singleton object for the specified contract (TC) to the collection.
+        /// </summary>
+        /// <typeparam name="TC">Type of the contract</typeparam>
+        /// <typeparam name="TS">Type of the service</typeparam>
+        /// <returns>Returns <see cref="IRootContainer"/> </returns>
         IRootContainer AddSingleton<TC, TS>() where TC : class where TS : TC;
+
+
+        /// <summary>
+        /// Adds specified service as singleton object with a name for the specified contract T to the collection.
+        /// This allows to register multiple implementations of same contract those are accessed by a name.
+        /// </summary>
+        /// <typeparam name="TC">Type of the contract</typeparam>
+        /// <typeparam name="TS">Type of the service</typeparam>
+        /// <param name="serviceName">Specify name of the service.</param>
+        /// <returns>Returns <see cref="IRootContainer"/> </returns>
         IRootContainer AddSingleton<TC, TS>(string serviceName) where TC : class where TS : TC;
 
         /// <summary>
@@ -138,7 +154,22 @@ namespace IocServiceStack
         /// <returns>Returns <see cref="IRootContainer"/> </returns>
         IRootContainer Replace<T>(Type service, string serviceName) where T : class;
 
+        /// <summary>
+        /// Replaces specified service (TS) as singleton object for the specified contract (TC).
+        /// </summary>
+        /// <typeparam name="TC">Type of the contract</typeparam>
+        /// <typeparam name="TS">Type of the service</typeparam>
+        /// <returns>Returns <see cref="IRootContainer"/> </returns>
         IRootContainer ReplaceSingleton<TC, TS>() where TC : class where TS : TC;
+
+
+        /// <summary>
+        /// Replaces specified service (<typeparamref name="TS"/>) with service name as singleton object for the specified contract (<typeparamref name="TC"/>).
+        /// </summary>
+        /// <typeparam name="TC">Type of the contract</typeparam>
+        /// <typeparam name="TS">Type of the service</typeparam>
+        /// <param name="serviceName">Type of service that's a implementation of specified contract.</param>
+        /// <returns>Returns <see cref="IRootContainer"/> </returns>
         IRootContainer ReplaceSingleton<TC, TS>(string serviceName) where TC : class where TS : TC;
     }
 }

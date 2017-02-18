@@ -28,25 +28,45 @@ namespace IocServiceStack
     using System;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// Represents default service provider, which gets the service from the internal 
+    /// service factory of container.
+    /// </summary>
     public class DefaultServiceProvider : IServiceProvider
     {
         private InternalServiceManager _internalsm;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="DefaultServiceProvider"/> class with specified 
+        /// configuration.
+        /// </summary>
+        /// <param name="config"></param>
         public DefaultServiceProvider(ContainerConfig config)
         {
             _internalsm = new InternalServiceManager(config);
         }
 
+        /// <summary>
+        /// Gets or set <see cref="IDecoratorManager"/>
+        /// </summary>
         public IDecoratorManager DecoratorManager
         {
             get; set;
         }
 
+        /// <summary>
+        /// Gets or sets main <see cref="IocContainer"/>.
+        /// </summary>
         public IocContainer IocContainer
         {
             get; set;
         }
 
+        /// <summary>
+        /// Returns service for the requested contract.
+        /// </summary>
+        /// <typeparam name="T">The type of the contract.</typeparam>
+        /// <returns>Returns instance of service that is associated with the specified contract.</returns>
         public virtual T GetService<T>() where T : class
         {
             InvocationInfo info = BeforeInvoke(typeof(T), null);
@@ -65,6 +85,13 @@ namespace IocServiceStack
 
         }
 
+        /// <summary>
+        /// Returns service for the specified contract with name. When there are more implementations for a single contract
+        /// then services need to be registered and separated by name.
+        /// </summary>
+        /// <typeparam name="T">The type of the contract.</typeparam>
+        /// <param name="serviceName">Specify name of the service.</param>
+        /// <returns>Returns instance of service that is associated with the specified contract.</returns>
         public virtual T GetService<T>(string serviceName) where T : class
         {
             if (string.IsNullOrWhiteSpace(serviceName))
@@ -88,6 +115,11 @@ namespace IocServiceStack
 
         }
 
+        /// <summary>
+        /// Returns service for the requested contract.
+        /// </summary>
+        /// <param name="contractType">The type of the contract.</param>
+        /// <returns>Returns instance of service that is associated with the specified contract.</returns>
         public virtual object GetService(Type contractType)
         {
             if (contractType == null)
@@ -110,6 +142,13 @@ namespace IocServiceStack
             return objectInstance;
         }
 
+        /// <summary>
+        /// Returns service for the specified contract with name. When there are more implementations for a single contract
+        /// then services need to be registered and separated by name.
+        /// </summary>
+        /// <param name="contractType">The type of the contract.</param>
+        /// <param name="serviceName">Specify name of the service.</param>
+        /// <returns>Returns instance of service that is associated with the specified contract.</returns>
         public virtual object GetService(Type contractType, string serviceName)
         {
             if (string.IsNullOrWhiteSpace(serviceName))
@@ -132,26 +171,41 @@ namespace IocServiceStack
             return objectInstance;
         }
 
+        /// <summary>
+        /// Returns root service factory of the container.
+        /// </summary>
+        /// <returns></returns>
         public virtual IRootServiceFactory GetServiceFactory()
         {
             return _internalsm.GetServiceFactory();
         }
 
+        
         /// <summary>
-        /// Gets dependency factory by specified name
+        /// Returns dependency factory of the root factory by specified name.
         /// </summary>
-        /// <param name="name">The name of the dependency factory. Value of name is not case sensitive</param>
-        /// <returns>Returns <see cref="IContainerService"/> if found, otherwise returns null</returns>
+        /// <param name="name">Specify name of the dependency service.</param>
+        /// <returns></returns>
         public IDependencyFactory GetDependencyFactory(string name)
         {
             return GetServiceFactory()?.GetDependencyFactory(name);
         }
 
-        public ISubContainer GetSharedContainer()
+        /// <summary>
+        /// Returns shared factory.
+        /// </summary>
+        /// <returns></returns>
+        public ISharedFactory GetSharedFactory()
         {
             return GetServiceFactory().GetSharedFactory();
         }
 
+        /// <summary>
+        /// Executes before initiating the service instance.
+        /// </summary>
+        /// <param name="contractType"></param>
+        /// <param name="serviceName"></param>
+        /// <returns></returns>
         protected InvocationInfo BeforeInvoke(Type contractType, string serviceName)
         {
             var factory = _internalsm.GetServiceFactory();
@@ -168,6 +222,12 @@ namespace IocServiceStack
             return new InvocationInfo() { ServiceInfo = serviceInfo, ServiceCallContext = callContext };
         }
 
+        /// <summary>
+        /// Executes after initiating the service instance.
+        /// </summary>
+        /// <param name="objectInstance"></param>
+        /// <param name="context"></param>
+        /// <param name="localDecorators"></param>
         protected void AfterInvoke(object objectInstance, ServiceCallContext context, IEnumerable<DecoratorAttribute> localDecorators)
         {
             context.ServiceInstance = objectInstance;
@@ -179,9 +239,19 @@ namespace IocServiceStack
             DecoratorManager.Execute(context, @case, localDecorators);
         }
 
+        /// <summary>
+        /// This class contains invocation information related objects.
+        /// </summary>
         protected struct InvocationInfo
         {
+            /// <summary>
+            /// Gets or sets service info
+            /// </summary>
             public BaseServiceInfo ServiceInfo;
+
+            /// <summary>
+            /// Gets or sets service call context.
+            /// </summary>
             public ServiceCallContext ServiceCallContext;
         }
     }

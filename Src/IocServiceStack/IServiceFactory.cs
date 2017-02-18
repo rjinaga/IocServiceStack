@@ -26,13 +26,52 @@
 namespace IocServiceStack
 {
     using System;
+
+    /// <summary>
+    /// Represents root service factory of main container.
+    /// </summary>
     public interface IRootServiceFactory : IRootContainer
     {
+        /// <summary>
+        /// Initializes the service factory and its dependencies.
+        /// </summary>
         void Initialize();
+
+        /// <summary>
+        /// Returns <see cref="BaseServiceInfo"/> of specified <paramref name="contractType"/> and <paramref name="serviceName"/>.
+        /// </summary>
+        /// <param name="contractType"></param>
+        /// <param name="serviceName"></param>
+        /// <returns></returns>
         BaseServiceInfo GetServiceInfo(Type contractType, string serviceName);
+
+        /// <summary>
+        /// Creates associated service instance of specified contract <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">Specify contact type.</typeparam>
+        /// <param name="serviceMeta"></param>
+        /// <returns></returns>
         T Create<T>(BaseServiceInfo serviceMeta) where T : class;
+
+        /// <summary>
+        /// Creates associated service instance of specified contract.
+        /// </summary>
+        /// <param name="contractType"></param>
+        /// <param name="serviceMeta"></param>
+        /// <returns></returns>
         object Create(Type contractType, BaseServiceInfo serviceMeta);
+
+        /// <summary>
+        /// Returns dependency factory of specified <paramref name="name"/>.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         IDependencyFactory GetDependencyFactory(string name);
+
+        /// <summary>
+        /// Returns shared factory.
+        /// </summary>
+        /// <returns></returns>
         ISharedFactory GetSharedFactory();
 
     }

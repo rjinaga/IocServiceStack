@@ -26,12 +26,40 @@
 namespace IocServiceStack
 {
     using System;
+
+    /// <summary>
+    /// Represents service access point for the IoC container.
+    /// </summary>
     public interface IServiceManager
     {
+        /// <summary>
+        /// Returns service instance of the specified contract.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         T GetService<T>() where T : class;
+
+        /// <summary>
+        /// Returns service instance of the specified contract.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="serviceName"></param>
+        /// <returns></returns>
         T GetService<T>(string serviceName) where T : class;
 
+        /// <summary>
+        /// Returns service instance of the specified contract.
+        /// </summary>
+        /// <param name="contractType"></param>
+        /// <returns></returns>
         object GetService(Type contractType);
+
+        /// <summary>
+        /// Returns service instance of the specified contract.
+        /// </summary>
+        /// <param name="contractType"></param>
+        /// <param name="serviceName"></param>
+        /// <returns></returns>
         object GetService(Type contractType, string serviceName);
     }
 }

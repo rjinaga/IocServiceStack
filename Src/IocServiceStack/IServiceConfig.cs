@@ -28,10 +28,23 @@ namespace IocServiceStack
 {
     using System;
 
+    /// <summary>
+    /// Represents configuration of the container.
+    /// </summary>
     public interface IContainerConfig
     {
+        /// <summary>
+        /// Adds root services to the container.
+        /// </summary>
+        /// <param name="config"></param>
+        /// <returns></returns>
         IContainerConfig AddServices(Action<ContainerOptions> config);
 
+        /// <summary>
+        /// Registers service provider for the IoC container.
+        /// </summary>
+        /// <param name="serviceProvider"></param>
+        /// <returns></returns>
         IContainerConfig RegisterServiceProvider(IServiceProvider serviceProvider);
     }
 }
