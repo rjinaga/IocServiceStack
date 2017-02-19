@@ -2,7 +2,10 @@
 
 [![Gitter](https://badges.gitter.im/IocServiceStack/Lobby.svg)](https://gitter.im/IocServiceStack/IocServiceStack)   [![Build status](https://ci.appveyor.com/api/projects/status/bylhcbchnjas953q?svg=true)](https://ci.appveyor.com/project/rjinaga/iocservicestack)
 
-IocServiceStack is a open source .NET dependency injection framework. It supports multi-service communication through multi-level dependency injection. This clearly separates the concerns of application layers, and makes the layers configurable and it offers several ways to inject dependencies.
+IocServiceStack is a open source .NET dependency injection framework. IoC container allows to add multiple services for the same contract by name and dependecies can be added at different levels. This makes the concerns of application layers  separated, and configurable. so that client-specific logic can be plugged easily or inject the sepcific dependecies for specific client implementions. And also it offers several ways to inject dependencies. This framework contains the main container in which there are three types of internal containers such as root container, shared and dependec(ies)y container.
+
+
+cies.
 
 ### Supports
 - .NET Core 1.0 (.NET Standard 1.6)
