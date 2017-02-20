@@ -26,28 +26,25 @@
 namespace IocServiceStack
 {
     using System;
-    using System.Linq.Expressions;
-   
     /// <summary>
-    /// Represents shared factory
+    /// Maps name of the service that's related to the contract. if system has more than one service implementations
+    /// then you need specify name of the service. Map service to the contact in order to inject in class constructor. 
     /// </summary>
-    public interface ISharedFactory : ISubContainer
+    [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
+    public sealed class MapServiceAttribute : Attribute
     {
         /// <summary>
-        /// Create <see cref="Expression"/> for service which is associated with contract.
+        /// Gets name of the service.
         /// </summary>
-        /// <param name="interfaceType">Type of contract</param>
-        /// <param name="register">The ServiceRegister</param>
-        /// <param name="state">The ServiceState</param>
-        /// <param name="serviceName">(Optional)</param>
-        /// <returns>Returns <see cref="Expression"/> of service constructor.</returns>
-        Expression Create(Type interfaceType, ServiceRegister register, ServiceState state, string serviceName);
+        public readonly string Name;
 
         /// <summary>
-        /// Gets or sets contract observer
+        /// Initializes a new instance of <see cref="MapServiceAttribute"/> class with specified name.
         /// </summary>
-        IContractObserver ContractObserver { get; set; }
+        /// <param name="name"></param>
+        public MapServiceAttribute(string name)
+        {
+            Name = name;
+        }
     }
-
-
 }

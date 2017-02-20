@@ -49,8 +49,9 @@ namespace IocServiceStack
         /// <param name="interfaceType">Type of contract</param>
         /// <param name="register">The ServiceRegister</param>
         /// <param name="state">The ServiceState</param>
+        /// <param name="serviceName">(Optional)</param>
         /// <returns>Returns <see cref="Expression"/> of service constructor.</returns>
-        Expression Create(Type interfaceType, ServiceRegister register, ServiceState state);
+        Expression Create(Type interfaceType, ServiceRegister register, ServiceState state, string serviceName);
 
         /// <summary>
         /// Gets or sets contract observer.

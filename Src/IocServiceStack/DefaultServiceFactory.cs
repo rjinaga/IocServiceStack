@@ -59,7 +59,7 @@ namespace IocServiceStack
         /// <param name="contractType"></param>
         /// <param name="serviceName"></param>
         /// <returns></returns>
-        public virtual BaseServiceInfo GetServiceInfo(Type contractType, string serviceName)
+        public new BaseServiceInfo GetServiceInfo(Type contractType, string serviceName)
         {
             if (!ServicesMapTable.Contains(contractType))
                 throw ExceptionHelper.ThrowServiceNotRegisteredException(contractType.Name);

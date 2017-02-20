@@ -83,8 +83,9 @@ namespace IocServiceStack
         /// <param name="interfaceType">Type of contract</param>
         /// <param name="register">The ServiceRegister</param>
         /// <param name="state">The ServiceState</param>
+        /// <param name="serviceName"></param>
         /// <returns>Returns <see cref="Expression"/> of service constructor.</returns>
-        public override Expression Create(Type interfaceType, ServiceRegister register, ServiceState state)
+        public override Expression Create(Type interfaceType, ServiceRegister register, ServiceState state, string serviceName)
         {
             if (interfaceType == null)
                 throw new ArgumentNullException(nameof(interfaceType));
@@ -93,11 +94,11 @@ namespace IocServiceStack
             //Root service will refresh with the updated service when there's replacement with new service
             register.Register(interfaceType);
 
-            BaseServiceInfo serviceMeta = ServicesMapTable?[interfaceType];
+            BaseServiceInfo serviceMeta = GetServiceInfo(interfaceType,serviceName);
 
             if (serviceMeta == null)
             {
-                return SharedFactory.Create(interfaceType, register, state);
+                return SharedFactory.Create(interfaceType, register, state, serviceName);
             }
 
             var userdefinedExpression = serviceMeta.GetServiceInstanceExpression();

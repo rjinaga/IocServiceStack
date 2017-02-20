@@ -361,15 +361,37 @@ namespace IocServiceStack
         /// <param name="interfaceType">The type of the contract.</param>
         /// <param name="register">The service register object.</param>
         /// <param name="state">The service state.</param>
+        /// <param name="serviceName"></param>
         /// <returns>Dependency expression</returns>
-        protected virtual Expression CreateDependency(Type interfaceType, ServiceRegister register, ServiceState state)
+        protected virtual Expression CreateDependency(Type interfaceType, ServiceRegister register, ServiceState state, string serviceName)
         {
             //let's subcontract take responsibility to create dependency objects 
             if (DependencyFactory == null && SharedFactory != null)
             {
-                return SharedFactory.Create(interfaceType, register, state) ?? Expression.Default(interfaceType);
+                return SharedFactory.Create(interfaceType, register, state, serviceName) ?? Expression.Default(interfaceType);
             }
-            return DependencyFactory?.Create(interfaceType, register, state) ?? Expression.Default(interfaceType);
+            return DependencyFactory?.Create(interfaceType, register, state, serviceName) ?? Expression.Default(interfaceType);
+        }
+
+        /// <summary>
+        /// Returns <see cref="BaseServiceInfo"/> object, if service is null then it returns default service info.
+        /// </summary>
+        /// <param name="interfaceType"></param>
+        /// <param name="serviceName"></param>
+        /// <returns></returns>
+        protected BaseServiceInfo GetServiceInfo(Type interfaceType, string serviceName)
+        {
+            BaseServiceInfo serviceInfo = null;
+
+            if (!string.IsNullOrEmpty(serviceName))
+            {
+                serviceInfo = ServicesMapTable[interfaceType, serviceName];
+            }
+            else
+            {
+                serviceInfo = ServicesMapTable[interfaceType];
+            }
+            return serviceInfo;
         }
 
         private void VerifyNull(object o, string name)
@@ -434,24 +456,26 @@ namespace IocServiceStack
             }
             else
             {
+                var mappedServiceName = GetMappedServiceName(constrParameter);
+
                 /*
                  * if container model is "Single" then it will search within the same container not in dependencies.
                  * if parameter is decorated with FromSelfAttribute, then find object within the current factory */
                 if (IsSelfDependent(constrParameter))
                 {
                     //Find it in same 
-                    return GetObjectFromSelf(constrParameter.ParameterType, registrar, state);
+                    return GetObjectFromSelf(constrParameter.ParameterType, registrar, state, mappedServiceName);
                 }
 
                 /*if parameter is decorated with FromDependencyAttribute, then find object within the specified factory */
                 string factoryName;
                 if (HasDependencyAttribute(constrParameter, out factoryName))
                 {
-                    return GetObjectFromDependencyFactory(constrParameter.ParameterType, factoryName, registrar, state);
+                    return GetObjectFromDependencyFactory(constrParameter.ParameterType, factoryName, registrar, state, mappedServiceName);
                 }
 
                 //let's subcontract take responsibility to create dependency objects 
-                return CreateDependency(constrParameter.ParameterType, registrar, state);
+                return CreateDependency(constrParameter.ParameterType, registrar, state, mappedServiceName);
             }
         }
 
@@ -462,6 +486,12 @@ namespace IocServiceStack
             return fromSelfAttr != null;
         }
 
+        private string GetMappedServiceName(ParameterInfo constrParameter)
+        {
+            var mapServiceAttr = constrParameter.GetCustomAttribute<MapServiceAttribute>();
+            return mapServiceAttr?.Name;
+        }
+
         private bool HasDependencyAttribute(ParameterInfo constrParameter, out string factoryName)
         {
             //FromSelf
@@ -470,15 +500,17 @@ namespace IocServiceStack
             return fromDepAttr != null;
         }
 
-        private Expression GetObjectFromDependencyFactory(Type interfaceType, string factoryName, ServiceRegister registrar, ServiceState state)
+        private Expression GetObjectFromDependencyFactory(Type interfaceType, string factoryName, ServiceRegister registrar, ServiceState state, string mappedServiceName)
         {
             var subcontractFactory = ServiceProviderHelper.GetDependencyFactory(DependencyFactory, factoryName);
-            return subcontractFactory?.Create(interfaceType, registrar, state) ?? Expression.Default(interfaceType);
+            return subcontractFactory?.Create(interfaceType, registrar, state, mappedServiceName) ?? Expression.Default(interfaceType);
         }
 
-        private Expression GetObjectFromSelf(Type interfaceType, ServiceRegister registrar, ServiceState state)
+        
+
+        private Expression GetObjectFromSelf(Type interfaceType, ServiceRegister registrar, ServiceState state, string serviceName)
         {
-            var serviceInfo = ServicesMapTable[interfaceType];
+            var serviceInfo = GetServiceInfo(interfaceType, serviceName);
 
             if (serviceInfo == null)
             {
@@ -500,6 +532,8 @@ namespace IocServiceStack
 
             return expression;
         }
+
+        
 
         private void AddServiceInternal<T>(Type service, string serviceName) where T : class
         {
