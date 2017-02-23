@@ -89,7 +89,7 @@ namespace IocServiceStack
         }
 
         /// <summary>
-        /// Get service of the specified contract.
+        /// Gets service of the specified contract.
         /// </summary>
         /// <typeparam name="T">The type of the contract.</typeparam>
         /// <returns>Returns service that's associated with the contract.</returns>
@@ -99,7 +99,7 @@ namespace IocServiceStack
         }
 
         /// <summary>
-        /// Get service of the specified contract with service name.
+        /// Gets service of the specified contract with service name.
         /// </summary>
         /// <typeparam name="T">The type of the contract.</typeparam>
         /// <param name="serviceName">The name of the service in specified contract family.</param>
@@ -110,7 +110,7 @@ namespace IocServiceStack
         }
 
         /// <summary>
-        /// Get service of the specified contract with service name.
+        /// Gets service of the specified contract with service name.
         /// </summary>
         /// <param name="contractType">The type of the contract.</param>
         /// <returns>Returns service that's associated with the contract.</returns>
@@ -120,7 +120,7 @@ namespace IocServiceStack
         }
 
         /// <summary>
-        /// Get service of the specified contract with service name.
+        /// Gets service of the specified contract with service name.
         /// </summary>
         /// <param name="contractType"></param>
         /// <param name="serviceName">The name of the service in specified contract family.</param>

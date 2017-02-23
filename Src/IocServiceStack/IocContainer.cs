@@ -66,7 +66,7 @@ namespace IocServiceStack
         }
 
         /// <summary>
-        /// Returns shared container of the root container and its dependencies.
+        /// Gets shared container of the root container and its dependencies.
         /// </summary>
         /// <returns></returns>
         public ISubContainer GetSharedContainer()
@@ -75,7 +75,7 @@ namespace IocServiceStack
         }
 
         /// <summary>
-        /// Returns dependency container  by specified name.
+        /// Gets dependency container  by specified name.
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
