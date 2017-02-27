@@ -55,14 +55,6 @@ namespace IocServiceStack
         }
 
         /// <summary>
-        /// Gets or sets main <see cref="IocContainer"/>.
-        /// </summary>
-        public IocContainer IocContainer
-        {
-            get; set;
-        }
-
-        /// <summary>
         /// Returns service for the requested contract.
         /// </summary>
         /// <typeparam name="T">The type of the contract.</typeparam>
@@ -175,7 +167,7 @@ namespace IocServiceStack
         /// Returns root service factory of the container.
         /// </summary>
         /// <returns></returns>
-        public virtual IRootServiceFactory GetServiceFactory()
+        public virtual IRootServiceFactory GetRootServiceFactory()
         {
             return _internalsm.GetServiceFactory();
         }
@@ -188,7 +180,7 @@ namespace IocServiceStack
         /// <returns></returns>
         public IDependencyFactory GetDependencyFactory(string name)
         {
-            return GetServiceFactory()?.GetDependencyFactory(name);
+            return GetRootServiceFactory()?.GetDependencyFactory(name);
         }
 
         /// <summary>
@@ -197,7 +189,7 @@ namespace IocServiceStack
         /// <returns></returns>
         public ISharedFactory GetSharedFactory()
         {
-            return GetServiceFactory().GetSharedFactory();
+            return GetRootServiceFactory().GetSharedFactory();
         }
 
         /// <summary>
@@ -216,7 +208,7 @@ namespace IocServiceStack
                 return default(InvocationInfo);
             }
 
-            ServiceCallContext callContext = ServiceCallContext.Create(contractType, serviceInfo.ServiceType, IocContainer);
+            ServiceCallContext callContext = ServiceCallContext.Create(contractType, serviceInfo.ServiceType, this);
             InvokeDecorator(callContext, InvocationCase.Before, serviceInfo.Decorators);
 
             return new InvocationInfo() { ServiceInfo = serviceInfo, ServiceCallContext = callContext };

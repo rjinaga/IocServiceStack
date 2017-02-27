@@ -30,7 +30,7 @@ namespace IocServiceStack
     /// <summary>
     /// Contains options for container dependencies.
     /// </summary>
-    public class ContainerDependencyOptions
+    public sealed class ContainerDependencyOptions
     {
         private bool _readOnly;
         private string[] _namespaces, _assemblies;

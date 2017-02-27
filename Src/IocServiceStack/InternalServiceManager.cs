@@ -27,7 +27,7 @@ namespace IocServiceStack
 {
     using System.Reflection;
 
-    internal class InternalServiceManager
+    internal sealed class InternalServiceManager
     {
         private IRootServiceFactory _serviceFactory;
         private readonly object _factorySyncObject = new object();

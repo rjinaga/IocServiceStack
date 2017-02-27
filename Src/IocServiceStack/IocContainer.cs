@@ -28,7 +28,7 @@ namespace IocServiceStack
     /// <summary>
     /// Main container of the inversion of control framework.
     /// </summary>
-    public class IocContainer
+    public sealed class IocContainer
     {
         private IServiceProvider _serviceProvider;
         private readonly ContainerConfig _config;
@@ -62,7 +62,7 @@ namespace IocServiceStack
         /// <returns></returns>
         public IRootContainer GetRootContainer()
         {
-            return ServiceProvider.GetServiceFactory();
+            return ServiceProvider.GetRootServiceFactory();
         }
 
         /// <summary>

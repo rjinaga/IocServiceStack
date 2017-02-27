@@ -2,11 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
-    using System.Threading.Tasks;
 
-    internal class ServiceCompiler
+    internal sealed class ServiceCompiler
     {
         private ServiceNotifier _notifier;
 

@@ -31,7 +31,7 @@ namespace IocServiceStack
     /// global decorators and while executing decorators for a service, it executes the global decorators first and
     /// then executes specific decorators to the contract.
     /// </summary>
-    public class DecoratorManager : IDecoratorManager
+    public sealed class DecoratorManager : IDecoratorManager
     {
         /// <summary>
         /// Gets or sets list of global decorators.

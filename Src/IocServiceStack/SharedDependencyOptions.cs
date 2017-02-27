@@ -28,7 +28,7 @@ namespace IocServiceStack
     /// <summary>
     /// Represents shared dependency options.
     /// </summary>
-    public class SharedDependencyOptions
+    public sealed class SharedDependencyOptions
     {
         private bool _readOnly;
         private string[] _namespaces, _assemblies;

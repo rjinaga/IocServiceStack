@@ -38,15 +38,10 @@ namespace IocServiceStack
         IDecoratorManager DecoratorManager { set; }
 
         /// <summary>
-        /// Sets current instance's container
-        /// </summary>
-        IocContainer IocContainer { set; }
-
-        /// <summary>
         /// Gets root service factory
         /// </summary>
         /// <returns></returns>
-        IRootServiceFactory GetServiceFactory();
+        IRootServiceFactory GetRootServiceFactory();
 
         /// <summary>
         /// Gets dependency factory by specified name.

@@ -30,7 +30,7 @@ namespace IocServiceStack
     /// <summary>
     /// Represents the event arguments data. it contains the ServiceType.
     /// </summary>
-    public class ServiceEventArgs : EventArgs
+    public sealed class ServiceEventArgs : EventArgs
     {
         /// <summary>
         /// Gets read-only service type.

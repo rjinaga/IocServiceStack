@@ -45,12 +45,13 @@ namespace IocServiceStack
         /// <summary>
         /// Gets read-only IocContainer
         /// </summary>
-        public readonly IocContainer IocContainer;
+        public readonly IServiceProvider ServiceProvider;
 
-        private ServiceCallContext(Type contractType, Type serviceType, IocContainer container)
+        private ServiceCallContext(Type contractType, Type serviceType, IServiceProvider serviceProvider)
         {
             ContractType = contractType;
             ServiceType = serviceType;
+            ServiceProvider = serviceProvider;
         }
 
         /// <summary>
@@ -66,11 +67,11 @@ namespace IocServiceStack
         /// </summary>
         /// <param name="contractType"></param>
         /// <param name="serviceType"></param>
-        /// <param name="container"></param>
+        /// <param name="serviceProvider"></param>
         /// <returns></returns>
-        public static ServiceCallContext Create(Type contractType, Type serviceType, IocContainer container)
+        public static ServiceCallContext Create(Type contractType, Type serviceType, IServiceProvider serviceProvider)
         {
-            return new ServiceCallContext(contractType, serviceType, container);
+            return new ServiceCallContext(contractType, serviceType, serviceProvider);
         }
         #endregion
 
