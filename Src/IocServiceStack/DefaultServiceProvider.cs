@@ -208,10 +208,17 @@ namespace IocServiceStack
                 return default(InvocationInfo);
             }
 
-            ServiceCallContext callContext = ServiceCallContext.Create(contractType, serviceInfo.ServiceType, this);
-            InvokeDecorator(callContext, InvocationCase.Before, serviceInfo.Decorators);
+            //Invoke if there are any decorators.
+            if (DecoratorManager.GlobalDecorators.Count > 0 || (serviceInfo.Decorators != null && serviceInfo.Decorators.Length > 0))
+            {
+                ServiceCallContext callContext = ServiceCallContext.Create(contractType, serviceInfo.ServiceType, this);
+                InvokeDecorator(callContext, InvocationCase.Before, serviceInfo.Decorators);
 
-            return new InvocationInfo() { ServiceInfo = serviceInfo, ServiceCallContext = callContext };
+                return new InvocationInfo() { ServiceInfo = serviceInfo, ServiceCallContext = callContext };
+            }
+
+            return new InvocationInfo() { ServiceInfo = serviceInfo};
+
         }
 
         /// <summary>
@@ -220,10 +227,14 @@ namespace IocServiceStack
         /// <param name="objectInstance"></param>
         /// <param name="context"></param>
         /// <param name="localDecorators"></param>
-        protected void AfterInvoke(object objectInstance, ServiceCallContext context, IEnumerable<DecoratorAttribute> localDecorators)
+        protected void AfterInvoke(object objectInstance, ServiceCallContext context, DecoratorAttribute[] localDecorators)
         {
-            context.ServiceInstance = objectInstance;
-            InvokeDecorator(context, InvocationCase.After, localDecorators);
+            //Invoke if there are any decorators.
+            if (context != null && (DecoratorManager.GlobalDecorators.Count > 0 || (localDecorators != null && localDecorators.Length > 0)))
+            {
+                context.ServiceInstance = objectInstance;
+                InvokeDecorator(context, InvocationCase.After, localDecorators);
+            }
         }
 
         private void InvokeDecorator(ServiceCallContext context, InvocationCase @case, IEnumerable<DecoratorAttribute> localDecorators)

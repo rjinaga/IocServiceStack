@@ -84,8 +84,9 @@ namespace IocServiceStack
         /// <param name="register">The ServiceRegister</param>
         /// <param name="state">The ServiceState</param>
         /// <param name="serviceName"></param>
+        /// <param name="attributes"></param>
         /// <returns>Returns <see cref="Expression"/> of service constructor.</returns>
-        public override Expression Create(Type interfaceType, ServiceRegister register, ServiceState state, string serviceName)
+        public override Expression Create(Type interfaceType, ServiceRegister register, ServiceState state, string serviceName,  TypeContextAttributes attributes)
         {
             if (interfaceType == null)
                 throw new ArgumentNullException(nameof(interfaceType));
@@ -98,7 +99,7 @@ namespace IocServiceStack
 
             if (serviceMeta == null)
             {
-                return SharedFactory.Create(interfaceType, register, state, serviceName);
+                return SharedFactory.Create(interfaceType, register, state, serviceName, attributes);
             }
 
             var userdefinedExpression = serviceMeta.GetServiceInstanceExpression();

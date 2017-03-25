@@ -362,15 +362,16 @@ namespace IocServiceStack
         /// <param name="register">The service register object.</param>
         /// <param name="state">The service state.</param>
         /// <param name="serviceName"></param>
+        /// <param name="attributes"></param>
         /// <returns>Dependency expression</returns>
-        protected virtual Expression CreateDependency(Type interfaceType, ServiceRegister register, ServiceState state, string serviceName)
+        protected virtual Expression CreateDependency(Type interfaceType, ServiceRegister register, ServiceState state, string serviceName, TypeContextAttributes attributes)
         {
             //let's subcontract take responsibility to create dependency objects 
             if (DependencyFactory == null && SharedFactory != null)
             {
-                return SharedFactory.Create(interfaceType, register, state, serviceName) ?? Expression.Default(interfaceType);
+                return SharedFactory.Create(interfaceType, register, state, serviceName, attributes) ?? Expression.Default(interfaceType);
             }
-            return DependencyFactory?.Create(interfaceType, register, state, serviceName) ?? Expression.Default(interfaceType);
+            return DependencyFactory?.Create(interfaceType, register, state, serviceName, attributes) ?? Expression.Default(interfaceType);
         }
 
         /// <summary>
@@ -471,11 +472,11 @@ namespace IocServiceStack
                 string factoryName;
                 if (HasDependencyAttribute(constrParameter, out factoryName))
                 {
-                    return GetObjectFromDependencyFactory(constrParameter.ParameterType, factoryName, registrar, state, mappedServiceName);
+                    return GetObjectFromDependencyFactory(constrParameter.ParameterType, factoryName, registrar, state, mappedServiceName, new TypeContextAttributes(constrParameter.GetCustomAttributes()));
                 }
 
                 //let's subcontract take responsibility to create dependency objects 
-                return CreateDependency(constrParameter.ParameterType, registrar, state, mappedServiceName);
+                return CreateDependency(constrParameter.ParameterType, registrar, state, mappedServiceName, new TypeContextAttributes(constrParameter.GetCustomAttributes()));
             }
         }
 
@@ -500,10 +501,10 @@ namespace IocServiceStack
             return fromDepAttr != null;
         }
 
-        private Expression GetObjectFromDependencyFactory(Type interfaceType, string factoryName, ServiceRegister registrar, ServiceState state, string mappedServiceName)
+        private Expression GetObjectFromDependencyFactory(Type interfaceType, string factoryName, ServiceRegister registrar, ServiceState state, string mappedServiceName, TypeContextAttributes attributes)
         {
             var subcontractFactory = ServiceProviderHelper.GetDependencyFactory(DependencyFactory, factoryName);
-            return subcontractFactory?.Create(interfaceType, registrar, state, mappedServiceName) ?? Expression.Default(interfaceType);
+            return subcontractFactory?.Create(interfaceType, registrar, state, mappedServiceName, attributes) ?? Expression.Default(interfaceType);
         }
 
         

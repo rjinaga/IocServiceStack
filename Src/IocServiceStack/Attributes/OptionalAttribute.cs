@@ -26,40 +26,14 @@
 namespace IocServiceStack
 {
     using System;
-    using System.Linq.Expressions;
-   
+
     /// <summary>
-    /// Represents dependency factory
+    /// Optional attributes injects the object if available in container, this stops throwing exception 
+    /// if object not available in container.
     /// </summary>
-    public interface IDependencyFactory : ISubContainer
+    [AttributeUsage(AttributeTargets.Parameter, AllowMultiple =false)]
+    public sealed class OptionalAttribute : Attribute
     {
-        /// <summary>
-        /// Gets or sets name of the factory.
-        /// </summary>
-        string Name { get;  }
 
-        /// <summary>
-        /// Gets dependency factory of the current factory.
-        /// </summary>
-        IDependencyFactory DependencyFactory { get; }
-
-        /// <summary>
-        /// Create <see cref="Expression"/> for service which is associated with contract.
-        /// </summary>
-        /// <param name="interfaceType">Type of contract</param>
-        /// <param name="register">The ServiceRegister</param>
-        /// <param name="state">The ServiceState</param>
-        /// <param name="serviceName">(Optional)</param>
-        /// <param name="attributes"></param>
-        /// <returns>Returns <see cref="Expression"/> of service constructor.</returns>
-        Expression Create(Type interfaceType, ServiceRegister register, ServiceState state, string serviceName, TypeContextAttributes attributes);
-
-        /// <summary>
-        /// Gets or sets contract observer.
-        /// </summary>
-        IContractObserver ContractObserver { get; set; }
-
-        
     }
-
 }

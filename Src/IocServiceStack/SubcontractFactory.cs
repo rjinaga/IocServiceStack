@@ -58,8 +58,9 @@ namespace IocServiceStack
         /// <param name="register">The ServiceRegister</param>
         /// <param name="state">The ServiceState</param>
         /// <param name="serviceName"></param>
+        /// <param name="attributes"></param>
         /// <returns>Returns <see cref="Expression"/> of service constructor.</returns>
-        public abstract Expression Create(Type interfaceType, ServiceRegister register, ServiceState state, string serviceName);
+        public abstract Expression Create(Type interfaceType, ServiceRegister register, ServiceState state, string serviceName, TypeContextAttributes attributes);
 
         /// <summary>
         /// Adds specified service for the specified contract T to the collection.

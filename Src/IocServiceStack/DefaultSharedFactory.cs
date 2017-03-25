@@ -68,8 +68,9 @@ namespace IocServiceStack
         /// <param name="register">The ServiceRegister</param>
         /// <param name="state">The ServiceState</param>
         /// <param name="serviceName"></param>
+        /// <param name="attributes"></param>
         /// <returns>Returns <see cref="Expression"/> of service constructor.</returns>
-        public override Expression Create(Type interfaceType, ServiceRegister register, ServiceState state, string serviceName)
+        public override Expression Create(Type interfaceType, ServiceRegister register, ServiceState state, string serviceName, TypeContextAttributes attributes)
         {
             if (interfaceType == null)
                 throw new ArgumentNullException(nameof(interfaceType));
@@ -83,7 +84,14 @@ namespace IocServiceStack
             //Throw exception if service meta not found in the service map table
             if (serviceMeta == null)
             {
-                ExceptionHelper.ThrowContractNotRegisteredException($"Type '{interfaceType.FullName}' was not registered with dependency container or shared container.");
+                if (attributes.HasAttribute(typeof(OptionalAttribute)))
+                {
+                    return Expression.Default(interfaceType);
+                }
+                else
+                {
+                    ExceptionHelper.ThrowContractNotRegisteredException($"Type '{interfaceType.FullName}' was not registered with dependency container or shared container.");
+                }
             }
 
             var userdefinedExpression = serviceMeta.GetServiceInstanceExpression();
@@ -103,10 +111,11 @@ namespace IocServiceStack
         /// <param name="register">The service register object.</param>
         /// <param name="state">The service state.</param>
         /// <param name="serviceName"></param>
+        /// <param name="attributes"></param>
         /// <returns>Dependency expression</returns>
-        protected override Expression CreateDependency(Type interfaceType, ServiceRegister register, ServiceState state, string serviceName)
+        protected override Expression CreateDependency(Type interfaceType, ServiceRegister register, ServiceState state, string serviceName, TypeContextAttributes attributes)
         {
-            return Create(interfaceType, register, state, serviceName) ?? Expression.Default(interfaceType);
+            return Create(interfaceType, register, state, serviceName, attributes) ?? Expression.Default(interfaceType);
         }
     }
 }
