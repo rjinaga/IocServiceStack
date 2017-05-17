@@ -54,5 +54,12 @@ namespace IocServiceStack
         /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// Sets or Gets array of contracts that can be mapped to current service class. This attribute is useful when
+        /// service class is inherited from third party interfaces and should map to their contract(s). Even this can be
+        /// used with your own contracts which has no contract attribute specified.
+        /// </summary>
+        public Type[] Contracts { get; set; }
+
     }
 }

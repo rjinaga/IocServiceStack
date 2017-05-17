@@ -266,20 +266,50 @@ namespace IocServiceStack
                     IEnumerable<Type> interfaces = serviceType.GetInterfaces()
                                                               .Where(@interface => @interface.GetTypeInfo().GetCustomAttribute<ContractAttribute>() != null);
 #endif
-                    /*Maps the base class*/
+                    /*Maps the base class (which is decorated with contract attribute) of the service*/
                     if (serviceType.GetTypeInfo().BaseType != typeof(object))
                     {
-                        MapService(services, interfaceType: serviceType.GetTypeInfo().BaseType, serviceType: serviceType);
+                        //if base type is decorated with contract attribute then add that to service.
+                        var baseTypeInfo = serviceType.GetTypeInfo().BaseType.GetTypeInfo();
+                        if (baseTypeInfo.GetCustomAttribute<ContractAttribute>() != null)
+                        {
+                            MapService(services, interfaceType: serviceType.GetTypeInfo().BaseType, serviceType: serviceType);
+                        }
                     }
 
+                    /*Maps the interfaces (which are decorated with contract attribute) of the service */
                     /*Map service type with the contract interfaces*/
                     foreach (var interfaceType in interfaces)
                     {
                         MapService(services, interfaceType, serviceType);
                     }
+
+                    /*Maps inherit type (base class/interface) if the type is set to the property contract of ServiceAttribute  */
+                    MapServiceDefinedAtAttributeLevel(services, serviceType);
                 }
             }
         }
+
+        private void MapServiceDefinedAtAttributeLevel(ServiceMapTable services, Type serviceType)
+        {
+            var serviceAttribute = serviceType.GetTypeInfo().GetCustomAttributes<ServiceAttribute>().FirstOrDefault();
+
+            if (serviceAttribute.Contracts != null)
+            {
+                foreach (var contract in serviceAttribute.Contracts)
+                {
+                    if (contract != null)
+                    {
+                        //First we need to check whether service class is inherited from this contract
+                        if (contract.GetTypeInfo().IsAssignableFrom(serviceType))
+                        {
+                            MapService(services, contract, serviceType);
+                        }
+                    }
+                }
+            }
+        }
+
 
         private void MapService(ServiceMapTable services, Type interfaceType, Type serviceType)
         {
