@@ -252,48 +252,84 @@ namespace IocServiceStack
 
         private void FillServicesDictionary(IEnumerable<Type> serviceTypes, ServiceMapTable services, string[] namespaces)
         {
-            foreach (var serviceType in serviceTypes)
+            foreach (Type serviceType in serviceTypes)
             {
                 /*Allow when no namespaces are configured or if it's configured then check the namespace of the service is matched with namespaces declared in config via ServiceInjector.*/
                 if (namespaces == null || namespaces.Length == 0 || namespaces.Contains(serviceType.Namespace))
                 {
+
+                    var serviceAttribute = serviceType.GetTypeInfo().GetCustomAttributes<ServiceAttribute>().FirstOrDefault();
+
+                    /*1. First check auto - if auto specified, rest all ignored
+                      2. Contracts at service attribute level - if contracts specified  Individual Interface  level contract ignored
+                      3. Individual Interface  level */
+                    if (serviceAttribute.Auto)
+                    {
+                        MapAllBaseAndInterfaceTypes(serviceType, services);
+                    }
+                    else
+                    {
+                        MapSelectiveBaseAndInterfaceTypes(serviceType, services, serviceAttribute);
+                    }
+                }
+            }
+        }
+
+        private void MapAllBaseAndInterfaceTypes(Type serviceType, ServiceMapTable services)
+        {
+            //Map base type with the service
+            if (serviceType.GetTypeInfo().BaseType != typeof(object))
+            {
+                MapService(services, interfaceType: serviceType.GetTypeInfo().BaseType, serviceType: serviceType);
+            }
+            IEnumerable<Type> interfaces = serviceType.GetInterfaces();
+
+            /*Maps the interfaces (which are decorated with contract attribute) of the service */
+            /*Map service type with the contract interfaces*/
+            foreach (var interfaceType in interfaces)
+            {
+                MapService(services, interfaceType, serviceType);
+            }
+        }
+
+        private void MapSelectiveBaseAndInterfaceTypes(Type serviceType, ServiceMapTable services, ServiceAttribute serviceAttribute)
+        {
+
 #if NET46
-                    /*Fetch implemented interfaces of service whose interface is decorated with  ContractAttribute.*/
-                    IEnumerable<Type> interfaces = serviceType.GetInterfaces()
-                                                              .Where(@interface => @interface.GetCustomAttribute<ContractAttribute>() != null);
+            /*Fetch implemented interfaces of service whose interface is decorated with  ContractAttribute.*/
+            IEnumerable<Type> interfaces = serviceType.GetInterfaces()
+                                                      .Where(@interface => @interface.GetCustomAttribute<ContractAttribute>() != null);
 #else
                     /*Fetch implemented interfaces of service whose interface is decorated with  ContractAttribute.*/
                     IEnumerable<Type> interfaces = serviceType.GetInterfaces()
                                                               .Where(@interface => @interface.GetTypeInfo().GetCustomAttribute<ContractAttribute>() != null);
 #endif
-                    /*Maps the base class (which is decorated with contract attribute) of the service*/
-                    if (serviceType.GetTypeInfo().BaseType != typeof(object))
-                    {
-                        //if base type is decorated with contract attribute then add that to service.
-                        var baseTypeInfo = serviceType.GetTypeInfo().BaseType.GetTypeInfo();
-                        if (baseTypeInfo.GetCustomAttribute<ContractAttribute>() != null)
-                        {
-                            MapService(services, interfaceType: serviceType.GetTypeInfo().BaseType, serviceType: serviceType);
-                        }
-                    }
-
-                    /*Maps the interfaces (which are decorated with contract attribute) of the service */
-                    /*Map service type with the contract interfaces*/
-                    foreach (var interfaceType in interfaces)
-                    {
-                        MapService(services, interfaceType, serviceType);
-                    }
-
-                    /*Maps inherit type (base class/interface) if the type is set to the property contract of ServiceAttribute  */
-                    MapServiceDefinedAtAttributeLevel(services, serviceType);
+            /*Maps the base class (which is decorated with contract attribute) of the service*/
+            if (serviceType.GetTypeInfo().BaseType != typeof(object))
+            {
+                //if base type is decorated with contract attribute then add that to service.
+                var baseTypeInfo = serviceType.GetTypeInfo().BaseType.GetTypeInfo();
+                if (baseTypeInfo.GetCustomAttribute<ContractAttribute>() != null)
+                {
+                    MapService(services, interfaceType: serviceType.GetTypeInfo().BaseType, serviceType: serviceType);
                 }
             }
+
+            /*Maps the interfaces (which are decorated with contract attribute) of the service */
+            /*Map service type with the contract interfaces*/
+            foreach (var interfaceType in interfaces)
+            {
+                MapService(services, interfaceType, serviceType);
+            }
+
+            /*Maps inherit type (base class/interface) if the type is set to the property contract of ServiceAttribute  */
+            MapServiceDefinedAtAttributeLevel(services, serviceType, serviceAttribute);
         }
 
-        private void MapServiceDefinedAtAttributeLevel(ServiceMapTable services, Type serviceType)
-        {
-            var serviceAttribute = serviceType.GetTypeInfo().GetCustomAttributes<ServiceAttribute>().FirstOrDefault();
 
+
+        private void MapServiceDefinedAtAttributeLevel(ServiceMapTable services, Type serviceType, ServiceAttribute serviceAttribute)
+        {
             if (serviceAttribute.Contracts != null)
             {
                 foreach (var contract in serviceAttribute.Contracts)

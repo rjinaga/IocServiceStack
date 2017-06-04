@@ -49,6 +49,16 @@ namespace IocServiceStack
             Name = serviceName;
         }
 
+
+        /// <summary>
+        /// Initializes new instance of <see cref="ServiceAttribute"/> with specified  array of <paramref name="contracts"/>
+        /// </summary>
+        /// <param name="contracts"></param>
+        public ServiceAttribute(params Type[] contracts)
+        {
+            Contracts = contracts;
+        }
+
         /// <summary>
         /// Sets or Gets the name of the service. and it must be unique for that particular contract type.
         /// </summary>
@@ -60,6 +70,12 @@ namespace IocServiceStack
         /// used with your own contracts which has no contract attribute specified.
         /// </summary>
         public Type[] Contracts { get; set; }
+
+
+        /// <summary>
+        /// Sets or Gets whether service must be wired-up with all the interfaces and base type automatically.
+        /// </summary>
+        public bool Auto { get; set; }
 
     }
 }
