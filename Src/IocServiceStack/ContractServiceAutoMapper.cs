@@ -104,6 +104,38 @@ namespace IocServiceStack
         }
 
         /// <summary>
+        /// Get all list of contracts
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Type> GetAllContracts()
+        {
+            return _mapTable.Keys.ToArray();
+        }
+
+        /// <summary>
+        /// Get list of services for the given contract type
+        /// </summary>
+        /// <param name="contractType"></param>
+        /// <returns></returns>
+        public IEnumerable<ServiceTypeInfo> GetServiceTypes(Type contractType)
+        {
+            var contract = _mapTable[contractType];
+
+            List<ServiceTypeInfo> types = new List<ServiceTypeInfo>();
+            types.Add(new ServiceTypeInfo { Type = contract.DefaultService.ServiceType });
+
+            var serviceTypes = _mapTable[contractType]?.Services;
+            if (serviceTypes != null)
+            {
+                foreach (var item in serviceTypes)
+                {
+                    types.Add(new ServiceTypeInfo { Name = item.Key, Type = item.Value.ServiceType });
+                }
+            }
+            return types;
+        }
+
+        /// <summary>
         /// Determines whether <see cref="ContractServiceAutoMapper"/> contains specified contract type.
         /// </summary>
         /// <param name="contractType">The <paramref name="contractType"/> locate in the <see cref="ContractServiceAutoMapper"/> </param>

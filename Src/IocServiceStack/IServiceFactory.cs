@@ -26,6 +26,7 @@
 namespace IocServiceStack
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Represents root service factory of main container.
@@ -74,5 +75,17 @@ namespace IocServiceStack
         /// <returns></returns>
         ISharedFactory GetSharedFactory();
 
+        /// <summary>
+        /// Get list of contract types added to the factory
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<Type> GetAllInterfaces();
+
+        /// <summary>
+        /// Get all types that implement given interface
+        /// </summary>
+        /// <param name="contractType"></param>
+        /// <returns></returns>
+        IEnumerable<ServiceTypeInfo> GetServiceTypes(Type contractType);
     }
 }

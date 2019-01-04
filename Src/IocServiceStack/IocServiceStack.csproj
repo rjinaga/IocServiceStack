@@ -19,8 +19,11 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>2.0.5</Version>
+    <Version>2.0.6</Version>
     <PackageReleaseNotes>Supports .NET Standard 2.0</PackageReleaseNotes>
+    <Description>IocServiceStack is a open source .NET dependency injection framework. It supports multi-service communication through multi-level dependency injection. This clearly separates the concerns of application layers, and makes the layers configurable and it offers several ways to inject dependencies. Check out http://www.iocservicestack.net for more information.</Description>
+    <Authors>rjinaga</Authors>
+    <RepositoryUrl>https://github.com/rjinaga/IocServiceStack</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">

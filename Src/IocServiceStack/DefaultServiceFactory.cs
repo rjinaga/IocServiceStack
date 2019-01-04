@@ -26,6 +26,7 @@
 namespace IocServiceStack
 {
     using System;
+    using System.Collections.Generic;
     using System.Reflection;
 
     /// <summary>
@@ -412,6 +413,24 @@ namespace IocServiceStack
 
             return this;
         }
-      
+
+        /// <summary>
+        /// Get all contract types
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Type> GetAllInterfaces()
+        {
+            return ServicesMapTable.GetAllContracts();
+        }
+
+        /// <summary>
+        /// Get service types that are implemented given contract type
+        /// </summary>
+        /// <param name="contractType"></param>
+        /// <returns></returns>
+        public IEnumerable<ServiceTypeInfo> GetServiceTypes(Type contractType)
+        {
+            return ServicesMapTable.GetServiceTypes(contractType);
+        }
     }
 }
