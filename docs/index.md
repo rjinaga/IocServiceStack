@@ -1,4 +1,5 @@
-# IocServiceStack
+# IocServiceStack 
+> **Multi-service and multi-level dependency injection framework for .NET**
 
 [![Build status](https://ci.appveyor.com/api/projects/status/bylhcbchnjas953q?svg=true)](https://ci.appveyor.com/project/rjinaga/iocservicestack)
 
