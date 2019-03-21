@@ -1,5 +1,7 @@
 theme: jekyll-theme-slate
 
+layout: default
+
 # Setup
 title: IocServiceStack .Net
 tagline: A multi-service and multi-level dependency injection .net framework
