@@ -348,8 +348,6 @@ container.GetSharedContainer()
 
 ```
 
-### ASP.NET Web Application Architecture using IocServiceStack
-[https://github.com/rjinaga/Web-App-Architecture-Using-IocServiceStack](https://github.com/rjinaga/Web-App-Architecture-Using-IocServiceStack)
 ### Wiki
 [https://github.com/rjinaga/IocServiceStack/wiki](https://github.com/rjinaga/IocServiceStack/wiki)
 
